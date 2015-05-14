@@ -1,0 +1,12 @@
+*
+
+!/cask
+!/cask/*
+!/cask/**/*
+
+!/themes
+!/themes/*.el
+
+!Cask
+!.gitignore
+!init.el
