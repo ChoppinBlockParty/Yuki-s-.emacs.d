@@ -1,8 +1,14 @@
 *
 
+!/.cache
+!/cache/*
+
 !/cask
 !/cask/*
 !/cask/**/*
+
+!/configs
+!/configs/*.el
 
 !/themes
 !/themes/*.el
