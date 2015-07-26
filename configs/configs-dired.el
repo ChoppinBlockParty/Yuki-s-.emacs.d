@@ -89,6 +89,34 @@
   (if (my-dired-at-title)
       (dired-kill-subdir)))
 
+(defun create-new-file (file-list)
+  (defun exsitp-untitled-x (file-list cnt)
+    (while (and (car file-list) (not (string= (car file-list) (concat "untitled" (number-to-string cnt) ".txt"))))
+      (setq file-list (cdr file-list)))
+    (car file-list))
+  
+  (defun exsitp-untitled (file-list)
+    (while (and (car file-list) (not (string= (car file-list) "untitled.txt")))
+      (setq file-list (cdr file-list)))
+    (car file-list))
+  
+  (if (not (exsitp-untitled file-list))
+      "untitled.txt"
+    (let ((cnt 2))
+      (while (exsitp-untitled-x file-list cnt)
+        (setq cnt (1+ cnt)))
+      (concat "untitled" (number-to-string cnt) ".txt"))))
+
+(defun my-dired-create-file (file)
+  (interactive
+   (list (read-file-name "Create file: " (concat (dired-current-directory) (create-new-file (directory-files (dired-current-directory))))))
+   )
+  (write-region "" nil (expand-file-name file) t) 
+  (dired-add-file file)
+  (revert-buffer)
+  (dired-goto-file (expand-file-name file)))
+
+
 (after 'evil
   ;;
   ;; These are plain ol' dired bindings, kept here for reference and future
@@ -235,11 +263,15 @@
   (evil-define-key 'normal dired-mode-map "l" 'my-dired-interact-with-file)
   (evil-define-key 'normal dired-mode-map "L" 'dired-find-alternate-file)
   (evil-define-key 'normal dired-mode-map "a" 'ag-dired)
-  (evil-define-key 'normal dired-mode-map "o" 'dired-sort-toggle-or-edit)
-  (evil-define-key 'normal dired-mode-map "v" 'dired-toggle-marks)
-  (evil-define-key 'normal dired-mode-map "m" 'dired-mark)
+  (evil-define-key 'normal dired-mode-map "o" 'dired-find-file)
+  (evil-define-key 'normal dired-mode-map (kbd "RET") 'dired-find-file)
+  ; (evil-define-key 'normal dired-mode-map (kbd "g N") 'dired-create-director)
+  ; (evil-define-key 'normal dired-mode-map "gn" 'my-dired-create-file)
+  (evil-define-key 'normal dired-mode-map "p" 'dired-display-file)
+  (evil-define-key 'normal dired-mode-map "v" 'dired-mark)
+  (evil-define-key 'normal dired-mode-map "V" 'dired-unmark-all-marks)
   (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
-  (evil-define-key 'normal dired-mode-map "U" 'dired-unmark-all-marks)
+  (evil-define-key 'normal dired-mode-map "U" 'dired-toggle-marks)
   (evil-define-key 'normal dired-mode-map "c" 'dired-create-directory)
   (evil-define-key 'normal dired-mode-map "q" 'kill-this-buffer)
   (evil-define-key 'normal dired-mode-map "/" 'evil-search-forward)

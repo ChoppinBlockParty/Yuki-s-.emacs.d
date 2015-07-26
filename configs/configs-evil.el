@@ -3,12 +3,11 @@
 ;; In order to work properly, we need to load evil-leader-mode before we load
 ;; evil-mode.
 (use-package evil-leader
-  :commands (evil-leader-mode global-evil-leader-mode)
   :ensure evil-leader
   :demand evil-leader
-  :init
+  :config
   (progn
-    ; (evil-leader/set-leader "<SPC>")
+    (evil-leader/set-leader "<SPC>")
     (global-evil-leader-mode t)))
 
 (use-package evil
@@ -41,13 +40,13 @@
       :commands (evilnc-comment-or-uncomment-lines))
 
 
-    (use-package evil-matchit
-      :ensure evil-matchit
-      :commands evilmi-jump-items
-      :init
-      (progn
-        (setq global-evil-matchit-mode t)
-        (define-key evil-normal-state-map "%" 'evilmi-jump-items)))
+    ; (use-package evil-matchit
+    ;   :ensure evil-matchit
+    ;   :commands evilmi-jump-items
+    ;   :init
+    ;   (progn
+    ;     (setq global-evil-matchit-mode t)
+    ;     (define-key evil-normal-state-map "%" 'evilmi-jump-items)))
 
 
     (use-package evil-surround
@@ -83,10 +82,20 @@
       (evil-ex-search-previous count)
       (list evil-ex-search-match-beg evil-ex-search-match-end))
 
-    (define-key minibuffer-local-map [escape] 'my-minibuffer-keyboard-quit)
-    (define-key minibuffer-local-ns-map [escape] 'my-minibuffer-keyboard-quit)
-    (define-key minibuffer-local-completion-map [escape] 'my-minibuffer-keyboard-quit)
-    (define-key minibuffer-local-must-match-map [escape] 'my-minibuffer-keyboard-quit)
+  ; (defun my-minibuffer-keyboard-quit ()
+  ;   "Abort recursive edit.
+  ; In Delete Selection mode, if the mark is active, just deactivate it;
+  ; then it takes a second \\[keyboard-quit] to abort the minibuffer."
+  ;   (interactive)
+  ;   (if (and delete-selection-mode transient-mark-mode mark-active)
+  ;       (setq deactivate-mark t)
+  ;     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+  ;     (abort-recursive-edit)))
+
+  ;   (define-key minibuffer-local-map [escape] 'my-minibuffer-keyboard-quit)
+  ;   (define-key minibuffer-local-ns-map [escape] 'my-minibuffer-keyboard-quit)
+  ;   (define-key minibuffer-local-completion-map [escape] 'my-minibuffer-keyboard-quit)
+  ;   (define-key minibuffer-local-must-match-map [escape] 'my-minibuffer-keyboard-quit)
 
     (defun my-delete-trailing-whitespace-at-line ()
       "Delete trailing whitespace on the current line only."
@@ -229,7 +238,7 @@ whether to call indent-according-to-mode."
 
     (define-key evil-normal-state-map (kbd "C-q")   'universal-argument)
 
-    (define-key evil-normal-state-map (kbd "C-h")   'evil-window-left)
+    ; (define-key evil-normal-state-map (kbd "C-h")   'evil-window-left)
     (define-key evil-normal-state-map (kbd "C-j")   'evil-window-down)
     (define-key evil-normal-state-map (kbd "C-k")   'evil-window-up)
     (define-key evil-normal-state-map (kbd "C-l")   'evil-window-right)
@@ -246,17 +255,54 @@ whether to call indent-according-to-mode."
     (evil-leader/set-key "q" 'evil-window-delete)
     (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
 
+       ; (evil-define-motion my-command ()
+       ; ; (evil-define-command my-command ()
+       ;   ; :digit-argument-redirection ,target
+       ;   ; :keep-visual t
+       ;   ; :repeat nil
+       ;   (interactive)
+       ;   (setq this-command #'digit-argument)
+       ;   (setq last-command-event (+ 8 ?0))
+       ;   (call-interactively #'digit-argument))
+
+    ; (defun capslock-digit-argument-fn (digit)
+    ;   `(lambda ()
+    ;      (interactive)
+    ;      (setq this-command #'digit-argument)
+    ;      (setq last-command-event (+ ,digit ?0))
+    ;      (call-interactively #'digit-argument)))
+
+    (defun capslock-digit-argument-fn (digit)
+      `(lambda (arg)
+         (interactive "P")
+         (setq last-command-event (+ ,digit ?0))
+         (digit-argument arg)))
+
+    ; (define-key evil-motion-state-map "!" (capslock-digit-argument-fn 1))
+    ; (define-key evil-motion-state-map "@" (capslock-digit-argument-fn 2))
+    ; (define-key evil-motion-state-map "#" (capslock-digit-argument-fn 3))
+    ; (define-key evil-motion-state-map "$" (capslock-digit-argument-fn 4))
+    (define-key evil-normal-state-map "%" (capslock-digit-argument-fn 5))
+    ; (define-key evil-motion-state-map "^" (capslock-digit-argument-fn 6))
+    ; (define-key evil-motion-state-map "&" (capslock-digit-argument-fn 7))
+    (define-key evil-normal-state-map "*" (capslock-digit-argument-fn 8))
+    ; (define-key evil-motion-state-map "*" (capslock-digit-argument-fn 8))
+    ; (define-key evil-motion-state-map "(" (capslock-digit-argument-fn 9))
+    (define-key evil-normal-state-map (kbd "5") 'evil-beginning-of-line)
+    (define-key evil-normal-state-map (kbd "8") 'evil-end-of-line)
+
+
     (define-key evil-normal-state-map "a"           'evil-append)
     (define-key evil-normal-state-map "A"           'my-electric-append-with-indent)
-    (define-key evil-normal-state-map "$"           'my-smart-end)
-    (define-key evil-normal-state-map "0"           'my-smart-home)
+    ; (define-key evil-normal-state-map "$"           'my-smart-end)
+    ; (define-key evil-normal-state-map "0"           'my-smart-home)
 
     (define-key evil-motion-state-map "h"           'evil-backward-char)
     (define-key evil-motion-state-map "j"           'evil-next-visual-line)
     (define-key evil-motion-state-map "k"           'evil-previous-visual-line)
     (define-key evil-motion-state-map "l"           'evil-forward-char)
-    (define-key evil-motion-state-map "$"           'evil-end-of-line)
-    (define-key evil-motion-state-map "0"           'evil-beginning-of-line)
+    ; (define-key evil-motion-state-map "$"           'evil-end-of-line)
+    ; (define-key evil-motion-state-map "0"           'evil-beginning-of-line)
 
     (define-key evil-normal-state-map "/"           'evil-search-forward)
     (define-key evil-normal-state-map (kbd "SPC /") 'helm-swoop)

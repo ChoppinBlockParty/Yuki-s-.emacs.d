@@ -1,9 +1,0 @@
-*.elc
-/.cask
-/test/sandbox
-/servant
-/features/sandbox
-/dist
-/build
-/tmp
-/servant/*/archive-contents

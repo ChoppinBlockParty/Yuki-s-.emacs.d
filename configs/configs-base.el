@@ -20,6 +20,9 @@
 ;; number columns in the status bar
 (column-number-mode)
 
+;; show line numbers
+(global-linum-mode t)
+
 ;; require a trailing newline
 (setq require-final-newline t)
 
@@ -42,6 +45,19 @@
   `(eval-after-load ,feature
      '(progn ,@body)))
 
+
+(setq molokai-theme-kit t)
+(load-theme 'molokai t)
+
+(use-package color-theme-approximate
+  :ensure t
+  :demand
+  :config
+  (progn
+    (color-theme-approximate-on)
+  )
+)
+
 ;; Hide startup messages
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
@@ -61,7 +77,6 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 
 ;; I know what I'm doing; don't litter my fscking tree!
-
 (defvar my-auto-save-folder "~/.emacs.d/.saves/"
   "Directory used for Emacs backups.")
 
