@@ -3,7 +3,8 @@
 
 (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
                          ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+                         ("SC"  . "http://joseito.republika.pl/sunrise-commander/")))
 
 (require 'package)
 (package-initialize)
@@ -15,11 +16,18 @@
 (require 'use-package)
 
 (require 'configs-base)
+(require 'config-color)
+(require 'config-cl-lib)
 (require 'configs-evil)
 (require 'configs-dired)
 (require 'configs-helm)
 (require 'configs-projectile)
-(provide 'configs-company)
+; (require 'config-sunrise-commander)
+(require 'config-ranger)
+(require 'config-paren)
+(require 'config-rainbow-delimiters)
+(require 'config-autocompletion)
+(require 'config-cider)
 
 ; (cua-mode t)
 ; (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands

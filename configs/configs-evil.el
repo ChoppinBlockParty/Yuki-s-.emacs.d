@@ -10,6 +10,21 @@
     (evil-leader/set-leader "<SPC>")
     (global-evil-leader-mode t)))
 
+; (use-package elscreen
+;   :ensure t
+;   :config
+;   (progn
+;   )
+; )
+
+; (use-package evil-tabs
+;   :ensure t
+;   :config
+;   (progn
+;     (global-evil-tabs-mode t)
+;   )
+; )
+
 (use-package evil
   :ensure evil
   :config
@@ -86,7 +101,9 @@
     (define-key evil-normal-state-map (kbd "\\") 'evil-window-vsplit)
     (define-key evil-normal-state-map (kbd "-") 'evil-window-split)
 
-    (define-key evil-insert-state-map (kbd "RET") 'my-ret-and-indent)
+    (define-key global-map (kbd "RET") 'newline-and-indent)
+    (define-key evil-normal-state-map (kbd "RET") 'newline-and-indent)
+
     (define-key evil-insert-state-map (kbd "<S-backspace>")
       'backward-delete-char-untabify)
     (define-key evil-insert-state-map (kbd "<S-return>")
@@ -137,19 +154,19 @@
 
 
     (define-key evil-normal-state-map "a"           'evil-append)
-    (define-key evil-normal-state-map "A"           'my-electric-append-with-indent)
-    ; (define-key evil-normal-state-map "$"           'my-smart-end)
-    ; (define-key evil-normal-state-map "0"           'my-smart-home)
 
     (define-key evil-motion-state-map "h"           'evil-backward-char)
     (define-key evil-motion-state-map "j"           'evil-next-visual-line)
     (define-key evil-motion-state-map "k"           'evil-previous-visual-line)
     (define-key evil-motion-state-map "l"           'evil-forward-char)
+    (define-key evil-motion-state-map (kbd "M-u") 'evil-scroll-down)
+    (define-key evil-motion-state-map (kbd "M-i") 'evil-scroll-up)
 
     (define-key evil-normal-state-map "/"           'evil-search-forward)
     (define-key evil-normal-state-map (kbd "SPC /") 'helm-swoop)
     (define-key evil-motion-state-map "/"           'evil-search-forward)
     (define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
+
 
     (evil-ex-define-cmd "Q"  'evil-quit)
     (evil-ex-define-cmd "Qa" 'evil-quit-all)
@@ -158,12 +175,13 @@
     (evil-define-key 'motion python-mode-map "]]" 'python-nav-forward-block)
     (evil-define-key 'motion python-mode-map "][" 'python-nav-end-of-block)
     (evil-define-key 'motion python-mode-map "[[" 'python-nav-backward-block)
-    (evil-define-key 'motion python-mode-map "[]" 'my-python-nav-backward-end-of-block)
     (evil-define-key 'motion python-mode-map "[(" 'evil-previous-open-paren)
     (evil-define-key 'motion python-mode-map "])" 'evil-next-close-paren)
     (evil-define-key 'motion python-mode-map "[{" 'evil-previous-open-brace)
     (evil-define-key 'motion python-mode-map "]}" 'evil-next-close-brace)
-    ))
+
+  )
+)
 
 (use-package evil-jumper
   :ensure evil-jumper

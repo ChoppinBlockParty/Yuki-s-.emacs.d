@@ -3,7 +3,6 @@
   :demand
 )
 
-
 (use-package helm
   :ensure helm
   :config
@@ -63,73 +62,8 @@
         (after 'evil
           (define-key evil-normal-state-map (kbd "SPC l")   'helm-swoop))))
 
-
-    (after 'evil
-      (progn
-      (defhydra helm-like-unite (:hint nil
-                                 :color pink)
-        ;; arrows
-        ("h" helm-beginning-of-buffer)
-        ("j" helm-next-line)
-        ("k" helm-previous-line)
-        ("l" helm-end-of-buffer)
-        ;; beginning/end
-        ("g" helm-beginning-of-buffer)
-        ("G" helm-end-of-buffer)
-        ;; scroll
-        ("K" helm-scroll-other-window-down)
-        ("J" helm-scroll-other-window)
-        ;; mark
-        ("v" helm-toggle-visible-mark)
-        ("V" helm-unmark-all)
-        ("U" helm-toggle-all-marks)
-        ;; exit
-        ("<escape>" keyboard-escape-quit "" :exit t)
-        ("o" keyboard-escape-quit :exit t)
-        ("i" nil)
-        ;; sources
-        ("}" helm-next-source)
-        ("{" helm-previous-source)
-        ;; rest
-        ("H" helm-help)
-        ("p" helm-execute-persistent-action)
-        ("d" helm-persistent-delete-marked)
-        ("f" helm-follow-mode))
-      
-      
-      (defun helm-persistent-delete-marked ()
-        "Kill buffer without quitting helm."
-        (interactive)
-        (if (equal (cdr (assoc 'name (helm-get-current-source)))
-                   "Buffers")
-            (with-helm-alive-p
-              (helm-attrset 'kill-action
-                            '(helm-persistent-kill-buffers . never-split))
-              (helm-execute-persistent-action 'kill-action))
-          (user-error "Only works for buffers")))
-      (defun helm-persistent-kill-buffers (_buffer)
-        (unwind-protect
-             (dolist (b (helm-marked-candidates))
-               (helm-buffers-persistent-kill-1 b))
-          (with-helm-buffer
-            (setq helm-marked-candidates nil
-                  helm-visible-mark-overlays nil))
-          (helm-force-update (helm-buffers--quote-truncated-buffer
-                              (helm-get-selection)))))
-
-      ; (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
-
-      (define-key evil-normal-state-map "\M-w" 'helm-buffers-list)
       (define-key evil-normal-state-map "\M-s" 'helm-buffers-list)
       (define-key evil-normal-state-map "\M-e" 'helm-for-files)
-      (define-key evil-normal-state-map "\M-d" 'helm-for-files)
-      ))
-
-; (define-key evil-normal-state-map "\M-w" 'helm-buffers-list)
-; (define-key evil-normal-state-map "\M-s" 'helm-buffers-list)
-; (define-key evil-normal-state-map "\M-e" 'helm-for-files)
-; (define-key evil-normal-state-map "\M-d" 'helm-for-files)
-
 
     (after 'evil-leader
         (evil-leader/set-key "b" 'helm-mini)
@@ -138,6 +72,35 @@
 
     (after 'flycheck
       (use-package helm-flycheck
-        :ensure helm-flycheck)))
+        :ensure helm-flycheck))
+
+    (defhydra helm-like-unite (:hint nil)
+      "vim movement"
+      ("?" helm-help "help")
+      ("<escape>" keyboard-escape-quit "exit")
+      ("<SPC>" helm-toggle-visible-mark "mark")
+      ("a" helm-toggle-all-marks "(un)mark all")
+      ;; not sure if there's a better way to do this
+      ("/" (lambda ()
+              (interactive)
+              (execute-kbd-macro [?\C-s]))
+           "search")
+      ("v" helm-execute-persistent-action)
+      ("g" helm-beginning-of-buffer "top")
+      ("G" helm-end-of-buffer "bottom")
+      ("j" helm-next-line "down")
+      ("k" helm-previous-line "up")
+      ("i" nil "cancel"))
+
+    (defun my-helm-like-unite-enter ()
+      (interactive)
+      (helm-buffers-list)
+      (helm-like-unite/body)
+    )
+    
+    (define-key evil-normal-state-map "\M-w" 'my-helm-like-unite-enter)
+
+    (define-key helm-map (kbd "<escape>") 'my-helm-like-unite-enter)
+)
 
 (provide 'configs-helm)
