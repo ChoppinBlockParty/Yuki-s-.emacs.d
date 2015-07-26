@@ -82,148 +82,9 @@
       (evil-ex-search-previous count)
       (list evil-ex-search-match-beg evil-ex-search-match-end))
 
-  ; (defun my-minibuffer-keyboard-quit ()
-  ;   "Abort recursive edit.
-  ; In Delete Selection mode, if the mark is active, just deactivate it;
-  ; then it takes a second \\[keyboard-quit] to abort the minibuffer."
-  ;   (interactive)
-  ;   (if (and delete-selection-mode transient-mark-mode mark-active)
-  ;       (setq deactivate-mark t)
-  ;     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-  ;     (abort-recursive-edit)))
-
-  ;   (define-key minibuffer-local-map [escape] 'my-minibuffer-keyboard-quit)
-  ;   (define-key minibuffer-local-ns-map [escape] 'my-minibuffer-keyboard-quit)
-  ;   (define-key minibuffer-local-completion-map [escape] 'my-minibuffer-keyboard-quit)
-  ;   (define-key minibuffer-local-must-match-map [escape] 'my-minibuffer-keyboard-quit)
-
-    (defun my-delete-trailing-whitespace-at-line ()
-      "Delete trailing whitespace on the current line only."
-      (interactive)
-      (let ((begin (line-beginning-position))
-            (end   (line-end-position)))
-        (delete-trailing-whitespace begin end)))
-
-    (defvar my-last-insertion-end 0
-"The distance between point at the time of insert and beginning of line.
-This tracks the saved value of the last insertion so we can figure out whether
-to indent for it.")
-
-    (defvar my-last-insertion-distance 0
-"The distance between point at the time of insert and beginning of line.
-This tracks the saved value of the last insertion so we can figure out whether
-to indent for it.")
-
-    (defun my-sensible-to-indent-p ()
-      "Determine whether it's sensible to indent the current line automagically.
-Using the data stored from my-exit-insert-state, this function determines
-whether or not it makes sense to indent the following line. The point of this
-is to ensure we don't indent lines after the user has manually tabbed point to
-the beginning of a line, but we do indent lines if there was already an
-indentation from the last insert state.
-A potential future improvement is to (rather than blindly indenting according
-to mode, which is a potshot) indent intelligently to the saved state of point."
-      (and (> my-last-insertion-distance 0)
-               (my-current-line-is-empty)))
-
-    (evil-define-motion my-append-and-indent (count)
-      "Moves to end of line, enters insert mode, and also indents the line."
-      (evil-append-line count)
-      (when (my-sensible-to-indent-p)
-          (indent-according-to-mode)))
-
-    (defun my-save-insert-state-state ()
-      "Save information about the state of insert state.
-This does the following:
-- Sets my-last-insertion-end to the character position at the end of the last
-  insert state.
-- Sets my-last-insertion-line to the position at the beginning of the line from
-  the last insert state.
-- Sets my-last-insertion-distance to the distance between those two points.
-- Deletes trailing whitespace to the left of point.
-The intent of this is to save the state of the insertion environment, so we can
-make smart decisions based on it later."
-      (interactive)
-      (setq my-last-insertion-end
-            (save-excursion
-              (if (not (my-current-line-is-empty))
-                  (beginning-of-line-text))
-              (point)))
-      (setq my-last-insertion-line
-            (save-excursion
-              (goto-char my-last-insertion-end)
-              (line-beginning-position)))
-      (setq my-last-insertion-distance
-            (- my-last-insertion-end my-last-insertion-line)))
-
-    (evil-define-motion my-ret-and-indent (count)
-      "Move the cursor COUNT lines down.
-If point is on a widget or a button, click on it.
-In Insert state, insert a newline and indent."
-      :type line
-      (my-save-insert-state-state)
-      (my-delete-trailing-whitespace-at-line)
-      (evil-ret-gen count nil)
-      (when (my-sensible-to-indent-p)
-               (indent-according-to-mode)))
-
-    (defun my-what-line ()
-      "Get the line, without printing the word 'line' before it."
-      (1+ (count-lines 1 (point))))
-
-
-    (defun my-where-beginning-of-visual-line ()
-      "Calculate the difference between the beginning
-of the current visual line and point."
-      (interactive)
-      (let ((old-point (point))
-            (bovl (save-excursion (beginning-of-visual-line)
-                                  (point))))
-        (- old-point bovl)))
-
-
-    (defun my-current-line-is-empty ()
-      "Returns t when the current line is empty or contains only whitespace."
-      (interactive)
-      (save-excursion
-        (beginning-of-line)
-        (looking-at "^\s*$")))
-
-
-    (defun my-electric-append-with-indent (count &optional vcount)
-      "Indent the current line if it is empty.
-Otherwise, just do a normal append-line."
-      (interactive "p")
-      (if (and (= (point) (line-beginning-position))
-               (my-is-this-line-empty))
-          (indent-according-to-mode))
-      (evil-append-line count vcount))
-
-    (defun my-exit-insert-state ()
-      "Function to be run when Evil exits insert state."
-      (my-save-insert-state-state)
-      (if (my-current-line-is-empty)
-          (delete-horizontal-space t)))
-
-    (defun my-enter-insert-state ()
-      "Function to be run when Evil enters insert state.
-Loads indent data from my-sensible-to-indent-p and uses that to determine
-whether to call indent-according-to-mode."
-      (interactive)
-      (if (my-sensible-to-indent-p)
-            (indent-according-to-mode)))
-
-    ;; exiting insert mode -> delete trailing whitespace
-    (add-hook 'evil-insert-state-exit-hook 'my-exit-insert-state)
-    (add-hook 'evil-insert-state-entry-hook 'my-enter-insert-state)
 
     (define-key evil-normal-state-map (kbd "\\") 'evil-window-vsplit)
     (define-key evil-normal-state-map (kbd "-") 'evil-window-split)
-
-    (define-key evil-normal-state-map (kbd "RET") 'my-append-and-indent)
-    (define-key evil-normal-state-map (kbd "<S-return>") 'my-append-and-indent)
-    (define-key evil-normal-state-map (kbd "C-w }") 'evil-window-rotate-downwards)
-    (define-key evil-normal-state-map (kbd "C-w {") 'evil-window-rotate-upwards)
 
     (define-key evil-insert-state-map (kbd "RET") 'my-ret-and-indent)
     (define-key evil-insert-state-map (kbd "<S-backspace>")
@@ -255,39 +116,22 @@ whether to call indent-according-to-mode."
     (evil-leader/set-key "q" 'evil-window-delete)
     (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
 
-       ; (evil-define-motion my-command ()
-       ; ; (evil-define-command my-command ()
-       ;   ; :digit-argument-redirection ,target
-       ;   ; :keep-visual t
-       ;   ; :repeat nil
-       ;   (interactive)
-       ;   (setq this-command #'digit-argument)
-       ;   (setq last-command-event (+ 8 ?0))
-       ;   (call-interactively #'digit-argument))
-
-    ; (defun capslock-digit-argument-fn (digit)
-    ;   `(lambda ()
-    ;      (interactive)
-    ;      (setq this-command #'digit-argument)
-    ;      (setq last-command-event (+ ,digit ?0))
-    ;      (call-interactively #'digit-argument)))
-
     (defun capslock-digit-argument-fn (digit)
       `(lambda (arg)
          (interactive "P")
          (setq last-command-event (+ ,digit ?0))
          (digit-argument arg)))
 
-    ; (define-key evil-motion-state-map "!" (capslock-digit-argument-fn 1))
-    ; (define-key evil-motion-state-map "@" (capslock-digit-argument-fn 2))
-    ; (define-key evil-motion-state-map "#" (capslock-digit-argument-fn 3))
-    ; (define-key evil-motion-state-map "$" (capslock-digit-argument-fn 4))
+    (define-key evil-normal-state-map "!" (capslock-digit-argument-fn 1))
+    (define-key evil-normal-state-map "@" (capslock-digit-argument-fn 2))
+    (define-key evil-normal-state-map "#" (capslock-digit-argument-fn 3))
+    (define-key evil-normal-state-map "$" (capslock-digit-argument-fn 4))
     (define-key evil-normal-state-map "%" (capslock-digit-argument-fn 5))
-    ; (define-key evil-motion-state-map "^" (capslock-digit-argument-fn 6))
-    ; (define-key evil-motion-state-map "&" (capslock-digit-argument-fn 7))
+    (define-key evil-normal-state-map "^" (capslock-digit-argument-fn 6))
+    (define-key evil-normal-state-map "&" (capslock-digit-argument-fn 7))
     (define-key evil-normal-state-map "*" (capslock-digit-argument-fn 8))
-    ; (define-key evil-motion-state-map "*" (capslock-digit-argument-fn 8))
-    ; (define-key evil-motion-state-map "(" (capslock-digit-argument-fn 9))
+    (define-key evil-normal-state-map "(" (capslock-digit-argument-fn 9))
+    (define-key evil-normal-state-map ")" (capslock-digit-argument-fn 0))
     (define-key evil-normal-state-map (kbd "5") 'evil-beginning-of-line)
     (define-key evil-normal-state-map (kbd "8") 'evil-end-of-line)
 
@@ -301,8 +145,6 @@ whether to call indent-according-to-mode."
     (define-key evil-motion-state-map "j"           'evil-next-visual-line)
     (define-key evil-motion-state-map "k"           'evil-previous-visual-line)
     (define-key evil-motion-state-map "l"           'evil-forward-char)
-    ; (define-key evil-motion-state-map "$"           'evil-end-of-line)
-    ; (define-key evil-motion-state-map "0"           'evil-beginning-of-line)
 
     (define-key evil-normal-state-map "/"           'evil-search-forward)
     (define-key evil-normal-state-map (kbd "SPC /") 'helm-swoop)
