@@ -36,9 +36,9 @@
     (setq evil-search-module         'isearch)
     (setq evil-magic                 'very-magic)
     (setq evil-emacs-state-cursor    '("#dfaf8f" box))
-    (setq evil-normal-state-cursor   '("#f8f893" box))
+    (setq evil-normal-state-cursor   '("#00CED1" box))
     (setq evil-visual-state-cursor   '("orange" box))
-    (setq evil-insert-state-cursor   '("#f8f893" bar))
+    (setq evil-insert-state-cursor   '("#00CED1" bar))
     (setq evil-replace-state-cursor  '("#cc9393" box))
     (setq evil-operator-state-cursor '("red" hollow))
     (setq evil-want-fine-undo t)
@@ -122,13 +122,9 @@
     (define-key evil-normal-state-map (kbd "C-l")   'evil-window-right)
 
     (evil-leader/set-key "h" 'evil-window-left)
-    (evil-leader/set-key "H" 'evil-window-move-far-left)
     (evil-leader/set-key "j" 'evil-window-down)
-    (evil-leader/set-key "J" 'evil-window-move-very-bottom)
     (evil-leader/set-key "k" 'evil-window-up)
-    (evil-leader/set-key "K" 'evil-window-move-very-top)
     (evil-leader/set-key "l" 'evil-window-right)
-    (evil-leader/set-key "L" 'evil-window-move-far-right)
 
     (evil-leader/set-key "q" 'evil-window-delete)
     (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
@@ -152,6 +148,8 @@
     (define-key evil-normal-state-map (kbd "5") 'evil-beginning-of-line)
     (define-key evil-normal-state-map (kbd "8") 'evil-end-of-line)
 
+    (define-key evil-normal-state-map (kbd "9") 'evil-jump-item)
+    (define-key evil-normal-state-map (kbd "DEL") 'evil-jump-item)
 
     (define-key evil-normal-state-map "a"           'evil-append)
 
@@ -166,6 +164,11 @@
     (define-key evil-normal-state-map (kbd "SPC /") 'helm-swoop)
     (define-key evil-motion-state-map "/"           'evil-search-forward)
     (define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
+
+    (define-key evil-motion-state-map (kbd "C-s") 'evil-write)
+
+    (define-key evil-motion-state-map (kbd "M-h") 'evil-jump-backward)
+    (define-key evil-motion-state-map (kbd "M-l") 'evil-jump-forward)
 
 
     (evil-ex-define-cmd "Q"  'evil-quit)

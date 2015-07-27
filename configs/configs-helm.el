@@ -90,17 +90,25 @@
       ("G" helm-end-of-buffer "bottom")
       ("j" helm-next-line "down")
       ("k" helm-previous-line "up")
-      ("i" nil "cancel"))
+      ;; suggested by ReneFroger
+      ("h" helm-previous-source)
+      ("l" helm-next-source)
+      ("i" nil "cancel")
+      ;; suggested by Sylvain Benner (syl20bnr)
+      ;; if you want to use a key besides TAB to go to action select and then exit the hydra
+      ("r" helm-select-action :color blue)
+      )
 
-    (defun my-helm-like-unite-enter ()
-      (interactive)
-      (helm-buffers-list)
-      (helm-like-unite/body)
-    )
+    ; (defun my-helm-like-unite-enter ()
+    ;   (interactive)
+    ;   (helm-buffers-list)
+    ;   (helm-like-unite/body)
+    ; )
     
-    (define-key evil-normal-state-map "\M-w" 'my-helm-like-unite-enter)
+    (define-key evil-normal-state-map "\M-w" 'helm-buffers-list)
+    (define-key evil-normal-state-map "\M-d" 'helm-for-files)
 
-    (define-key helm-map (kbd "<escape>") 'my-helm-like-unite-enter)
+    (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
 )
 
 (provide 'configs-helm)

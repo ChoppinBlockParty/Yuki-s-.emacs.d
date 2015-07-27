@@ -26,6 +26,8 @@
 ;; require a trailing newline
 (setq require-final-newline t)
 
+(blink-cursor-mode -1)      ;; or pass in -1 to turn it off
+
 ;; I never look at right-side fringes. Do you?
 (set-fringe-style '(8 . 0))
 
@@ -44,6 +46,9 @@
   (declare (indent defun))
   `(eval-after-load ,feature
      '(progn ,@body)))
+
+; (with-eval-after-load 'evil
+;  ...)
 
 
 (setq molokai-theme-kit t)

@@ -1,5 +1,5 @@
 (use-package company
-  :ensure company
+  :ensure t
   :init
   (progn
     (global-company-mode)
@@ -12,6 +12,8 @@
     (setq company-echo-delay 0)                          ; remove annoying blinking
     (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
     (setq company-minimum-prefix-length 1)
+    (setq company-auto-complete nil)
+    (setq company-require-match nil)
 
     (after 'evil
       ; (defun my-complete-or-indent ()
@@ -49,11 +51,9 @@
     (define-key company-active-map [up-mouse-3] 'ignore)
     ; (define-key company-active-map (kbd "ESC") 'company-abort)
     (evil-define-key 'insert company-mode-map (kbd "ESC") 'company-abort)
-    (define-key company-active-map [return] 'company-complete-selection)
-    (define-key company-active-map (kbd "SPC") 'my-company-pass-key)
     ; (define-key company-active-map "\e\e\e" 'company-abort)
     (define-key company-active-map "\C-i" 'company-abort)
-    (define-key company-active-map [tab] 'company-select-next)
+    (define-key company-active-map [tab] 'company-complete-selection)
     ; (define-key company-active-map [shift-tab] 'company-select-previous)
     ; (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
     ; (define-key company-active-map (kbd "TAB") 'company-select-next)
@@ -62,7 +62,13 @@
     (define-key company-active-map "\C-w" 'company-show-location)
     (define-key company-active-map "\C-s" 'company-search-candidates)
     ; (define-key company-active-map "\C-\M-s" 'company-filter-candidates)
-    )
+    (define-key company-active-map (kbd "<return>") nil)
+    (define-key company-active-map (kbd "RET") nil)
+    (define-key company-active-map (kbd "SPC") nil)
+    (define-key company-active-map (kbd "C-SPC") #'company-complete-selection)
+    ; (define-key company-active-map [return] 'company-abort)
+    ; (define-key company-active-map (kbd "SPC") 'my-company-pass-key)
+)
 
   (custom-set-faces
    '(company-preview

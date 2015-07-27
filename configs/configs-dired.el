@@ -31,15 +31,11 @@
         (load "dired-x"))
     (add-hook 'dired-load-hook 'my-load-dired-x)))
 
-(use-package direx
-  :ensure t
-  :init
-  (progn)
-)
-
 (defun my-configure-dired ()
   "Setup dired and dired-x. For use with dired-mode-hook."
-  (dired-omit-mode 1))
+  ; (dired-omit-mode 1)
+  (dired-hide-details-mode t)
+  )
 
 (add-hook 'dired-mode-hook 'my-configure-dired)
 
@@ -266,15 +262,17 @@
 
   (evil-define-key 'normal dired-mode-map (kbd "C-j") 'dired-next-subdir)
   (evil-define-key 'normal dired-mode-map (kbd "C-k") 'dired-prev-subdir)
-  (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map "h" 'my-dired-up-directory)
   (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
   (evil-define-key 'normal dired-mode-map "L" 'dired-find-alternate-file)
+  (evil-define-key 'normal dired-mode-map "j" 'my-dired-next-line)
+  (evil-define-key 'normal dired-mode-map "k" 'my-dired-previous-line)
   (evil-define-key 'normal dired-mode-map "a" 'ag-dired)
   (evil-define-key 'normal dired-mode-map "o" 'dired-find-file)
   (evil-define-key 'normal dired-mode-map (kbd "RET") 'dired-find-file)
   (evil-define-key 'normal dired-mode-map "g" nil)
   (evil-define-key 'normal dired-mode-map (kbd "g N") 'dired-create-directory)
-  (evil-define-key 'normal dired-mode-map "gn" 'my-dired-create-file)
+  (evil-define-key 'normal dired-mode-map (kbd "g n") 'my-dired-create-file)
   (evil-define-key 'normal dired-mode-map "p" 'dired-display-file)
   (evil-define-key 'normal dired-mode-map "v" 'dired-mark)
   (evil-define-key 'normal dired-mode-map "V" 'dired-unmark-all-marks)
@@ -285,8 +283,6 @@
   (evil-define-key 'normal dired-mode-map "/" 'evil-search-forward)
   (evil-define-key 'normal dired-mode-map "n" 'evil-search-next)
   (evil-define-key 'normal dired-mode-map "N" 'evil-search-previous)
-  (evil-define-key 'normal dired-mode-map "j" 'my-dired-next-line)
-  (evil-define-key 'normal dired-mode-map "k" 'my-dired-previous-line)
   (evil-define-key 'normal dired-mode-map (kbd "TAB") 'dired-hide-subdir)
   (evil-define-key 'normal dired-mode-map (kbd "<backspace>") 'my-dired-remove-from-buffer)
 )
