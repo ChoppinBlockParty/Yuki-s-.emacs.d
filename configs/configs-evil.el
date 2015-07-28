@@ -49,10 +49,36 @@
     (setq evil-regexp-search t)
     (setq evil-want-C-i-jump t)
 
+    (use-package expand-region
+      :ensure t
+      :config
+      (progn
+        (define-key evil-motion-state-map (kbd "7") 'er/expand-region)
+      )
+    )
+
 
     (use-package evil-nerd-commenter
-      :ensure evil-nerd-commenter
-      :commands (evilnc-comment-or-uncomment-lines))
+      :ensure t
+      :config
+      (progn
+        ;; Emacs key bindings
+        ; (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+        ; (global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
+        ; (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
+        ; (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
+
+        ;; Vim key bindings
+        (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
+        ;(define-key evil-normal-state-map (kbd "cl") 'evilnc-quick-comment-or-uncomment-to-the-line)
+        ;(define-key evil-normal-state-map (kbd "ll") 'evilnc-quick-comment-or-uncomment-to-the-line)
+        ; (define-key evil-normal-state-map (kbd "cc") 'evilnc-copy-and-comment-lines)
+        ; (define-key evil-norevil-normal-state-map (kbd "cp") 'evilnc-comment-or-uncomment-paragraphs)
+        (define-key evil-visual-state-map (kbd "gcc") 'comment-or-uncomment-region)
+        ;(define-key evil-normarmal-state-map (kbd "cv") 'evilnc-toggle-invert-comment-line-by-line)
+        ;(define-key evil-normarmal-state-map (kbd "\\") 'evilnc-comment-operator) ; if you prefer backslash key
+        )
+    )
 
 
     ; (use-package evil-matchit
@@ -63,6 +89,13 @@
     ;     (setq global-evil-matchit-mode t)
     ;     (define-key evil-normal-state-map "%" 'evilmi-jump-items)))
 
+;    (use-package evil-search-highlight-persist
+;      :ensure t
+;      :config
+;      (progn
+;        (global-evil-search-highlight-persist t)
+;      )
+;    )
 
     (use-package evil-surround
       :ensure evil-surround
@@ -147,6 +180,9 @@
     (define-key evil-normal-state-map ")" (capslock-digit-argument-fn 0))
     (define-key evil-normal-state-map (kbd "5") 'evil-beginning-of-line)
     (define-key evil-normal-state-map (kbd "8") 'evil-end-of-line)
+    ;(define-key evil-normal-state-map (kbd "0") 'evil-search-highlight-persist-remove-all)
+    (define-key evil-motion-state-map (kbd "3") 'evil-search-word-forward)
+    (define-key evil-motion-state-map (kbd "4") 'evil-search-word-backward)
 
     (define-key evil-normal-state-map (kbd "9") 'evil-jump-item)
     (define-key evil-normal-state-map (kbd "DEL") 'evil-jump-item)
@@ -169,6 +205,8 @@
 
     (define-key evil-motion-state-map (kbd "M-h") 'evil-jump-backward)
     (define-key evil-motion-state-map (kbd "M-l") 'evil-jump-forward)
+
+    (define-key evil-motion-state-map (kbd "M-c") 'evil-visual-block)
 
 
     (evil-ex-define-cmd "Q"  'evil-quit)

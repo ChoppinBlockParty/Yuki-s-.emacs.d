@@ -26,11 +26,23 @@
 ; )
 
 (global-hl-line-mode 1)
- 
+
 ;; To customize the background color
 (set-face-background 'hl-line "#330")  ;; Emacs 22 Only
 
+(use-package highlight-symbol
+  :ensure t
+  :config
+  (progn
+    (global-set-key [(f2)] 'highlight-symbol)
+    (global-set-key [f3] 'highlight-symbol-next)
+    (global-set-key [(shift f3)] 'highlight-symbol-prev)
+    (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
+  )
+)
+
 (require 'configs-base)
+(require 'auto-fill-mode-config)
 ; (require 'crosshairs-config)
 (require 'config-color)
 (require 'config-cl-lib)
