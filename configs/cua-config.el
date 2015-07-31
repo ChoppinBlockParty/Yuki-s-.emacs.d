@@ -90,7 +90,7 @@
 
   (define-key evil-normal-state-map (kbd "C-c") 'copy-to-clipboard)
   (define-key evil-visual-state-map (kbd "C-c") 'copy-to-clipboard)
-  (define-key evil-normal-state-map (kbd "C-x") 'paste-from-clipboard)
+  (define-key evil-visual-state-map (kbd "C-v") 'paste-from-clipboard)
   (define-key evil-normal-state-map (kbd "C-v") 'paste-from-clipboard)
   (define-key evil-insert-state-map (kbd "C-v") 'paste-from-clipboard)
 )

@@ -1,5 +1,3 @@
-
-
 ;; In order to work properly, we need to load evil-leader-mode before we load
 ;; evil-mode.
 (use-package evil-leader
@@ -105,51 +103,37 @@
 
     (evil-set-initial-state 'flycheck-error-list-mode 'normal)
     (evil-set-initial-state 'git-commit-mode 'insert)
-    (evil-set-initial-state 'shell-mode 'emacs)
-    (evil-set-initial-state 'esup-mode 'emacs)
-    (evil-set-initial-state 'diff-mode 'emacs)
-    (evil-set-initial-state 'term-mode 'emacs)
-    (evil-set-initial-state 'multi-term-mode 'emacs)
+    ;; (evil-set-initial-state 'shell-mode 'emacs)
+    ;; (evil-set-initial-state 'esup-mode 'emacs)
+    ;; (evil-set-initial-state 'diff-mode 'emacs)
+    ;; (evil-set-initial-state 'term-mode 'emacs)
+    ;; (evil-set-initial-state 'multi-term-mode 'emacs)
 
-    ; (use-package key-chord
-    ;   :ensure key-chord
-    ;   :diminish key-chord-mode
-    ;   :config
-    ;   (progn
-    ;     (key-chord-mode 1)))
-
-    (evil-define-text-object my-evil-next-match (count &optional beg end type)
-      "Select next match."
-      (evil-ex-search-previous 1)
-      (evil-ex-search-next count)
-      (list evil-ex-search-match-beg evil-ex-search-match-end))
-
-    (evil-define-text-object my-evil-previous-match (count &optional beg end type)
-      "Select previous match."
-      (evil-ex-search-next 1)
-      (evil-ex-search-previous count)
-      (list evil-ex-search-match-beg evil-ex-search-match-end))
-
+    (defun my-newline-without-break-of-line ()
+        "1. remove to end of the line.
+        2. insert newline with index"
+        (interactive)
+        (let ((oldpos (point)))
+            (end-of-line)
+            (newline-and-indent)))
 
     (define-key evil-normal-state-map (kbd "\\") 'evil-window-vsplit)
     (define-key evil-normal-state-map (kbd "-") 'evil-window-split)
 
     (define-key global-map (kbd "RET") 'newline-and-indent)
     (define-key evil-normal-state-map (kbd "RET") 'newline-and-indent)
+    (define-key evil-insert-state-map (kbd "<S-return>") 'my-newline-without-break-of-line)
+    (define-key evil-normal-state-map (kbd "<S-return>") 'my-newline-without-break-of-line)
 
     (define-key evil-insert-state-map (kbd "<S-backspace>")
       'backward-delete-char-untabify)
-    (define-key evil-insert-state-map (kbd "<S-return>")
-      'electric-indent-just-newline)
-    (define-key evil-normal-state-map (kbd "<S-return>")
-      'electric-indent-just-newline)
 
     (define-key evil-normal-state-map (kbd "SPC a") 'ag)
     (define-key evil-normal-state-map (kbd "SPC SPC") 'helm-M-x)
 
-    (define-key evil-normal-state-map (kbd "C-q")   'universal-argument)
+    (define-key evil-normal-state-map (kbd "C-u")   'universal-argument)
 
-    ; (define-key evil-normal-state-map (kbd "C-h")   'evil-window-left)
+    (define-key evil-normal-state-map (kbd "C-h")   'evil-window-left)
     (define-key evil-normal-state-map (kbd "C-j")   'evil-window-down)
     (define-key evil-normal-state-map (kbd "C-k")   'evil-window-up)
     (define-key evil-normal-state-map (kbd "C-l")   'evil-window-right)
@@ -159,7 +143,7 @@
     (evil-leader/set-key "k" 'evil-window-up)
     (evil-leader/set-key "l" 'evil-window-right)
 
-    (evil-leader/set-key "q" 'evil-window-delete)
+    (evil-leader/set-key "u" 'evil-window-delete)
     (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
 
     (defun capslock-digit-argument-fn (digit)
@@ -207,6 +191,9 @@
     (define-key evil-motion-state-map (kbd "M-l") 'evil-jump-forward)
 
     (define-key evil-motion-state-map (kbd "M-c") 'evil-visual-block)
+
+
+    (define-key evil-motion-state-map (kbd ";") 'evil-ex)
 
 
     (evil-ex-define-cmd "Q"  'evil-quit)

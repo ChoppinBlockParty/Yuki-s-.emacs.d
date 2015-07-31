@@ -260,6 +260,9 @@
   ; (define-key evil-normal-state-map "`" 'direx:jump-to-directory)
   (define-key evil-normal-state-map "`" 'dired-jump)
 
+  (after 'helm
+    (evil-define-key 'normal dired-mode-map ":" 'helm-M-x)
+  )
   (evil-define-key 'normal dired-mode-map (kbd "C-j") 'dired-next-subdir)
   (evil-define-key 'normal dired-mode-map (kbd "C-k") 'dired-prev-subdir)
   (evil-define-key 'normal dired-mode-map "h" 'my-dired-up-directory)

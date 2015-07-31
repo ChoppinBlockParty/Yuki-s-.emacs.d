@@ -41,13 +41,24 @@
   )
 )
 
+(defvar dotspacemacs-editing-style 'vim
+  "Either `vim' or `emacs'. Evil is always enabled but if the variable
+    is `emacs' then the `holy-mode' is enabled at startup.")
+
+(defvar dotspacemacs-leader-key "SPC"
+  "The leader key.")
+
+(require 'core-funcs)
 (require 'configs-base)
-(require 'auto-fill-mode-config)
-; (require 'crosshairs-config)
+(require 'core-micro-state)
 (require 'config-color)
 (require 'config-cl-lib)
 (require 'configs-evil)
 (require 'configs-dired)
+(require 'golden-ratio-config)
+(require 'window-numbering-config)
+(require 'auto-fill-mode-config)
+(require 'ag-config)
 (require 'configs-helm)
 (require 'configs-projectile)
 ; (require 'config-sunrise-commander)
@@ -57,7 +68,7 @@
 (require 'config-autocompletion)
 (require 'config-cider)
 (require 'config-easymotion)
-(require 'ido-config)
+;; (require 'ido-config)
 (require 'cua-config)
 (require 'spell-check-config)
 ; (require 'latex-config)
