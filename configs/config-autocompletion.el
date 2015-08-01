@@ -92,7 +92,11 @@
       :ensure t
       :config
       (progn
+        (set-variable 'ycmd-server-command '("python" "/home/qwert/Vim/Plugins/Ycm/Plugin/third_party/ycmd"))
         (company-ycmd-setup)
+        (use-package flycheck-ycmd
+          :ensure t
+          :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup))
       )
     )
   )

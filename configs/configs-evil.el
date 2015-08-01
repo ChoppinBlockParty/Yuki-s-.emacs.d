@@ -196,6 +196,14 @@
     (define-key evil-motion-state-map (kbd ";") 'evil-ex)
 
 
+    ;   ;; Set your own keyboard shortcuts to reload/save/switch WGs:
+    ;   ;; "s" == "Super" or "Win"-key, "S" == Shift, "C" == Control
+    ;   ; (define-key evil-normal-state-mode (kbd "<pause>")     'wg-reload-session)
+    ;   ; (define-key evil-normal-state-mode (kbd "C-S-<pause>") 'wg-save-session)
+    (define-key evil-normal-state-map (kbd "g t") 'elscreen-next)
+    (define-key evil-normal-state-map (kbd "g T") 'elscreen-previous)
+    ;   (workgroups-mode t)
+
     (evil-ex-define-cmd "Q"  'evil-quit)
     (evil-ex-define-cmd "Qa" 'evil-quit-all)
     (evil-ex-define-cmd "QA" 'evil-quit-all)

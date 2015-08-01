@@ -171,14 +171,13 @@ ARG non nil means that the editing style is `vim'."
       (spacemacs|define-micro-state helm-navigation
         :persistent t
         :disable-evil-leader t
-        :define-key (helm-map . "<escape>") (helm-map . "s-C-SPC")
+        :define-key (helm-map . "<escape>") (helm-map . "ESC")
         :on-enter (spacemacs//helm-navigation-ms-on-enter)
         :on-exit  (spacemacs//helm-navigation-ms-on-exit)
         :bindings
         ("<tab>" helm-select-action)
         ("C-i" helm-select-action :exit t)
         ("<RET>" helm-maybe-exit-minibuffer :exit t)
-        ("<escpae>" helm-maybe-exit-minibuffer :exit t)
         ("?" nil :doc (spacemacs//helm-navigation-ms-full-doc))
         ("a" helm-select-action :post (spacemacs//helm-navigation-ms-set-face))
         ("e" spacemacs/helm-edit)
@@ -188,13 +187,15 @@ ARG non nil means that the editing style is `vim'."
         ("l" helm-next-source)
         ("g" helm-beginning-of-buffer)
         ("G" helm-end-of-buffer)
+        ("C-q" keyboard-escape-quit :exit t)
+        ("C-u" keyboard-escape-quit :exit t)
+        ("<escape>" keyboard-escape-quit :exit t)
         ("q" nil :exit t)
         ("i" nil :exit t)
         ("v" helm-toggle-visible-mark)
         ("u" helm-toggle-all-marks)
         ("p" helm-execute-persistent-action)
         )
-
 
     (defun helm-jump ()
       "Find files with helm, but be smart about buffers and recent files."
