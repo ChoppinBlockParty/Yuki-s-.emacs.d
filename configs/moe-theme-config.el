@@ -18,7 +18,7 @@
     ;; Choose what you like, (moe-light) or (moe-dark)
     (moe-dark)
     (after 'powerline
-      ;; (powerline-moe-theme)
+      (powerline-moe-theme)
     )
   )
 )
