@@ -2,7 +2,7 @@
   :ensure t
   :config
   (progn
-    (rainbow-mode t)
+    ; (rainbow-mode t)
   )
 )
 

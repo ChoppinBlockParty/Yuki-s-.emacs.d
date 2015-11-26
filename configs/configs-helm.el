@@ -3,7 +3,7 @@
   :demand
 )
 
-(require 'helm-files)
+(use-package helm-files)
 
 (after 'projectile
 (use-package helm-projectile

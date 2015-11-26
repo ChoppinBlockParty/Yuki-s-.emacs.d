@@ -145,6 +145,7 @@
 
     (evil-leader/set-key "u" 'evil-window-delete)
     (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
+    (define-key evil-normal-state-map "q" 'evil-window-delete)
 
     (defun capslock-digit-argument-fn (digit)
       `(lambda (arg)
