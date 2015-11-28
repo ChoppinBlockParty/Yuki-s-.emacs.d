@@ -60,7 +60,7 @@
 (require 'window-numbering-config)
 (require 'auto-fill-mode-config)
 (require 'ag-config)
-; (require 'configs-helm)
+(require 'configs-helm)
 ; (require 'config-sunrise-commander)
 ; (require 'ranger-config)
 (require 'config-easymotion)
@@ -88,8 +88,7 @@
 (require 'config-rainbow-delimiters)
 ;; (require 'tab-bar-mode-config)
 
-(require 'neotree-config)
-(require 'undo-tree-config)
+;; (require 'undo-tree-config)
 (require 'projectile-config)
 (require 'magit-config)
 

@@ -170,7 +170,6 @@
     (define-key evil-motion-state-map (kbd "4") 'evil-search-word-backward)
 
     (define-key evil-normal-state-map (kbd "9") 'evil-jump-item)
-    (define-key evil-normal-state-map (kbd "DEL") 'evil-jump-item)
 
     (define-key evil-normal-state-map "a"           'evil-append)
 
@@ -184,7 +183,6 @@
     (define-key evil-normal-state-map "/"           'evil-search-forward)
     (define-key evil-normal-state-map (kbd "SPC /") 'helm-swoop)
     (define-key evil-motion-state-map "/"           'evil-search-forward)
-    (define-key evil-normal-state-map (kbd "Y") (kbd "y$"))
 
     (define-key evil-motion-state-map (kbd "C-s") 'evil-write)
 
@@ -196,6 +194,10 @@
 
     (define-key evil-motion-state-map (kbd ";") 'evil-ex)
 
+    (define-key evil-normal-state-map "U" 'redo)
+    (define-key evil-normal-state-map "Y" 'evil-join)
+    (define-key evil-normal-state-map "t" 'evil-substitute)
+    (define-key evil-normal-state-map "T" 'evil-change-whole-line)
 
     ;   ;; Set your own keyboard shortcuts to reload/save/switch WGs:
     ;   ;; "s" == "Super" or "Win"-key, "S" == Shift, "C" == Control
@@ -217,13 +219,13 @@
     (evil-define-key 'motion python-mode-map "[{" 'evil-previous-open-brace)
     (evil-define-key 'motion python-mode-map "]}" 'evil-next-close-brace)
 
+
+    (use-package evil-jumper
+    :ensure evil-jumper
+    :init
+    ;; C-i and C-o don't work unless we load it again like this ...
+    (require 'evil-jumper))
   )
 )
-
-(use-package evil-jumper
-  :ensure evil-jumper
-  :init
-  ;; C-i and C-o don't work unless we load it again like this ...
-  (require 'evil-jumper))
 
 (provide 'configs-evil)
