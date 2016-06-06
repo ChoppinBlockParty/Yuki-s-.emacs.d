@@ -220,11 +220,14 @@
     (evil-define-key 'motion python-mode-map "]}" 'evil-next-close-brace)
 
 
-    (use-package evil-jumper
-    :ensure evil-jumper
-    :init
-    ;; C-i and C-o don't work unless we load it again like this ...
-    (require 'evil-jumper))
+
+    ; Error in 24.5.1
+    ;
+    ; (use-package evil-jumper
+    ; :ensure evil-jumper
+    ; :init
+    ; ;; C-i and C-o don't work unless we load it again like this ...
+    ; (require 'evil-jumper))
   )
 )
 
