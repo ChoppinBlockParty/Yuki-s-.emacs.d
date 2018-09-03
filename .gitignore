@@ -10,9 +10,12 @@
 !/configs
 !/configs/*.el
 
+!/local
+!/local/**
+!/local/**/*.el
+
 !/themes
 !/themes/*.el
 
-!Cask
 !.gitignore
 !init.el

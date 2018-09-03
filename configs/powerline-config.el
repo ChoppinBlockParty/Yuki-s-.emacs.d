@@ -3,6 +3,7 @@
   :config
   (progn
 
+   (powerline-vim-theme)
     ;; (defcustom powerline-default-separator 'wave
     ;; "The separator to use for the default theme."
     ;; :group 'powerline

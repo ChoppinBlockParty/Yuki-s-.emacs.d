@@ -1,4 +1,3 @@
-
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package saveplace
@@ -96,12 +95,12 @@
     (while (and (car file-list) (not (string= (car file-list) (concat "untitled" (number-to-string cnt) ".txt"))))
       (setq file-list (cdr file-list)))
     (car file-list))
-  
+
   (defun exsitp-untitled (file-list)
     (while (and (car file-list) (not (string= (car file-list) "untitled.txt")))
       (setq file-list (cdr file-list)))
     (car file-list))
-  
+
   (if (not (exsitp-untitled file-list))
       "untitled.txt"
     (let ((cnt 2))
@@ -255,7 +254,7 @@
 
   ;;
   ;; My bindings.
-  ;;
+  ;; Replaces original dired binding (above).
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ; (define-key evil-normal-state-map "`" 'direx:jump-to-directory)
   (define-key evil-normal-state-map "`" 'dired-jump)
@@ -288,6 +287,7 @@
   (evil-define-key 'normal dired-mode-map "N" 'evil-search-previous)
   (evil-define-key 'normal dired-mode-map (kbd "TAB") 'dired-hide-subdir)
   (evil-define-key 'normal dired-mode-map (kbd "<backspace>") 'my-dired-remove-from-buffer)
+  (evil-define-key 'normal dired-mode-map "f" 'dired-find-file)
 )
 
 (provide 'configs-dired)

@@ -6,34 +6,56 @@
 
 (after 'evil
 (use-package helm
-  :ensure helm
+  :ensure t
   :config
   (progn
 
     (use-package helm-config
       :config
       (progn))
+
+
     (use-package helm-themes
       :ensure t
       :config
       (progn))
 
-    (helm-mode 1)
-    (setq helm-split-window-in-side-p      t ; open helm buffer inside current window, not occupy whole other window
-     helm-split-window-default-side        'above
-     ;; helm-echo-input-in-header-line        t
-     ;; helm-display-header-line              nil ; t by default
-     helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-     helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-     helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-     helm-ff-file-name-history-use-recentf t
-     ;; helm-autoresize-mode                  t
-     helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
-     helm-buffers-fuzzy-matching           t
-     helm-recentf-fuzzy-match              t
-     helm-semantic-fuzzy-match             t
-     helm-imenu-fuzzy-match                t
-     )
+    ;; helm-find-files: one command that handles all the files related commands (bind to C-x C-f).
+    ;; helm-buffers-list: provides enhanced buffers listing.
+    ;; helm-browse-project: handles project files and buffers; defaults to current directory; works with helm-find-files; recommended with helm-ls-git, helm-ls-hg and helm-ls-svn for a better handling of version control files. Each time a project under version control is visited it is added to helm-browse-project-history and can be visted with helm-projects-history.
+    ;; helm-dabbrev: enhanced dabbrev implementation with helm completion; does not use emacs code.
+    ;; helm-moccur: enhanced occur for one or more buffers; launch from helm-buffers-list or current-buffer.
+    ;; helm-M-x: enhanced execute-extended-command (bind it to M-x).
+    ;; helm-imenu and helm-imenu-in-all-buffers: provide imenus for current or all buffers.
+    ;; helm-etags-select: enhanced etags with helm-completion; usable everywhere with helm-find-files.
+    ;; helm-apropos: enhanced apropos for functions and variables that C-h commands provide.
+    ;; Grep: launch from any helm file commands; supports back-ends grep, ack-grep, git-grep, ag and custom implementation of pt.
+    ;; helm-gid: Helm interface for gid from id-utils.
+    ;; helm-show-kill-ring: A helm browser for kill ring.
+    ;; helm-all-mark-rings: A helm browser for mark ring; retrieves last positions in buffers.
+    ;; helm-filtered-bookmarks: enhanced browser for bookmarks.
+    ;; helm-list-elisp-packages: enhanced browser for elisp package management.
+
+    ;; helm-mode: turns on helm completions for most standard emacs completions. Helm provides even more optimized helm completions for some commands in helm-mode. Prefer these natively optimized versions over the ones in helm-mode.
+    (helm-mode t)
+
+    (setq
+      helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      helm-split-window-default-side        'above
+      helm-echo-input-in-header-line        t
+      helm-display-header-line              t ; t by default
+      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+      helm-ff-file-name-history-use-recentf t
+      helm-autoresize-mode                  t
+      helm-ff-skip-boring-files             t
+      helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
+      helm-buffers-fuzzy-matching           t
+      helm-recentf-fuzzy-match              t
+      helm-semantic-fuzzy-match             t
+      helm-imenu-fuzzy-match                t
+      )
 
     (defun helm-hide-minibuffer-maybe ()
         (when (with-helm-buffer helm-echo-input-in-header-line)
@@ -42,29 +64,6 @@
             (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
                                     `(:background ,bg-color :foreground ,bg-color)))
             (setq-local cursor-type nil))))
-
-    ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-
-    ;; (defvar helm-source-header-default-background (face-attribute 'helm-source-header :background))
-    ;; (defvar helm-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
-    ;; (defvar helm-source-header-default-box (face-attribute 'helm-source-header :box))
-
-    ;; (defun helm-toggle-header-line ()
-    ;;     (if (> (length helm-sources) 1)
-    ;;         (set-face-attribute 'helm-source-header
-    ;;                             nil
-    ;;                             :foreground helm-source-header-default-foreground
-    ;;                             :background helm-source-header-default-background
-    ;;                             :box helm-source-header-default-box
-    ;;                             :height 0.9)
-    ;;         (set-face-attribute 'helm-source-header
-    ;;                             nil
-    ;;                             :foreground (face-attribute 'helm-selection :background)
-    ;;                             :background (face-attribute 'helm-selection :background)
-    ;;                             :box nil
-    ;;                             :height 0.1)))
-
-    ;; (add-hook 'helm-before-initialize-hook 'helm-toggle-header-line)
 
     (defun my-helm-in-ido (buffer)
       "Display a helm buffer in ido. Send the purists screaming."
@@ -77,7 +76,7 @@
     (global-set-key (kbd "M-x") 'helm-M-x)
 
     ;; shell history.
-    ;; (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
+    (define-key shell-mode-map (kbd "C-r") 'helm-comint-input-ring)
 
     ;; use helm to list eshell history
     (add-hook 'eshell-mode-hook
@@ -191,20 +190,6 @@
 ;;         ("p" helm-execute-persistent-action)
 ;;         )
 
-    (defun helm-jump ()
-      "Find files with helm, but be smart about buffers and recent files."
-      (interactive)
-      (let ((helm-ff-transformer-show-only-basename nil))
-        (helm-other-buffer '(helm-projectile-sources-list
-                             helm-source-buffers-list
-                             helm-source-recentf
-                             helm-source-bookmarks
-                             helm-source-file-cache
-                             helm-source-files-in-current-dir
-                             helm-source-locate
-                             helm-source-buffer-not-found)
-                           "*helm jump*")))
-
     (setq helm-command-prefix-key "C-c h")
     (setq helm-quick-update t)
 
@@ -223,7 +208,11 @@
 
     (after 'flycheck
       (use-package helm-flycheck
-        :ensure helm-flycheck))
+        :ensure t
+        :config
+        (add-hook 'after-init-hook #'global-flycheck-mode)
+        (define-key evil-normal-state-map (kbd "SPC f") 'flycheck-error-list-explain-error)
+        ))
 
     ;; (defhydra helm-like-unite (:hint nil
     ;;                            :pre (set-cursor-color "#e52b50")
@@ -248,6 +237,31 @@
 
     ;; ;; (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
 
+   (defun helm-my-buffers ()
+    (interactive)
+    (let ((helm-ff-transformer-show-only-basename nil))
+    (helm-other-buffer '(helm-source-buffers-list
+                        ;; helm-source-elscreen
+                        helm-source-projectile-files-list
+                        ;; helm-source-ctags
+                        ;; helm-source-recentf
+                        helm-source-locate)
+                        "*helm-my-buffers*")))
+
+    (defun helm-jump ()
+      "Find files with helm, but be smart about buffers and recent files."
+      (interactive)
+      (let ((helm-ff-transformer-show-only-basename nil))
+        (helm-other-buffer '(helm-projectile-sources-list
+                             helm-source-buffers-list
+                             helm-source-recentf
+                             helm-source-bookmarks
+                             helm-source-file-cache
+                             helm-source-files-in-current-dir
+                             helm-source-locate
+                             helm-source-buffer-not-found)
+                           "*helm jump*")))
+
     (define-key helm-map (kbd "<escape>") 'keyboard-escape-quit)
     (define-key helm-map (kbd "C-q") 'keyboard-escape-quit)
 
@@ -260,11 +274,12 @@
     (define-key helm-map (kbd "M-h") 'helm-next-source)
     (define-key helm-map (kbd "M-l") 'helm-previous-source)
 
-    (define-key evil-normal-state-map "\M-w" 'helm-buffers-list)
-    (define-key evil-normal-state-map "\M-d" 'helm-for-files)
-    (define-key evil-normal-state-map "\M-s" 'helm-buffers-list)
-    (define-key evil-normal-state-map "\M-e" 'helm-for-files)
+    (global-set-key (kbd "M-w") 'helm-buffers-list)
+    (global-set-key (kbd "M-e") 'helm-my-buffers)
+    (global-set-key (kbd "M-d") 'helm-for-files)
+    (global-set-key (kbd "M-s") 'helm-buffers-list)
 
+    (define-key evil-normal-state-map (kbd "SPC u ?") 'helm-apropos)
     (define-key evil-normal-state-map (kbd "SPC m m") 'helm-mini)
     (define-key evil-normal-state-map (kbd "SPC m f") 'helm-find)
     (define-key evil-normal-state-map (kbd "SPC m i") 'helm-semantic-or-imenu)
@@ -279,18 +294,18 @@
      )
 
     (evil-leader/set-key
-       "q" 'find-file
-       "w" 'helm-for-files
+       ;; "q" 'find-file
+       ;; "w" 'helm-for-files
        ;; "l" 'helm-locate
        ;; "y" 'helm-show-kill-ring
        ;; "t" 'helm-top
        ;; "m" 'helm-man-woman
        ;; "o" 'helm-occur
        ;; "j" 'helm-M-x
-       "e" 'helm-find-files
-       "b" 'helm-buffers-list
-       "f" 'helm-projectile-find-file
-       "r" 'helm-recentf
+       ;; "e" 'helm-find-files
+       ;; "b" 'helm-buffers-list
+       ;; "f" 'helm-projectile-find-file
+       ;; "r" 'helm-recentf
        "A" 'helm-projectile
        "a" 'helm-projectile-ag)
         ;; (eval-after-load "helm-ag"

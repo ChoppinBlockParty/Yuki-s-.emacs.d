@@ -1,8 +1,8 @@
 (require 'cl-lib)
 
-(defvar my-terminal-emulator "urxvtc"
+(defvar my-terminal-emulator "urxvt"
   "Terminal emulator to be spawned with my-spawn-terminal-here.")
-(defvar my-graphical-font "Gohufont-18"
+(defvar my-graphical-font "Gohufont-12"
   "Font used for graphical editing sessions.")
 
 ;; Don't show those horrible buttons
@@ -17,11 +17,14 @@
 ;; also tabs are evil
 (setq-default indent-tabs-mode nil)
 
+;; tabs width
+(setq-default tab-width 2)
+
 ;; number columns in the status bar
 (column-number-mode)
 
 ;; show line numbers
-(global-linum-mode t)
+; (global-linum-mode t)
 
 ;; require a trailing newline
 (setq require-final-newline t)
@@ -199,7 +202,6 @@ This command only has an effect on graphical frames."
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
-(global-set-key (kbd "C-x g") 'my-google)
 (global-set-key (kbd "C-c e") 'my-eval-and-replace)
 
 (defun my-setup-help-mode ()

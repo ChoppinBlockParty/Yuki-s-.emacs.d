@@ -1,10 +1,14 @@
-(add-to-list 'load-path (concat user-emacs-directory "configs"))
+(add-to-list 'load-path
+             (concat user-emacs-directory
+                     (convert-standard-filename "configs")))
+(add-to-list 'load-path
+             (concat user-emacs-directory
+                     (convert-standard-filename "local/protobuf")))
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
                          ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("SC"  . "http://joseito.republika.pl/sunrise-commander/")))
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
 
 (require 'package)
 (package-initialize)
@@ -24,31 +28,10 @@
 ;   (progn
 ;   )
 ; )
-
-(global-hl-line-mode 1)
-
+(global-hl-line-mode t)
 ;; To customize the background color
 (set-face-background 'hl-line "#330")  ;; Emacs 22 Only
 
-(use-package highlight-symbol
-  :ensure t
-  :config
-  (progn
-    (global-set-key [(f2)] 'highlight-symbol)
-    (global-set-key [f3] 'highlight-symbol-next)
-    (global-set-key [(shift f3)] 'highlight-symbol-prev)
-    (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
-  )
-)
-
-(defvar dotspacemacs-editing-style 'vim
-  "Either `vim' or `emacs'. Evil is always enabled but if the variable
-    is `emacs' then the `holy-mode' is enabled at startup.")
-
-(defvar dotspacemacs-leader-key "SPC"
-  "The leader key.")
-
-(require 'elscreen-config)
 (require 'core-funcs)
 (require 'configs-base)
 (require 'core-micro-state)
@@ -79,7 +62,6 @@
 (require 'show-paren-mode-config)
 (require 'config-paren)
 
-(require 'icicles-config)
 (require 'visual-regexp-config)
 
 (require 'powerline-config)
@@ -93,5 +75,61 @@
 (require 'magit-config)
 
 (require 'config-cider)
-(require 'jedi-config)
+;; There is ycmd do not jedi
+;; (require 'jedi-config)
+(require 'vimrc-mode-config)
+(require 'docker-config)
 
+(after 'evil
+(use-package highlight-symbol
+  :ensure t
+  :config
+  (progn
+    (highlight-symbol-mode t)
+    (global-set-key [(f2)] 'highlight-symbol)
+    (global-set-key [f3] 'highlight-symbol-next)
+    (global-set-key [(shift f3)] 'highlight-symbol-prev)
+    (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
+  )
+  )
+ (defun my-formatting ()
+    ""
+    (interactive)
+    (if (equal major-mode 'go-mode) (gofmt) ()
+    )
+    )
+
+  (require 'protobuf-mode)
+  (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+
+(use-package cmake-mode
+  :ensure t
+  :config
+  (progn
+  )
+  )
+
+(use-package go-mode
+  :ensure t
+  :config
+  (progn
+    (add-to-list `auto-mode-alist '("\\.go\\'" . go-mode))
+    (define-key evil-normal-state-map (kbd "SPC s") 'my-formatting)
+  )
+  )
+)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (highlight-symbol vimrc-mode cider magit helm-ag helm-flycheck helm-swoop helm-themes helm-projectile projectile rainbow-delimiters rainbow-mode moe-theme powerline visual-regexp icicles markdown-mode flycheck-ycmd company-ycmd ycmd company flyspell-lazy evil-easymotion ag window-numbering evil-surround evil-nerd-commenter expand-region evil-leader color-theme-approximate elscreen use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

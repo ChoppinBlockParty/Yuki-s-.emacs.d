@@ -1,4 +1,3 @@
-
 (use-package cider
   :ensure t
   :config
