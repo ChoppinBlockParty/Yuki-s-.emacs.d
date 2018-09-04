@@ -7,6 +7,8 @@
     (evil-leader/set-leader "<SPC>")
     (global-evil-leader-mode t)))
 
+;; Must be before `evil` because of keymap
+(after 'window-numbering
 (use-package evil
   :ensure t
   :config
@@ -32,6 +34,55 @@
       evil-shift-width 2
       evil-regexp-search t
       evil-want-C-i-jump t)
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; Global
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    (defvar my-intercept-mode-map (make-sparse-keymap)
+     "High precedence keymap.")
+
+   (define-minor-mode my-intercept-mode
+     "Global minor mode for higher precedence evil keybindings."
+     :global t)
+
+   (my-intercept-mode)
+
+   (dolist (state '(normal visual insert))
+     (evil-make-intercept-map
+      ;; NOTE: This requires an evil version from 2018-03-20 or later
+      (evil-get-auxiliary-keymap my-intercept-mode-map state t t)
+      state))
+
+    (defun my-global-define-key (key func)
+      "Define globally in evil"
+      (evil-define-key 'motion my-intercept-mode-map key func)
+      (evil-define-key 'emacs my-intercept-mode-map key func)
+      (evil-define-key 'insert my-intercept-mode-map key func)
+      (evil-define-key 'insert my-intercept-mode-map key func)
+      )
+    (defun my-switch-to-previous-buffer ()
+      "Switch to most recent buffer. Repeated calls toggle back and forth between the most recent two buffers."
+      (interactive)
+      (switch-to-buffer (other-buffer (current-buffer) 1))
+      )
+    (defun my-switch-to-previous-window ()
+      (interactive)
+      (select-window (previous-window))
+      )
+    (my-global-define-key (kbd "M-1") 'my-switch-to-previous-buffer)
+    (my-global-define-key (kbd "M-2") 'my-switch-to-previous-window)
+    (after 'helm
+    (defun my-global-define-helm-key (key func)
+      "Define globally helm keys in evil"
+      (my-global-define-key key func)
+      (define-key helm-map key 'keyboard-escape-quit)
+      )
+    ;; "Fast buffer switching extension to `avy'."
+    (my-global-define-helm-key (kbd "M-w") 'ace-jump-buffer)
+    (my-global-define-helm-key (kbd "M-s") 'helm-buffers-list)
+    (my-global-define-helm-key (kbd "M-e") 'helm-my-buffers)
+    (my-global-define-helm-key (kbd "M-d") 'helm-for-files)
+    )
 
     (use-package expand-region
       :ensure t
@@ -102,11 +153,6 @@
 
     (define-key evil-insert-state-map (kbd "<S-backspace>") 'backward-delete-char-untabify)
 
-    (define-key evil-normal-state-map (kbd "SPC a") 'ag)
-    (define-key evil-normal-state-map (kbd "SPC SPC") 'helm-M-x)
-    ;; Do not do this
-    ;; (define-key evil-normal-state-map (kbd ":") 'helm-M-x)
-
     (define-key evil-normal-state-map (kbd "C-u")   'universal-argument)
 
     (evil-leader/set-key "h" 'evil-window-left)
@@ -154,10 +200,18 @@
     (define-key evil-motion-state-map (kbd "M-i") 'evil-scroll-up)
 
     (define-key evil-motion-state-map "/"           'evil-search-forward)
-    (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance)
     (define-key isearch-mode-map (kbd "<up>")   'isearch-ring-retreat)
-    (define-key isearch-mode-map (kbd "M-j")    'isearch-ring-advance)
+    (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance)
     (define-key isearch-mode-map (kbd "M-k")    'isearch-ring-retreat)
+    (define-key isearch-mode-map (kbd "M-j")    'isearch-ring-advance)
+    (define-key evil-motion-state-map "7"
+        'evil-search-word-forward
+      ;; (lambda ()
+      ;;   (interactive)
+      ;;   (evil-search-word-forward)
+      ;;   (evil-search-word-backward)
+      ;;   )
+      )
     ;; (defun isearch-yank-symbol ()
     ;;   "*Put symbol at current point into search string."
     ;;   (interactive)
@@ -199,6 +253,12 @@
     (evil-ex-define-cmd "Qa" 'evil-quit-all)
     (evil-ex-define-cmd "QA" 'evil-quit-all)
 
+    (define-key evil-normal-state-map (kbd "SPC SPC") 'helm-M-x)
+    ;; Do not do this
+    ;; (define-key evil-normal-state-map (kbd ":") 'helm-M-x)
+    (define-key evil-normal-state-map (kbd "SPC a") 'helm-ag)
+    (define-key evil-normal-state-map (kbd "SPC w") 'kill-this-buffer)
+
     ;; Marco related stuff
     ;; map("<Leader>r", "@:", Normal, Visual, Select, OperatorPending, NoRemap, Silent)
     ;; (define-key evil-normal-state-map "@" 'evil-execute-macro)
@@ -231,7 +291,7 @@
     )
     (define-key evil-normal-state-map (kbd "SPC /") 'helm-swoop)
     (define-key evil-normal-state-map (kbd "SPC u g") 'magit-status)
-    (define-key evil-normal-state-map (kbd "SPC u s") 'eshell)
+    (define-key evil-normal-state-map (kbd "SPC u s") 'shell)
 
     (use-package evil-easymotion
     :ensure t
@@ -251,6 +311,6 @@
         )
     )
   )
-)
+))
 
 (provide 'configs-evil)

@@ -109,13 +109,15 @@
       (concat "untitled" (number-to-string cnt) ".txt"))))
 
 (defun my-dired-create-file (file)
+  "Create a new file in current dire directory. FILE to create."
   (interactive
-   (list (read-file-name "Create file: " (concat (dired-current-directory) (create-new-file (directory-files (dired-current-directory))))))
-   )
-  (write-region "" nil (expand-file-name file) t) 
+    (list (read-file-name "Create file: " (dired-current-directory) ))
+    )
+  (write-region "" nil (expand-file-name file) t)
   (dired-add-file file)
   (revert-buffer)
-  (dired-goto-file (expand-file-name file)))
+  (dired-goto-file (expand-file-name file))
+  )
 
 
 (after 'evil

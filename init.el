@@ -34,27 +34,22 @@
 ;   (progn
 ;   )
 ; )
-(global-hl-line-mode t)
-;; To customize the background color
-(set-face-background 'hl-line "#330")  ;; Emacs 22 Only
 
 (require 'core-funcs)
 (require 'configs-base)
+(require 'window-numbering-config)
 ;; (require 'cua-config)
 (require 'core-micro-state)
 (require 'config-color)
+(require 'highlight-config)
 (require 'config-cl-lib)
 (require 'configs-evil)
 (require 'configs-dired)
-; (require 'golden-ratio-config)
-(require 'window-numbering-config)
 (require 'auto-fill-mode-config)
 (require 'ag-config)
 (require 'configs-helm)
-; (require 'config-sunrise-commander)
-; (require 'ranger-config)
+(require 'ace-config)
 (require 'config-easymotion)
-;; (require 'ido-config)
 (require 'spell-check-config)
 ;; (require 'latex-config)
 
@@ -100,12 +95,12 @@
     (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
   )
   )
+
  (defun my-formatting ()
-    ""
-    (interactive)
-    (if (equal major-mode 'go-mode) (gofmt) ()
-    )
-    )
+   ""
+   (interactive)
+   (when (equal major-mode 'go-mode) (gofmt) )
+   )
 
   (require 'protobuf-mode)
   (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
@@ -126,7 +121,6 @@
   )
   )
 )
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -134,7 +128,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (highlight-symbol vimrc-mode cider magit helm-ag helm-flycheck helm-swoop helm-themes helm-projectile projectile rainbow-delimiters rainbow-mode moe-theme powerline visual-regexp icicles markdown-mode flycheck-ycmd company-ycmd ycmd company flyspell-lazy evil-easymotion ag window-numbering evil-surround evil-nerd-commenter expand-region evil-leader color-theme-approximate elscreen use-package))))
+    (ace-jump-buffer window-numbering visual-regexp vimrc-mode use-package rainbow-mode rainbow-delimiters powerline moe-theme markdown-mode magit highlight-symbol highlight-operators helm-themes helm-swoop helm-projectile helm-flycheck helm-ag go-mode flyspell-lazy flycheck-ycmd expand-region evil-surround evil-nerd-commenter evil-leader evil-easymotion elscreen dockerfile-mode docker-compose-mode company-ycmd color-theme-approximate cmake-mode cider ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

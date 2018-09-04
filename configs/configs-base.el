@@ -5,17 +5,22 @@
 (defvar my-graphical-font "Gohufont-12"
   "Font used for graphical editing sessions.")
 
-;; Don't show those horrible buttons
-(tool-bar-mode -1)
+;; Disable toolbar (must use -1 to disable)
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
 ;; break long lines at word boundaries
-(visual-line-mode 1)
+(visual-line-mode t)
+
+;; Removes duplicated items everywhere
+(setq-default history-delete-duplicates t)
 
 ;; lockfiles are evil.
 (setq create-lockfiles nil)
 
 ;; also tabs are evil
 (setq-default indent-tabs-mode nil)
+;; With this setting the TAB key will first try to re-indent the current line. If the line is already indented properly it will call completion-at-point instead.
+(setq-default tab-always-indent 'complete)
 
 ;; tabs width
 (setq-default tab-width 2)
@@ -27,11 +32,15 @@
 ; (global-linum-mode t)
 
 ;; require a trailing newline
+;; otherwise people get angry on you
 (setq require-final-newline t)
 
-(blink-cursor-mode -1)      ;; or pass in -1 to turn it off
+;; (must use -1 to disable)
+(blink-cursor-mode -1)
 
-;; I never look at right-side fringes. Do you?
+;; On graphical displays, each Emacs window normally has narrow fringes (gutters/margins) on the left and right edges. The fringes are used to display symbols that provide information about the text in the window. You can type M-x fringe-mode to disable the fringes, or modify their width. This command affects fringes in all frames; to modify fringes on the selected frame only, use M-x set-fringe-style. You can make your changes to the fringes permanent by customizing the variable fringe-mode.
+;; Out-of-the-box the most common use of the fringes is to indicate a continuation line. When one line of text is split into multiple screen lines, the left fringe shows a curving arrow for each screen line except the first, indicating that “this is not the real beginning”. The right fringe shows a curving arrow for each screen line except the last, indicating that “this is not the real end”. If the line’s direction is right-to-left, the meanings of the curving arrows in the fringes are swapped.
+;; Third-party modes like flycheck and diff-hl also make use of the fringe to display valuable information there (e.g. lint and VC information).
 (set-fringe-style '(8 . 0))
 
 ;; don't put intitial text in scratch buffer
@@ -40,9 +49,6 @@
 ;'Woman' > 'man'.
 (defalias 'man 'woman)
 
-;; Disable toolbars and splash screens.
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-
 ;; from <https://github.com/bling/dotemacs/>
 (defmacro after (feature &rest body)
   "After FEATURE is loaded, evaluate BODY."
@@ -50,21 +56,15 @@
   `(eval-after-load ,feature
      '(progn ,@body)))
 
-; (with-eval-after-load 'evil
-;  ...)
 
-
-(setq molokai-theme-kit t)
-(load-theme 'molokai t)
-
-(use-package color-theme-approximate
-  :ensure t
-  :demand
-  :config
-  (progn
-    (color-theme-approximate-on)
-  )
-)
+;; (use-package color-theme-approximate
+;;   :ensure t
+;;   :demand
+;;   :config
+;;   (progn
+;;     (color-theme-approximate-on)
+;;   )
+;; )
 
 ;; Hide startup messages
 (setq inhibit-splash-screen t
@@ -89,8 +89,7 @@
   "Directory used for Emacs backups.")
 
 (setq backup-directory-alist `(("." . "~/.emacs.d/.saves")))
-(setq auto-save-file-name-transforms
-      `((".*" ,my-auto-save-folder t)))
+(setq auto-save-file-name-transforms `((".*" ,my-auto-save-folder t)))
 
 ;; Only scroll one line when near the bottom of the screen, instead
 ;; of jumping the screen around.
@@ -199,10 +198,6 @@ This command only has an effect on graphical frames."
   (when window-system (my-set-window-font my-graphical-font)))
 
 ;; (add-hook 'after-make-frame-functions 'my-use-default-font)
-
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-x C-k") 'kill-this-buffer)
-(global-set-key (kbd "C-c e") 'my-eval-and-replace)
 
 (defun my-setup-help-mode ()
   "Setup help mode the way I like it."

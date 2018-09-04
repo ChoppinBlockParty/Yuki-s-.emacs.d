@@ -50,14 +50,10 @@
       helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
       helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
       helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t
-      helm-autoresize-mode                  t
-      helm-ff-skip-boring-files             t
-      helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
-      helm-buffers-fuzzy-matching           t
-      helm-recentf-fuzzy-match              t
-      helm-semantic-fuzzy-match             t
-      helm-imenu-fuzzy-match                t
+      helm-comint-input-ring-fuzzy-match                 t ; everything will be fuzzy
+      helm-mode-fuzzy-match                 t ; everything will be fuzzy
+      helm-completion-in-region-fuzzy-match t
+      helm-comint-input-ring-fuzzy-match    t
       )
 
     (defun helm-hide-minibuffer-maybe ()
@@ -243,9 +239,9 @@
    (defun helm-my-buffers ()
     (interactive)
     (let ((helm-ff-transformer-show-only-basename nil))
-    (helm-other-buffer '(helm-source-buffers-list
-                        ;; helm-source-elscreen
-                        helm-source-projectile-files-list
+    (helm-other-buffer '(;; helm-source-elscreen
+                         helm-source-projectile-files-list
+                         helm-source-buffers-list
                         ;; helm-source-ctags
                         ;; helm-source-recentf
                         helm-source-locate)
@@ -268,19 +264,14 @@
     (define-key helm-map (kbd "<escape>") 'keyboard-escape-quit)
     (define-key helm-map (kbd "C-q") 'keyboard-escape-quit)
 
-    (define-key helm-map (kbd "C-j") 'helm-next-line)
     (define-key helm-map (kbd "C-k") 'helm-previous-line)
-    (define-key helm-map (kbd "C-h") 'helm-next-source)
-    (define-key helm-map (kbd "C-l") 'helm-previous-source)
-    (define-key helm-map (kbd "M-j") 'helm-next-line)
+    (define-key helm-map (kbd "C-j") 'helm-next-line)
+    (define-key helm-map (kbd "C-h") 'helm-previous-source)
+    (define-key helm-map (kbd "C-l") 'helm-next-source)
     (define-key helm-map (kbd "M-k") 'helm-previous-line)
-    (define-key helm-map (kbd "M-h") 'helm-next-source)
-    (define-key helm-map (kbd "M-l") 'helm-previous-source)
-
-    (global-set-key (kbd "M-w") 'helm-buffers-list)
-    (global-set-key (kbd "M-e") 'helm-my-buffers)
-    (global-set-key (kbd "M-d") 'helm-for-files)
-    (global-set-key (kbd "M-s") 'helm-buffers-list)
+    (define-key helm-map (kbd "M-j") 'helm-next-line)
+    (define-key helm-map (kbd "M-h") 'helm-previous-source)
+    (define-key helm-map (kbd "M-l") 'helm-next-source)
 
     (define-key evil-normal-state-map (kbd "SPC u ?") 'helm-apropos)
     (define-key evil-normal-state-map (kbd "SPC m m") 'helm-mini)

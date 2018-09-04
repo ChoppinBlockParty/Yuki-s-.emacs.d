@@ -4,7 +4,17 @@
   :ensure t
   :config
   (progn
-    ;; (when (configuration-layer/package-usedp 'powerline)
+    (let ((m window-numbering-keymap))
+        (define-key m "\M-0" nil)
+        (define-key m "\M-1" nil)
+        (define-key m "\M-2" nil)
+        (define-key m "\M-3" nil)
+        (define-key m "\M-4" nil)
+        (define-key m "\M-5" nil)
+        (define-key m "\M-6" nil)
+        (define-key m "\M-7" nil)
+        (define-key m "\M-8" nil)
+        (define-key m "\M-9" nil))
     ;;   (defun window-numbering-install-mode-line (&optional position)
     ;;     "Do nothing, the display is handled by the powerline."))
     (setq window-numbering-auto-assign-0-to-minibuffer nil)
@@ -20,7 +30,7 @@
         "7" 'select-window-7
         "8" 'select-window-8
         "9" 'select-window-9)
-        (window-numbering-mode 1)
+        (window-numbering-mode t)
     )
 
     ;; "Return the number of the window."
