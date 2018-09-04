@@ -40,8 +40,11 @@
     (helm-mode t)
 
     (setq
-      helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      ; open helm buffer inside current window, not occupy whole other window
+      helm-split-window-inside-p           t
       helm-split-window-default-side        'above
+      ; If not set completion opens a new frame/window
+      helm-show-completion-display-function #'helm-show-completion-default-display-function
       helm-echo-input-in-header-line        t
       helm-display-header-line              t ; t by default
       helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.

@@ -1,8 +1,11 @@
+(after 'evil
 (use-package undo-tree
   :ensure t
+  :init
+    ;; (global-undo-tree-mode nil)
   :config
-  (progn
-    )
-  )
+  (progn)
+  ))
+
 
 (provide 'undo-tree-config)

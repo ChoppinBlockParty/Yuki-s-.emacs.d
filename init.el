@@ -1,3 +1,9 @@
+;;; init.el -- Emacs startup script
+
+;;; Commentary:
+;;; omg
+
+;;; Code:
 (add-to-list 'load-path
              (concat user-emacs-directory
                      (convert-standard-filename "configs")))
@@ -34,6 +40,7 @@
 
 (require 'core-funcs)
 (require 'configs-base)
+;; (require 'cua-config)
 (require 'core-micro-state)
 (require 'config-color)
 (require 'config-cl-lib)
@@ -48,19 +55,20 @@
 ; (require 'ranger-config)
 (require 'config-easymotion)
 ;; (require 'ido-config)
-(require 'cua-config)
 (require 'spell-check-config)
 ;; (require 'latex-config)
 
 
 (require 'config-autocompletion)
+(require 'config-paren)
+
+(require 'eshell-config)
 
 (provide 'clojure-mode-config)
 (provide 'js2-mode-config)
 (require 'markdown-mode-config)
 
 (require 'show-paren-mode-config)
-(require 'config-paren)
 
 (require 'visual-regexp-config)
 

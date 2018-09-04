@@ -26,7 +26,7 @@
       evil-insert-state-cursor   '("#00CED1" bar)
       evil-replace-state-cursor  '("#cc9393" box)
       evil-operator-state-cursor '("red" hollow)
-      evil-want-fine-undo t
+      evil-want-fine-undo nil ; Googled it, people say it is buggy
       evil-want-change-word-to-end t
       evil-auto-indent t
       evil-shift-width 2
@@ -109,11 +109,6 @@
 
     (define-key evil-normal-state-map (kbd "C-u")   'universal-argument)
 
-    (define-key evil-normal-state-map (kbd "C-h")   'evil-window-left)
-    (define-key evil-normal-state-map (kbd "C-j")   'evil-window-down)
-    (define-key evil-normal-state-map (kbd "C-k")   'evil-window-up)
-    (define-key evil-normal-state-map (kbd "C-l")   'evil-window-right)
-
     (evil-leader/set-key "h" 'evil-window-left)
     (evil-leader/set-key "j" 'evil-window-down)
     (evil-leader/set-key "k" 'evil-window-up)
@@ -121,6 +116,8 @@
 
     (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
     (define-key evil-normal-state-map "q" 'evil-window-delete)
+    (with-eval-after-load 'with-editor
+      (evil-define-key 'normal with-editor-mode-map "q" 'with-editor-finish))
 
     (defun capslock-digit-argument-fn (digit)
       `(lambda (arg)
@@ -138,7 +135,7 @@
     (define-key evil-motion-state-map "*" (capslock-digit-argument-fn 8))
     (define-key evil-motion-state-map "(" (capslock-digit-argument-fn 9))
     (define-key evil-motion-state-map ")" (capslock-digit-argument-fn 0))
- 
+
     (evil-redirect-digit-argument evil-motion-state-map "0" 'evil-search-highlight-persist-remove-all)
     (define-key evil-normal-state-map "2" 'evil-record-macro)
     (define-key evil-motion-state-map (kbd "3") 'evil-search-word-forward)
@@ -157,6 +154,10 @@
     (define-key evil-motion-state-map (kbd "M-i") 'evil-scroll-up)
 
     (define-key evil-motion-state-map "/"           'evil-search-forward)
+    (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance)
+    (define-key isearch-mode-map (kbd "<up>")   'isearch-ring-retreat)
+    (define-key isearch-mode-map (kbd "M-j")    'isearch-ring-advance)
+    (define-key isearch-mode-map (kbd "M-k")    'isearch-ring-retreat)
     ;; (defun isearch-yank-symbol ()
     ;;   "*Put symbol at current point into search string."
     ;;   (interactive)
@@ -182,6 +183,7 @@
 
     (define-key evil-motion-state-map (kbd ";") 'evil-ex)
 
+    (define-key evil-normal-state-map (kbd "C-r") nil)
     (define-key evil-normal-state-map "U" 'redo)
     (define-key evil-normal-state-map "Y" 'evil-join)
 
@@ -229,6 +231,25 @@
     )
     (define-key evil-normal-state-map (kbd "SPC /") 'helm-swoop)
     (define-key evil-normal-state-map (kbd "SPC u g") 'magit-status)
+    (define-key evil-normal-state-map (kbd "SPC u s") 'eshell)
+
+    (use-package evil-easymotion
+    :ensure t
+    :config
+    (progn
+        ;; (setq avy-keys (number-sequence ?a ?z))
+
+        (define-key evil-normal-state-map "J" nil)
+        (evilem-define "J" #'evil-backward-WORD-begin)
+        (evilem-define "K" #'evil-forward-WORD-begin)
+        (evilem-define "H" #'evil-backward-WORD-end)
+        (evilem-define "L" #'evil-forward-WORD-end)
+        (evilem-define "t" #'evilem-motion-find-char-backward)
+        (evilem-define "T" #'evilem-motion-find-char-to-backward)
+        (evilem-define "f" #'evilem-motion-find-char)
+        (evilem-define "F" #'evilem-motion-find-char-to)
+        )
+    )
   )
 )
 

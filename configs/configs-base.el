@@ -198,7 +198,7 @@ This command only has an effect on graphical frames."
   (interactive)
   (when window-system (my-set-window-font my-graphical-font)))
 
-(add-hook 'after-make-frame-functions 'my-use-default-font)
+;; (add-hook 'after-make-frame-functions 'my-use-default-font)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
