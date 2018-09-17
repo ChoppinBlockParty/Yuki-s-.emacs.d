@@ -34,8 +34,8 @@
   (defun company-ac-setup ()
     "Sets up `company-mode' to behave similarly to `auto-complete-mode'."
     (setq company-require-match nil)
-    (setq company-auto-complete #'my-company-visible-and-explicit-action-p)
-    (setq company-auto-complete t)
+    ;; (setq company-auto-complete #'my-company-visible-and-explicit-action-p)
+    (setq company-auto-complete nil)
     (setq company-frontends '(company-tng-frontend
                               company-echo-metadata-frontend
                               company-pseudo-tooltip-unless-just-one-frontend
@@ -52,12 +52,6 @@
 
      (defvar-local company-fci-mode-on-p nil)
 
-     (defun my-company-pass-key (arg)
-       "Pass a key out of company-mode"
-       (interactive "P")
-       (company-abort)
-       (kbd arg)
-       )
      ;; C-hjkl in company-mode
      (define-key company-active-map (kbd "C-h") 'company-show-doc-buffer)
      (define-key company-active-map (kbd "C-l") 'company-show-location)
@@ -71,7 +65,6 @@
      (define-key company-active-map [mouse-3] 'ignore)
      (define-key company-active-map [up-mouse-1] 'ignore)
      (define-key company-active-map [up-mouse-3] 'ignore)
-     (evil-define-key 'insert company-mode-map (kbd "ESC") 'company-abort)
      ; (define-key company-active-map "\e\e\e" 'company-abort)
      (define-key company-active-map "\C-i" 'company-abort)
      (define-key company-active-map (kbd "[shift-tab]") 'company-select-previous)
@@ -84,7 +77,10 @@
      (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
      ; (define-key company-active-map [tab] 'company-select-next)
      (define-key company-active-map (kbd "<f1>") 'company-show-doc-buffer)
+     ;;; Quits completion and removes last selection
      (define-key company-active-map (kbd "C-w") 'company-abort)
+     ;;; Quits completion and keeps last selection
+     (evil-define-key 'insert company-mode-map (kbd "ESC") 'company-abort)
      (define-key company-active-map "\C-s" 'company-search-candidates)
      ; (define-key company-active-map "\C-\M-s" 'company-filter-candidates)
      ;; (add-hook 'shell-mode-hook
@@ -108,14 +104,19 @@
          (company--insert-candidate
           (nth company-selection company-candidates)))
        (company-cancel))
-     (define-key company-active-map [return] 'company-quit)
-     (define-key company-active-map (kbd "RET") 'company-quit)
+     ;; (define-key company-active-map [return] 'company-quit)
+     ;; (define-key company-active-map (kbd "RET") 'company-quit)
+     (define-key company-active-map [return] nil)
+     (define-key company-active-map (kbd "RET") nil)
+     ;; (define-key company-active-map (kbd "SPC") nil)
+     ;; (define-key company-active-map (kbd "SPC") nil)
+     ;; (define-key company-active-map (kbd "SPC") 'company-quit)
 
-     (define-key company-active-map (kbd "SPC") nil)
      (evil-define-key 'insert 'global (kbd "C-SPC") 'company-complete-common)
 
     (use-package ycmd
     :ensure t
+    :after (evil)
     :config
     (progn
         (set-variable 'ycmd-server-command `("python3" ,(file-truename "~/Data/Sources/ycmd/ycmd")))
@@ -128,15 +129,45 @@
         (progn
             ;; (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
             (use-package flycheck-ycmd
-                :ensure t
-                :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup))
+              :ensure t
+              :init (add-hook 'ycmd-mode-hook
+              'flycheck-ycmd-setup)
+              :config
+              (progn
+                ;; Make sure the flycheck cache sees the parse results
+                (add-hook 'ycmd-file-parse-result-hook 'flycheck-ycmd--cache-parse-results)
+
+                ;; Add the ycmd checker to the list of available checkers
+                (add-to-list 'flycheck-checkers 'ycmd)
+              ))
         )
         )
-        ;; (add-hook 'after-init-hook #'global-ycmd-mode)
-        (add-hook 'python-mode-hook 'ycmd-mode)
-        (add-hook 'c-mode-hook 'ycmd-mode)
-        (add-hook 'c++-mode-hook 'ycmd-mode)
-        (add-hook 'go-mode-hook 'ycmd-mode)
+      ;; (add-hook 'after-init-hook #'global-ycmd-mode)
+      (add-hook 'python-mode-hook 'ycmd-mode)
+      (add-hook 'c-mode-hook 'ycmd-mode)
+      (add-hook 'c++-mode-hook 'ycmd-mode)
+      (add-hook 'go-mode-hook 'ycmd-mode)
+
+      (evil-define-key 'normal 'global (kbd "SPC u y p") 'ycmd-parse-buffer)
+      (evil-define-key 'normal 'global (kbd "SPC u y o") 'ycmd-open)
+      (evil-define-key 'normal 'global (kbd "SPC u y c") 'ycmd-close)
+      (evil-define-key 'normal 'global (kbd "SPC u y .") 'ycmd-goto)
+      (evil-define-key 'normal 'global (kbd "SPC u y i") 'ycmd-goto-include)
+      (evil-define-key 'normal 'global (kbd "SPC c") 'ycmd-goto-definition)
+      (evil-define-key 'normal 'global (kbd "SPC d") 'ycmd-goto-declaration)
+      (evil-define-key 'normal 'global (kbd "SPC u y p") 'ycmd-goto-implementation)
+      (evil-define-key 'normal 'global (kbd "SPC u y m") 'ycmd-goto-imprecise)
+      (evil-define-key 'normal 'global (kbd "SPC u y m") 'ycmd-goto-references)
+      (evil-define-key 'normal 'global (kbd "SPC u y m") 'ycmd-goto-type)
+      (evil-define-key 'normal 'global (kbd "SPC s") 'ycmd-toggle-force-semantic-completion)
+      (evil-define-key 'normal 'global (kbd "SPC u y ?") 'ycmd-show-documentation)
+      (evil-define-key 'normal 'global (kbd "SPC u y C") 'ycmd-clear-compilation-flag-cache)
+      (evil-define-key 'normal 'global (kbd "SPC u y O") 'ycmd-restart-semantic-server)
+      (evil-define-key 'normal 'global (kbd "SPC u y t") 'ycmd-get-type)
+      (evil-define-key 'normal 'global (kbd "SPC u y T") 'ycmd-get-parent)
+      (evil-define-key 'normal 'global (kbd "SPC u y f") 'ycmd-fixit)
+      (evil-define-key 'normal 'global (kbd "SPC u y r") 'ycmd-refactor-rename)
+      (evil-define-key 'normal 'global (kbd "SPC u y x") 'ycmd-completer)
     )
     )
 )

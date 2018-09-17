@@ -18,6 +18,7 @@
     ;;   (defun window-numbering-install-mode-line (&optional position)
     ;;     "Do nothing, the display is handled by the powerline."))
     (setq window-numbering-auto-assign-0-to-minibuffer nil)
+
     (after 'evil
         (evil-leader/set-key
         "0" 'select-window-0
@@ -31,7 +32,7 @@
         "8" 'select-window-8
         "9" 'select-window-9)
         (window-numbering-mode t)
-    )
+        )
 
     ;; "Return the number of the window."
     ;; (let* ((num (window-numbering-get-number))

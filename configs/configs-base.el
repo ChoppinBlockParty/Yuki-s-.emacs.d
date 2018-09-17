@@ -46,6 +46,19 @@
 ;; don't put intitial text in scratch buffer
 (setq initial-scratch-message nil)
 
+;;; https://stackoverflow.com/questions/18316665/how-to-improve-emacs-performance-when-view-large-file
+;;; Should improve large file performance
+(defun my-find-file-check-make-large-file-read-only-hook ()
+  "If a file is over a given size, make the buffer read only."
+  (when (> (buffer-size) (* 10 1024 1024))
+    (setq buffer-read-only t)
+    (linum-mode -1)
+    (font-lock-mode -1)
+    (buffer-disable-undo)
+    (fundamental-mode)))
+
+(add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
+
 ;'Woman' > 'man'.
 (defalias 'man 'woman)
 
@@ -55,7 +68,6 @@
   (declare (indent defun))
   `(eval-after-load ,feature
      '(progn ,@body)))
-
 
 ;; (use-package color-theme-approximate
 ;;   :ensure t
@@ -118,16 +130,25 @@
 ;; nevermind that's annoying
 (setq ring-bell-function 'ignore)
 
-;; The default of 16 is too low. Give me a 64-object mark ring.
-;; Across all files, make it 128.
+;;; The default of 16 is too low. Give me a 64-object mark ring.
+;;; Across all files, make it 128.
 (setq mark-ring-max 64)
 (setq global-mark-ring-max 128)
 
-;; Display the current function name in the modeline.
-(which-function-mode 0)
+;;; Display the current function name in the modeline.
+(which-function-mode 1)
 
-;; Show me the new saved file if the contents change on disk when editing.
+;;; Show me the new saved file if the contents change on disk when editing.
 (global-auto-revert-mode 1)
+
+(defun my-find-file-check-make-large-file-read-only-hook ()
+  "If a file is over a given size, make the buffer read only."
+  (when (> (buffer-size) (* 1024 1024))
+    (setq buffer-read-only t)
+    (buffer-disable-undo)
+    (fundamental-mode)))
+
+(add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
 
 ;; Repurposed from
 ;; <https://github.com/bling/dotemacs/blob/master/config/init-core.el>
@@ -226,5 +247,6 @@ This command only has an effect on graphical frames."
           recentf-max-saved-items 1000
           recentf-max-menu-items 500)
     (recentf-mode +1)))
+
 
 (provide 'configs-base)

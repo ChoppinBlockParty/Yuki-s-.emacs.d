@@ -4,21 +4,16 @@
 ;;; Eshell configuration
 
 ;;; Code:
-(after 'helm
 (use-package eshell
   :ensure t
+  :after (counsel)
   :config
   (progn
 
-    ; Remember lots of previous commands in shell-mode
-    (setq comint-input-ring-size 1000000)
-    (add-hook 'shell-mode-hook 'my-shell-mode-hook)
-    (defun my-shell-mode-hook ()
-      (setq comint-input-ring-file-name "~/.config/zsh/.zhistory")
-                                        ; Ignore timestamps in history file.  Assumes that zsh
-                                        ; EXTENDED_HISTORY option is in use.
-      (setq comint-input-ring-separator "\n: \\([0-9]+\\):\\([0-9]+\\);")
-      (comint-read-input-ring t))
+    ;; use helm to list eshell history
+    ;; (add-hook 'eshell-mode-hook
+    ;;         #'(lambda ()
+    ;;             (substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
 
     (defconst evil-collection-eshell-maps '(eshell-mode-map))
 
@@ -56,7 +51,7 @@
       "Set up `evil' bindings for `eshell'."
       ;; (define-key eshell-mode-map (kbd "C-r") 'helm-eshell-history)
       (evil-define-key 'normal 'eshell-mode-map
-        (kbd "C-r") 'helm-eshell-history
+        ;; (kbd "C-r") 'helm-eshell-history
         ;; motion
         "[" 'eshell-previous-input
         "]" 'eshell-next-input
@@ -73,7 +68,7 @@
         (kbd "<return>") 'eshell-send-input
         (kbd "C-c C-c") 'evil-collection-eshell-interrupt-process)
       (evil-define-key 'insert 'eshell-mode-map
-        (kbd "C-r") 'helm-eshell-history
+        ;; (kbd "C-r") 'helm-eshell-history
         ;; motion
         (kbd "C-k") 'eshell-previous-input
         (kbd "C-j") 'eshell-next-input
@@ -100,16 +95,80 @@
     )
   )
 
-(require 'comint)
-(setq comint-prompt-read-only t
-      comint-input-ignoredups t)
-;; Part of emacs
-(require 'ansi-color)
-(defun colorize-compilation-buffer ()
-  (toggle-read-only)
-  (ansi-color-apply-on-region (point-min) (point-max))
-  (toggle-read-only)
+(after 'counsel
+(after 'helm
+
+(defun my-shell ()
+  "Similar to `shell`, but allows to spawn new shells on successive invocations."
+  (interactive)
+  (let ((currentbuf (get-buffer-window (current-buffer)))
+        (newbuf     (generate-new-buffer-name "*shell*")))
+    (generate-new-buffer newbuf)
+    (set-window-dedicated-p currentbuf nil)
+    (set-window-buffer currentbuf newbuf)
+    (shell newbuf)
+    )
   )
+
+(require 'comint)
+(use-package xterm-color
+  :ensure t
+  )
+
+;;; Part of emacs
+;; (require 'ansi-color)
+
+;;; `shell` uses (pop-to-buffer buffer) instead of (switch-to-buffer buffer)
+;;; That fucks up windows when `shell` is called.
+;;; https://github.com/syl20bnr/spacemacs/issues/6820#issuecomment-239665146
+;; (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+;;; https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows
+(add-to-list 'display-buffer-alist
+             `(,(regexp-quote "*shell") display-buffer-same-window))
+
+(setq comint-prompt-read-only t
+      ;;; Remember lots of previous commands in shell-mode
+      comint-input-ring-size 1000000
+      comint-input-ignoredups t)
+;;; For ANSI colors
+;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+;;; For ANSI colors
+;; (defun colorize-compilation-buffer ()
+;;   (toggle-read-only)
+;;   (ansi-color-apply-on-region (point-min) (point-max))
+;;   (toggle-read-only)
+;;   )
+;; (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+(defun my-shell-mode-hook ()
+  "A hook to setup shell-mode."
+  (setq comint-output-filter-functions
+    (remove'ansi-color-process-output comint-output-filter-functions))
+  (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)
+  ;;; For ANSI colors
+  ;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+  ;;; Removes face inherited from minibuffer
+  (face-remap-set-base 'comint-highlight-prompt :inherit nil)
+  ;;; You can highlight some text based on regexp (useful to see "OK" or warnings):
+  ;; (add-hook 'shell-mode-hook (lambda () (highlight-regexp "\\[OK\\]" "hi-green-b")))
+  ;;; Make URLs clickable
+  (goto-address-mode)
+  ;;; Make file paths clickable
+  ;;; Every line representing a path to a file will be colorized and made clickable, so that you can jump to that file and that line, like in compilation-mode (specially useful when compiling a program or running tests):
+  (compilation-shell-minor-mode)
+
+  ;;; For some reasons must be in a hook
+  (setq comint-input-ring-file-name "~/.config/zsh/.zhistory")
+                                    ; Ignore timestamps in history file.  Assumes that zsh
+                                    ; EXTENDED_HISTORY option is in use.
+  (setq comint-input-ring-separator "\n: \\([0-9]+\\):\\([0-9]+\\);")
+
+  (comint-read-input-ring nil)
+  )
+(add-hook 'shell-mode-hook 'my-shell-mode-hook)
+
+;; Replaces RET behavior
 (defun my-comint-send-input-maybe ()
   "Only `comint-send-input' when point is after the latest prompt.
 Otherwise move to the end of the buffer."
@@ -127,28 +186,21 @@ Otherwise move to the end of the buffer."
   (define-key shell-mode-map [remap comint-send-input] 'my-comint-send-input-maybe)
   )
 
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-;; For ansi-term
-;; (ansi-color-for-comint-mode-on)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-(add-hook 'shell-mode-hook
-      (lambda ()
-        (face-remap-set-base 'comint-highlight-prompt :inherit nil)))
+;;; shell history.
+(define-key shell-mode-map (kbd "C-r") 'helm-comint-input-ring)
+;; (define-key shell-mode-map (kbd "C-r") 'counsel-shell-history)
 
-;; You can highlight some text based on regexp (useful to see "OK" or warnings):
-;; (add-hook 'shell-mode-hook (lambda () (highlight-regexp "\\[OK\\]" "hi-green-b")))
-;; Make URLs clickable
-(add-hook 'shell-mode-hook (lambda () (goto-address-mode )))
-;; Make file paths clickable
-;; Every line representing a path to a file will be colorized and made clickable, so that you can jump to that file and that line, like in compilation-mode (specially useful when compiling a program or running tests):
-(add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
+(defun my-comint-run-last-command(arg)
+  "Run last command in shell mode. ARG is number."
+  (interactive "*p")
+  (comint-previous-input arg)
+  (comint-send-input)
+  )
 
 (evil-define-key 'normal 'comint-mode-map
-  (kbd "C-p") #'comint-previous-prompt
-  (kbd "C-n") #'comint-next-prompt
-  (kbd "M-p") #'comint-previous-prompt
-  (kbd "M-n") #'comint-next-prompt
+  (kbd "C-p") #'my-comint-run-last-command
+  (kbd "4") #'comint-previous-prompt
+  (kbd "3") #'comint-next-prompt
   (kbd "C-k") #'comint-previous-input
   (kbd "C-j") #'comint-next-input
   (kbd "M-k") #'comint-previous-input
@@ -159,10 +211,11 @@ Otherwise move to the end of the buffer."
   (kbd "<down>") #'comint-previous-input)
 
 (evil-define-key 'insert 'comint-mode-map
-  (kbd "C-p") #'comint-previous-prompt
-  (kbd "C-n") #'comint-next-prompt
-  (kbd "M-p") #'comint-previous-prompt
-  (kbd "M-n") #'comint-next-prompt
+  (kbd "C-p") #'my-comint-run-last-command
+  (kbd "C-4") #'comint-previous-prompt
+  (kbd "C-3") #'comint-next-prompt
+  (kbd "M-4") #'comint-previous-prompt
+  (kbd "M-3") #'comint-next-prompt
   (kbd "C-k") #'comint-previous-input
   (kbd "C-j") #'comint-next-input
   (kbd "M-k") #'comint-previous-input
@@ -170,7 +223,7 @@ Otherwise move to the end of the buffer."
   (kbd "<up>") #'comint-previous-input
   (kbd "<down>") #'comint-next-input)
 
-)
+))
 
 (provide 'eshell-config)
 ;;; eshell-config.el ends here

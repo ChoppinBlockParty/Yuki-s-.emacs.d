@@ -1,25 +1,20 @@
-(use-package helm-files)
+;; (use-package helm-files)
 
-(after 'projectile
-(use-package helm-projectile
-  :ensure t)
+;; (after 'projectile
+;; (use-package helm-projectile
+;;   :ensure t
+;;   :config
+;;     (progn
+;;       ;; enable Helm version of Projectile with replacment commands
+;;       ;; (helm-projectile-on)
+;;       )
+;;   )
 
 (after 'evil
 (use-package helm
   :ensure t
   :config
   (progn
-
-    (use-package helm-config
-      :config
-      (progn))
-
-
-    (use-package helm-themes
-      :ensure t
-      :config
-      (progn))
-
     ;; helm-find-files: one command that handles all the files related commands (bind to C-x C-f).
     ;; helm-buffers-list: provides enhanced buffers listing.
     ;; helm-browse-project: handles project files and buffers; defaults to current directory; works with helm-find-files; recommended with helm-ls-git, helm-ls-hg and helm-ls-svn for a better handling of version control files. Each time a project under version control is visited it is added to helm-browse-project-history and can be visted with helm-projects-history.
@@ -37,7 +32,7 @@
     ;; helm-list-elisp-packages: enhanced browser for elisp package management.
 
     ;; helm-mode: turns on helm completions for most standard emacs completions. Helm provides even more optimized helm completions for some commands in helm-mode. Prefer these natively optimized versions over the ones in helm-mode.
-    (helm-mode t)
+    ;; (helm-mode t)
 
     (setq
       ; open helm buffer inside current window, not occupy whole other window
@@ -72,21 +67,8 @@
     (setq helm-display-function 'helm-default-display-buffer)
     (setq helm-adaptive-history-file "~/.emacs.d/.helm-adapative-history")
 
-    (global-set-key (kbd "M-x") 'helm-M-x)
-
-    ;; shell history.
-    (define-key shell-mode-map (kbd "C-r") 'helm-comint-input-ring)
-
-    ;; use helm to list eshell history
-    (add-hook 'eshell-mode-hook
-            #'(lambda ()
-                (substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
-
     (substitute-key-definition 'find-tag 'helm-etags-select global-map)
     (setq projectile-completion-system 'helm)
-
-    ;; enable Helm version of Projectile with replacment commands
-    (helm-projectile-on)
 
 ;; Helm like Unite
 ;;       ;; helm navigation on hjkl
@@ -273,21 +255,14 @@
     (define-key helm-map (kbd "M-h") 'helm-previous-source)
     (define-key helm-map (kbd "M-l") 'helm-next-source)
 
-    (define-key evil-normal-state-map (kbd "SPC u ?") 'helm-apropos)
-    (define-key evil-normal-state-map (kbd "SPC m m") 'helm-mini)
-    (define-key evil-normal-state-map (kbd "SPC m f") 'helm-find)
-    (define-key evil-normal-state-map (kbd "SPC m i") 'helm-semantic-or-imenu)
-    (define-key evil-normal-state-map (kbd "DEL") 'helm-do-ag-this-file)
-
     (use-package helm-ag
       :ensure t
-      :demand
       :config
       (progn
         )
      )
 
-    (evil-leader/set-key
+    ;; (evil-leader/set-key
        ;; "q" 'find-file
        ;; "w" 'helm-for-files
        ;; "l" 'helm-locate
@@ -300,8 +275,9 @@
        ;; "b" 'helm-buffers-list
        ;; "f" 'helm-projectile-find-file
        ;; "r" 'helm-recentf
-       "A" 'helm-projectile
-       "a" 'helm-projectile-ag)
+       ;; "A" 'helm-projectile
+       ;; "a" 'helm-projectile-ag
+       ;; )
         ;; (eval-after-load "helm-ag"
         ;;     (evil-leader/set-key
         ;;     "a" 'helm-projectile-ag))
@@ -327,8 +303,7 @@
         ;;     "2" 'split-window-below
         ;;     "3" 'split-window-right)
         ;; (global-evil-leader-mode))
-)
-)
-)
+    ;;)
+))
 
 (provide 'configs-helm)
