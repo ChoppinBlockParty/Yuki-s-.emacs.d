@@ -1,8 +1,18 @@
 ;;; highlight-config --- summary
-
 ;;; Commentary:
-
 ;;; Code:
+
+(use-package highlight-symbol
+  :config
+  (setq
+    highlight-symbol-on-naviagtion-p t
+    highlight-symbol-idle-delay 0
+    )
+  (global-set-key [f3] 'highlight-symbol)
+  (global-set-key [(ctrl f3)] 'highlight-symbol-remove-all)
+  (highlight-symbol-mode t)
+  )
+
 (use-package highlight-operators
   :ensure t
   :config

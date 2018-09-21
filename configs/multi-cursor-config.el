@@ -1,12 +1,11 @@
 
 (use-package evil-mc
-  :ensure t
-  :after (evil flyspell)
+  :after (flyspell)
   :init
   (defvar evil-mc-key-map
     (let ((map (make-sparse-keymap))
           (keys '(
-                   ("TAB" . my-evil-mc-make-all-cursors)
+                   ("TAB"   . my-evil-mc-make-all-cursors)
                    ("<tab>" . my-evil-mc-make-all-cursors)
                    ("[tab]" . my-evil-mc-make-all-cursors)
                   )))

@@ -31,21 +31,11 @@
     rlt
     ))
 
-(use-package flyspell
-  :ensure t
-  :demand
-  :config
-  (progn
-    (use-package flyspell-lazy
-      :ensure t
-      :demand
-      :config
-      (progn
-        (flyspell-lazy-mode 1)
-        (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
-      )
-    )
-  )
+(use-package flyspell)
+(use-package flyspell-lazy
+:config
+  (flyspell-lazy-mode 1)
+  (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
 )
 
 ;; better performance
@@ -158,18 +148,9 @@
     (add-hook hook 'flyspell-mode))
 
 
-(after 'evil
-    ;; you can also use "M-x ispell-word" or hotkey "M-$". It pop up a multiple choice
-    ;; @see http://frequal.com/Perspectives/EmacsTip03-FlyspellAutoCorrectWord.html
-    ; (global-set-key (kbd "C-c s") 'flyspell-auto-correct-word)
-    (define-key evil-normal-state-map (kbd "z c") 'flyspell-auto-correct-word)
-    ;(define-key evil-normal-state-map (kbd "SPC t") 'flyspell-auto-correct-word)
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "z c") 'flyspell-auto-correct-word)
 )
 
-
-;(add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
-;(add-hook 'latex-mode-hook (lambda () (flyspell-mode 1)))
-;(add-hook 'log-edit-mode-hook (lambda () (flyspell-mode -1)))
-;(add-hook 'change-log-mode-hook (lambda () (flyspell-mode -1)))
 
 (provide 'spell-check-config)
