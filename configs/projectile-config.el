@@ -1,26 +1,22 @@
 
 (use-package projectile
-  :ensure t
   :config
-  (progn
-    (projectile-global-mode t)
-    (setq
-      projectile-indexing-method 'alien
-      projectile-enable-caching t
-      projectile-cache-file (concat user-emacs-directory ".cache/projectile.cache")
-      projectile-known-projects-file (concat user-emacs-directory "projectile-bookmarks.eld")
-      )
+  (setq
     ;; automatically dired in projectile-switch-project
-    (setq projectile-switch-project-action 'projectile-dired)
-    (setq projectile-completion-system 'ivy)
-    (add-to-list 'projectile-globally-ignored-directories "~")
-    (setq projectile-globally-ignored-files '(
-      "/home/smikerov/Makefile"
+    projectile-switch-project-action 'projectile-dired
+    projectile-completion-system 'ivy
+    projectile-indexing-method 'alien
+    projectile-enable-caching t
+    projectile-cache-file "~/.cache/emacs/projectile-cache"
+    projectile-known-projects-file "~/.cache/emacs/projectile-bookmarks"
+    projectile-globally-ignored-files '(
       ".tags"
       "tags"
       ".tag"
       "tag"
-      ))
-    ))
+      )
+    )
+  (projectile-global-mode t)
+  )
 
 (provide 'projectile-config)
