@@ -1,4 +1,9 @@
+;;; easymotion-config --- Summary
 
+;;; Commentary:
+;;; Eshell configuration
+
+;;; Code:
 (use-package evil-easymotion
   :ensure t
   :config
@@ -18,4 +23,4 @@
     )
   )
 
-(provide 'ace-config)
+(provide 'easymotion-config)

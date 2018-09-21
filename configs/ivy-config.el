@@ -241,8 +241,6 @@
     )
 
 (use-package counsel-projectile
-  :ensure t
-  :after(counsel)
   :config
   (progn
     )

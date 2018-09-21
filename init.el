@@ -1,7 +1,5 @@
-;;; init.el -- Emacs startup script
-
+;;; init --- Emacs startup script
 ;;; Commentary:
-
 ;;; Code:
 
 ;;; Configure emacs garbage collection from 0.76MB to 20MB
@@ -10,16 +8,9 @@
 ;;; emacs gets lags during usage.
 (setq gc-cons-threshold 20000000)
 
-(add-to-list 'load-path
-             (concat user-emacs-directory
-                     (convert-standard-filename "configs")))
-(add-to-list 'load-path
-             (concat user-emacs-directory
-                     (convert-standard-filename "local/protobuf")))
-;; (add-to-list 'load-path
-;;              (concat user-emacs-directory
-;;                      (convert-standard-filename "local/telephone-line")))
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(add-to-list 'load-path (concat user-emacs-directory "configs"))
+(add-to-list 'load-path (concat user-emacs-directory "local/protobuf"))
+(add-to-list 'load-path (concat user-emacs-directory "local/evil"))
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
@@ -33,124 +24,39 @@
         (package-refresh-contents)
         (package-install 'use-package))
 (require 'use-package)
-(use-package all-the-icons :ensure t)
-(require 'configs-base)
-(require 'flx-config)
-(require 'smex-config)
-(require 'core-funcs)
+(setq use-package-always-ensure t)
+
+(require 'evil-config)
+
+(require 'base-config)
+(use-package all-the-icons)
+(use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
+(use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'window-numbering-config)
-;; (require 'cua-config)
-(require 'core-micro-state)
-;; (require 'config-color)
-(require 'highlight-config)
-(require 'projectile-config)
-(require 'config-cl-lib)
-(require 'configs-evil)
-(require 'minibuffer-config)
-(require 'configs-dired)
-(require 'auto-fill-mode-config)
-;; (require 'ag-config)
-(require 'configs-helm)
-(require 'multi-cursor-config)
-(require 'ivy-config)
-(require 'ace-config)
-(require 'config-easymotion)
+(require 'completion-config)
+(require 'shell-config)
 (require 'spell-check-config)
-;; (require 'latex-config)
-
-
-(require 'config-autocompletion)
-(require 'config-paren)
-
-(require 'eshell-config)
-
-(provide 'clojure-mode-config)
-(provide 'js2-mode-config)
-(require 'markdown-mode-config)
-
-(require 'show-paren-mode-config)
-
-(require 'visual-regexp-config)
-
-(require 'powerline-config)
 (require 'moe-theme-config)
+(require 'powerline-config)
+(require 'highlight-config)
+(require 'paren-config)
+(require 'easymotion-config)
+(require 'multi-cursor-config)
+(require 'projectile-config)
+(require 'neotree-config)
+;; (require 'dired-config)
+(require 'helm-config (concat user-emacs-directory "configs/helm-config.el"))
+(require 'ivy-config)
 (require 'rainbow-mode-config)
-(require 'config-rainbow-delimiters)
-;; (require 'tab-bar-mode-config)
-
-;; (require 'undo-tree-config)
 (require 'magit-config)
-
-;; (require 'config-cider)
-;; There is ycmd-jedi, do not this one
-;; (require 'jedi-config)
-(require 'vimrc-mode-config)
-(require 'docker-config)
-
-(use-package highlight-symbol
-  :ensure t
-  :config
-  (progn
-    (highlight-symbol-mode t)
-    (setq highlight-symbol-on-naviagtion-p t
-          highlight-symbol-idle-delay 0
-      )
-    (global-set-key [f3] 'highlight-symbol)
-    (global-set-key [(ctrl f3)] 'highlight-symbol-remove-all)
-    ))
-
- (defun my-formatting ()
-   ""
-   (interactive)
-   (cond
-     ((equal major-mode 'go-mode) (gofmt))
-     ((equal major-mode 'c++-mode) (clang-format-buffer))
-     (t nil))
-   )
-
-    (define-key evil-normal-state-map (kbd "SPC s") 'my-formatting)
-
-  (require 'protobuf-mode)
-  (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
-
-(use-package cmake-mode :ensure t)
-
-(use-package go-mode
-  :ensure t
-  :after (evil)
-  :config
-  (progn
-    (add-to-list `auto-mode-alist '("\\.go\\'" . go-mode))
-    ))
-
-(use-package clang-format :ensure t)
-
-;; (use-package multiple-cursors
-;;   :ensure t
-;;   :after(evil flyspell)
-;;   :config
-;;   (defun my-evil-mc-make-all-cursors ()
-;;     (interactive)
-;;     (if (evil-mc-has-cursors-p)
-;;         (evil-mc-undo-all-cursors)
-;;         (evil-mc-make-all-cursors)
-;;       )
-;;     )
-;;   (defvar evil-mc-key-map
-;;     (let ((map (make-sparse-keymap))
-;;           (keys '(("R" . my-evil-mc-make-all-cursors))))
-;;     (dolist (key-data keys)
-;;       (evil-define-key 'normal map (kbd (car key-data)) (cdr key-data))
-;;       (evil-define-key 'visual map (kbd (car key-data)) (cdr key-data)))
-;;     map))
-;;     (global-evil-mc-mode 1)
-;;   )
+(require 'file-modes-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver
 ;;; It is very fun, however consumes 100% cpu all the time, sad...
 ;; (re 'zone)
 ;; (zone-when-idle 120)
 
+;;; https://emacs.stackexchange.com/questions/9583/how-to-treat-underscore-as-part-of-the-word
 (modify-syntax-entry ?_ "w" (standard-syntax-table))
 (modify-syntax-entry ?- "w" (standard-syntax-table))
 (modify-syntax-entry ?_ "w" emacs-lisp-mode-syntax-table)
@@ -251,8 +157,6 @@
 (modify-syntax-entry ?- "w" rst-toc-mode-syntax-table)
 (modify-syntax-entry ?_ "w" epa-key-mode-syntax-table)
 (modify-syntax-entry ?- "w" epa-key-mode-syntax-table)
-(modify-syntax-entry ?_ "w" helm-ag-mode-syntax-table)
-(modify-syntax-entry ?- "w" helm-ag-mode-syntax-table)
 (modify-syntax-entry ?_ "w" log-edit-mode-syntax-table)
 (modify-syntax-entry ?- "w" log-edit-mode-syntax-table)
 (modify-syntax-entry ?_ "w" epa-info-mode-syntax-table)
@@ -265,8 +169,6 @@
 (modify-syntax-entry ?- "w" ycmd-view-mode-syntax-table)
 (modify-syntax-entry ?_ "w" url-parse-args-syntax-table)
 (modify-syntax-entry ?- "w" url-parse-args-syntax-table)
-(modify-syntax-entry ?_ "w" helm-grep-mode-syntax-table)
-(modify-syntax-entry ?- "w" helm-grep-mode-syntax-table)
 (modify-syntax-entry ?_ "w" Info-edit-mode-syntax-table)
 (modify-syntax-entry ?- "w" Info-edit-mode-syntax-table)
 (modify-syntax-entry ?_ "w" ivy-occur-mode-syntax-table)
@@ -281,14 +183,10 @@
 (modify-syntax-entry ?- "w" url-cookie-mode-syntax-table)
 (modify-syntax-entry ?_ "w" magit-refs-mode-syntax-table)
 (modify-syntax-entry ?- "w" magit-refs-mode-syntax-table)
-(modify-syntax-entry ?_ "w" helm-major-mode-syntax-table)
-(modify-syntax-entry ?- "w" helm-major-mode-syntax-table)
 (modify-syntax-entry ?_ "w" magit-diff-mode-syntax-table)
 (modify-syntax-entry ?- "w" magit-diff-mode-syntax-table)
 (modify-syntax-entry ?_ "w" magit-stash-mode-syntax-table)
 (modify-syntax-entry ?- "w" magit-stash-mode-syntax-table)
-(modify-syntax-entry ?_ "w" helm-moccur-mode-syntax-table)
-(modify-syntax-entry ?- "w" helm-moccur-mode-syntax-table)
 (modify-syntax-entry ?_ "w" Buffer-menu-mode-syntax-table)
 (modify-syntax-entry ?- "w" Buffer-menu-mode-syntax-table)
 (modify-syntax-entry ?_ "w" magit-popup-mode-syntax-table)
@@ -353,16 +251,6 @@
 (modify-syntax-entry ?- "w" use-package-statistics-mode-syntax-table)
 (modify-syntax-entry ?_ "w" git-commit-elisp-text-mode-syntax-table)
 (modify-syntax-entry ?- "w" git-commit-elisp-text-mode-syntax-table)
-;;   ;;; After you do that, ciw works as you want it to, such that it will select all of
-;;   ;;; abc_def_ghi rather than just def.
-;;   ;;; Doing it this way, however, may be overkill, especially if you only want the _
-;;   ;;; to count as part of the word for the text object. Instead, you can advise
-;;   ;;; evil-inner-word as follows:
-;;   ;;; https://emacs.stackexchange.com/questions/9583/how-to-treat-underscore-as-part-of-the-word
-;;   ;; (print table)
-;;   ;; (modify-syntax-entry ?_ "w" emacs-lisp-mode-syntax-table)
-;;   (modify-syntax-entry ?- "w" tt)
-;; )
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -380,6 +268,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(avy-lead-face ((t (:background nil :foreground "#ff2929" :weight bold))))
  '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
  '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
  '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))

@@ -27,25 +27,25 @@
      :group 'powerline)
   :config
   (progn
-    (use-package nyan-mode
-      :ensure t
-      :config
-      (setq
-        ;;; t to have it animated, nil for a static version.
-        nyan-animate-nyancat t
-        ;;; number of seconds between animation frames. Accepts fractional values.
-        nyan-animation-frame-interval 0.5
-        ;;; length of nyan-mode bar, in 8px-wide units.
-        nyan-bar-length 32
-        ;;; choose a cat face for the console mode.
-        ;; nyan-cat-face-number
-        ;;; to make the trail wavy; works even better when animation is enabled!
-        ;; nyan-wavy-trail t
-        ;;; minimum width of the window, below which Nyan Mode will be disabled. This is important because Nyan Mode will otherwise push out more relevant information from the mode-line.
-        ;; nyan-minimum-window-width
-        )
-      (nyan-start-animation)
-      )
+    ;; (use-package nyan-mode
+    ;;   :ensure t
+    ;;   :config
+    ;;   (setq
+    ;;     ;;; t to have it animated, nil for a static version.
+    ;;     nyan-animate-nyancat t
+    ;;     ;;; number of seconds between animation frames. Accepts fractional values.
+    ;;     nyan-animation-frame-interval 0.5
+    ;;     ;;; length of nyan-mode bar, in 8px-wide units.
+    ;;     nyan-bar-length 32
+    ;;     ;;; choose a cat face for the console mode.
+    ;;     ;; nyan-cat-face-number
+    ;;     ;;; to make the trail wavy; works even better when animation is enabled!
+    ;;     ;; nyan-wavy-trail t
+    ;;     ;;; minimum width of the window, below which Nyan Mode will be disabled. This is important because Nyan Mode will otherwise push out more relevant information from the mode-line.
+    ;;     ;; nyan-minimum-window-width
+    ;;     )
+    ;;   (nyan-start-animation)
+    ;;   )
 
     ;;; (defcustom powerline-default-separator 'wave
     ;;; "The separator to use for the default theme."
@@ -164,7 +164,7 @@
                         (powerline-raw "%6p" face0 'r)
                         (funcall separator-left face0 black-face)
                         ;; (powerline-hud face2 face1)
-                        (powerline-raw (list (nyan-create)) black-face 'l)
+                        ;; (powerline-raw (list (nyan-create)) black-face 'l)
                         (when (and (boundp 'which-func-mode) which-func-mode)
                           (powerline-raw which-func-format face0 'l))
                         (powerline-narrow face0 'l)

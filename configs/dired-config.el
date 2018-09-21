@@ -1,34 +1,20 @@
+;;; dired-config --- Genuinely dire
+;;; Commentary:
+;;; Code:
+
+;;; When you choose a directory to visit, it is normally visited in a new buffer – the
+;;; Dired buffer you chose it in is not deleted.
+;;; Disable this behavior by disabling `dired-find-alternate-file`.
 (put 'dired-find-alternate-file 'disabled nil)
 
-(use-package saveplace
-  :config
-  (progn
-    (setq save-place-file (concat user-emacs-directory ".cache/places"))
-    (setq-default save-place t)))
-
-(use-package savehist
-  :config
-    (progn
-        (setq savehist-file (concat user-emacs-directory ".cache/savehist")
-            savehist-additional-variables '(search ring regexp-search-ring)
-            savehist-autosave-interval 60)
-        (savehist-mode t)))
-
-(use-package recentf
-  :config
-  (progn
-    (setq recentf-save-file (concat user-emacs-directory ".cache/recentf")
-          recentf-max-saved-items 1000
-          recentf-max-menu-items 500)
-    (recentf-mode +1)))
-
-(use-package dired-x
-  :init
-  (progn
-    (defun my-load-dired-x ()
-      "Load dired-x. For use on dired-load-hook"
-        (load "dired-x"))
-    (add-hook 'dired-load-hook 'my-load-dired-x)))
+;; (use-package dired-x
+;;   :ensure nil
+;;   :init
+;;   (add-hook 'dired-load-hook (lambda() (load "dired-x")))
+;;   )
+;; (use-package dired-subtree
+;;   :config
+;;   )
 
 (defun my-configure-dired ()
   "Setup dired and dired-x. For use with dired-mode-hook."
@@ -120,7 +106,7 @@
   )
 
 
-(after 'evil
+(with-eval-after-load 'evil
   ;;
   ;; These are plain ol' dired bindings, kept here for reference and future
   ;; modification.
@@ -259,7 +245,7 @@
   ;; Replaces original dired binding (above).
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ; (define-key evil-normal-state-map "`" 'direx:jump-to-directory)
-  (define-key evil-normal-state-map "`" 'dired-jump)
+  ;; (define-key evil-normal-state-map "`" 'dired-jump)
 
   (evil-define-key 'normal dired-mode-map (kbd "C-j") 'dired-next-subdir)
   (evil-define-key 'normal dired-mode-map (kbd "C-k") 'dired-prev-subdir)
@@ -287,6 +273,7 @@
   (evil-define-key 'normal dired-mode-map (kbd "TAB") 'dired-hide-subdir)
   (evil-define-key 'normal dired-mode-map (kbd "<backspace>") 'my-dired-remove-from-buffer)
   (evil-define-key 'normal dired-mode-map "f" 'dired-find-file)
-)
+  )
 
-(provide 'configs-dired)
+(provide 'dired-config)
+;;; dired-config.el ends here
