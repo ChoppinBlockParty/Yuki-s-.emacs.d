@@ -14,174 +14,6 @@
   ;;;   use `evil-search-forward/backward`
   (evil-select-search-module 'evil-search-module 'evil-search)
 
-;;; In order to work properly, we need to load evil-leader-mode
-;;; before we load evil-mode.
-(use-package evil-leader
-  :config
-  (evil-leader/set-leader "<SPC>")
-  (global-evil-leader-mode t)
-  )
-
-  ;; TODO: Highlight in all windows
-
-  (defun get-hl-buffers()
-    (let ((bufs (list)) buf)
-      (dolist (win (window-list nil -1 nil))
-        (setq buf (window-buffer win))
-        (unless (memq buf bufs)
-          (setq bufs (append bufs (list buf))))
-        )
-      bufs))
-
-(defun evil-ex-hl-update-highlights ()
-  "Update the overlays of all active highlights."
-  (dolist (hl (mapcar #'cdr evil-ex-active-highlights-alist))
-    (let* ((old-ovs (evil-ex-hl-overlays hl))
-           new-ovs
-           (pattern (evil-ex-hl-pattern hl))
-           (case-fold-search (evil-ex-pattern-ignore-case pattern))
-           (case-replace case-fold-search)
-           (face (evil-ex-hl-face hl))
-           (match-hook (evil-ex-hl-match-hook hl))
-           result)
-      (if pattern
-          ;; collect all visible ranges
-          (let (ranges sranges)
-            (dolist (win (if (eq evil-ex-interactive-search-highlight
-                                 'all-windows)
-                             (get-buffer-window-list (current-buffer) nil t)
-                           (list (evil-ex-hl-window hl))))
-              (let ((beg (max (window-start win)
-                              (or (evil-ex-hl-min hl) (point-min))))
-                    (end (min (window-end win t)
-                              (or (evil-ex-hl-max hl) (point-max)))))
-                (when (< beg end)
-                  (push (cons beg end) ranges))))
-            (setq ranges
-                  (sort ranges #'(lambda (r1 r2) (< (car r1) (car r2)))))
-            (while ranges
-              (let ((r1 (pop ranges))
-                    (r2 (pop ranges)))
-                (cond
-                 ;; last range
-                 ((null r2)
-                  (push r1 sranges))
-                 ;; ranges overlap, union
-                 ((>= (cdr r1) (car r2))
-                  (push (cons (car r1)
-                              (max (cdr r1) (cdr r2)))
-                        ranges))
-                 ;; ranges distinct
-                 (t
-                  (push r1 sranges)
-                  (push r2 ranges)))))
-
-            ;; run through all ranges
-            (condition-case lossage
-                (save-match-data
-                  (dolist (r sranges)
-                    (let ((beg (car r))
-                          (end (cdr r)))
-                      (save-excursion
-                        (goto-char beg)
-                        ;; set the overlays for the current highlight,
-                        ;; reusing old overlays (if possible)
-                        (while (and (not (eobp))
-                                    (evil-ex-search-find-next-pattern pattern)
-                                    (<= (match-end 0) end)
-                                    (not (and (= (match-end 0) end)
-                                              (string= (evil-ex-pattern-regex pattern)
-                                                       "^"))))
-                          (let ((ov (or (pop old-ovs) (make-overlay 0 0))))
-                            (move-overlay ov (match-beginning 0) (match-end 0))
-                            (overlay-put ov 'face face)
-                            (overlay-put ov 'evil-ex-hl (evil-ex-hl-name hl))
-                            (overlay-put ov 'priority 1000)
-                            (push ov new-ovs)
-                            (when match-hook (funcall match-hook hl ov)))
-                          (cond
-                           ((and (not (evil-ex-pattern-whole-line pattern))
-                                 (not (string-match-p "\n" (buffer-substring-no-properties
-                                                            (match-beginning 0)
-                                                            (match-end 0)))))
-                            (forward-line))
-                           ((= (match-beginning 0) (match-end 0))
-                            (forward-char))
-                           (t (goto-char (match-end 0))))))))
-                  (mapc #'delete-overlay old-ovs)
-                  (evil-ex-hl-set-overlays hl new-ovs)
-                  (if (or (null pattern) new-ovs)
-                      (setq result t)
-                    ;; Maybe the match could just not be found somewhere else?
-                    (save-excursion
-                      (goto-char (or (evil-ex-hl-min hl) (point-min)))
-                      (if (and (evil-ex-search-find-next-pattern pattern)
-                               (< (match-end 0) (or (evil-ex-hl-max hl)
-                                                    (point-max))))
-                          (setq result (format "Match in line %d"
-                                               (line-number-at-pos
-                                                (match-beginning 0))))
-                        (setq result "No match")))))
-
-              (invalid-regexp
-               (setq result (cadr lossage)))
-
-              (search-failed
-               (setq result (nth 2 lossage)))
-
-              (error
-               (setq result (format "%s" (cadr lossage))))
-
-              (user-error
-               (setq result (format "%s" (cadr lossage))))))
-        ;; no pattern, remove all highlights
-        (mapc #'delete-overlay old-ovs)
-        (evil-ex-hl-set-overlays hl new-ovs))
-      (when (evil-ex-hl-update-hook hl)
-        (funcall (evil-ex-hl-update-hook hl) hl result)))))
-
-(defun evil-ex-search-activate-highlight (pattern)
-  "Activate highlighting of the search pattern set to PATTERN.
-This function does nothing if `evil-ex-search-interactive' or
-`evil-ex-search-highlight-all' is nil. "
-  (when (and evil-ex-search-interactive evil-ex-search-highlight-all)
-    (dolist (buf (get-hl-buffers))
-      (with-current-buffer buf
-        (unless (evil-ex-hl-active-p 'evil-ex-search)
-          (evil-ex-make-hl 'evil-ex-search :win nil))
-        (when pattern (evil-ex-hl-change 'evil-ex-search pattern))
-       )
-      )))
-
-(defun evil-ex-hl-idle-update ()
-  "Triggers the timer to update the highlights in the current buffer."
-  (when (and evil-ex-interactive-search-highlight
-             evil-ex-active-highlights-alist)
-    (evil-ex-hl-do-update-highlight (current-buffer))
-    ))
-
-(defun evil-ex-hl-change (name pattern)
-  "Set the regular expression of highlight NAME to PATTERN."
-  (let ((hl (cdr-safe (assoc name evil-ex-active-highlights-alist))))
-    (when hl
-      (evil-ex-hl-set-pattern hl (if (zerop (length pattern)) nil pattern))
-      (evil-ex-hl-idle-update)
-      )
-    )
-  )
-
-;; (defun my-evil-ex-hl-do-update-highlight (beg end &optional buffer)
-;;   "Timer function for updating the highlights."
-;;   (when (buffer-live-p buffer)
-;;     (with-current-buffer buffer
-;;       (my-evil-ex-hl-update-highlights beg end)))
-;;   (setq evil-ex-hl-update-timer nil))
-
-;; (defun evil-ex-hl-update-highlights-scroll (win beg)
-;;   "Update highlights after scrolling in some window."
-;;   (with-current-buffer (window-buffer win)
-;;     (my-evil-ex-hl-idle-update)))
-
   (setq
     evil-toggle-key "C-z"
     evil-echo-state nil
@@ -353,8 +185,8 @@ This function does nothing if `evil-ex-search-interactive' or
         (end-of-line)
         (newline-and-indent)))
 
-  (evil-define-key 'normal my-intercept-mode-map (kbd "\\") 'evil-window-vsplit)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "-") 'evil-window-split)
+  (evil-define-key 'motion my-intercept-mode-map (kbd "\\") 'evil-window-vsplit)
+  (evil-define-key 'motion my-intercept-mode-map (kbd "-") 'evil-window-split)
 
   (define-key global-map (kbd "RET") 'newline-and-indent)
   (define-key evil-normal-state-map (kbd "RET") 'newline-and-indent)
@@ -365,32 +197,32 @@ This function does nothing if `evil-ex-search-interactive' or
 
   (define-key evil-normal-state-map (kbd "C-u")   'universal-argument)
 
-  (evil-leader/set-key "h" 'evil-window-left)
-  (evil-leader/set-key "j" 'evil-window-down)
-  (evil-leader/set-key "k" 'evil-window-up)
-  (evil-leader/set-key "l" 'evil-window-right)
+  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC h") 'evil-window-left)
+  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC j") 'evil-window-down)
+  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC k") 'evil-window-up)
+  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC l") 'evil-window-right)
 
   (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
   (define-key evil-normal-state-map "q" 'evil-window-delete)
   (with-eval-after-load 'with-editor
     (evil-define-key 'normal with-editor-mode-map "q" 'with-editor-finish))
 
-  (defun capslock-digit-argument-fn (digit)
+  (defun get-digit-function (digit)
     `(lambda (arg)
        (interactive "P")
        (setq last-command-event (+ ,digit ?0))
        (digit-argument arg)))
 
-  (define-key evil-motion-state-map "!" (capslock-digit-argument-fn 1))
-  (define-key evil-normal-state-map "@" (capslock-digit-argument-fn 2))
-  (define-key evil-motion-state-map "#" (capslock-digit-argument-fn 3))
-  (define-key evil-motion-state-map "$" (capslock-digit-argument-fn 4))
-  (define-key evil-motion-state-map "%" (capslock-digit-argument-fn 5))
-  (define-key evil-motion-state-map "^" (capslock-digit-argument-fn 6))
-  (define-key evil-normal-state-map "&" (capslock-digit-argument-fn 7))
-  (define-key evil-motion-state-map "*" (capslock-digit-argument-fn 8))
-  (define-key evil-motion-state-map "(" (capslock-digit-argument-fn 9))
-  (define-key evil-motion-state-map ")" (capslock-digit-argument-fn 0))
+  (define-key evil-motion-state-map "!" (get-digit-function 1))
+  (define-key evil-normal-state-map "@" (get-digit-function 2))
+  (define-key evil-motion-state-map "#" (get-digit-function 3))
+  (define-key evil-motion-state-map "$" (get-digit-function 4))
+  (define-key evil-motion-state-map "%" (get-digit-function 5))
+  (define-key evil-motion-state-map "^" (get-digit-function 6))
+  (define-key evil-normal-state-map "&" (get-digit-function 7))
+  (define-key evil-motion-state-map "*" (get-digit-function 8))
+  (define-key evil-motion-state-map "(" (get-digit-function 9))
+  (define-key evil-motion-state-map ")" (get-digit-function 0))
 
   (define-key evil-motion-state-map (kbd "0") 'evil-beginning-of-line)
   (define-key evil-normal-state-map "2" 'evil-record-macro)

@@ -1,10 +1,7 @@
 ;;; shell-config --- Configures eshell and shell modes
-
 ;;; Commentary:
-
 ;;; Code:
 (use-package eshell
-  :ensure t
   :after (counsel)
   :config
   ;; use helm to list eshell history
@@ -115,12 +112,11 @@
 ;;; https://github.com/syl20bnr/spacemacs/issues/6820#issuecomment-239665146
 ;; (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 ;;; https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows
-(add-to-list 'display-buffer-alist
-             `(,(regexp-quote "*shell") display-buffer-same-window))
+(add-to-list 'display-buffer-alist `(,(regexp-quote "*shell") display-buffer-same-window))
 
 (setq comint-prompt-read-only t
       ;;; Remember lots of previous commands in shell-mode
-      comint-input-ring-size 1000000
+      comint-input-ring-size 100000
       comint-input-ignoredups t)
 ;;; For ANSI colors
 ;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)

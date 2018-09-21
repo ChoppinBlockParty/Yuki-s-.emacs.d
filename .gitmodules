@@ -1,0 +1,3 @@
+[submodule "evil"]
+	path = local/evil
+	url = git@github.com:ChoppinBlockParty/evil.git

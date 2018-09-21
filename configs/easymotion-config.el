@@ -1,8 +1,5 @@
 ;;; easymotion-config --- Summary
-
 ;;; Commentary:
-;;; Eshell configuration
-
 ;;; Code:
 (use-package evil-easymotion
   :ensure t
@@ -24,3 +21,4 @@
   )
 
 (provide 'easymotion-config)
+;;; easymotion-config.el ends here
