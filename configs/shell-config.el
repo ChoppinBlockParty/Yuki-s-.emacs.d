@@ -163,13 +163,21 @@
 ;; Replaces RET behavior
 (defun my-comint-send-input-maybe ()
   "Only `comint-send-input' when point is after the latest prompt.
-Otherwise move to the end of the buffer."
+Otherwise move to the end of the buffer.
+TODO: Fix if current position is not prompt and does not have a previsou prompt"
   (interactive)
-  (let ((proc (get-buffer-process (current-buffer))))
+  (let ((proc (get-buffer-process (current-buffer))) (cur (line-number-at-pos)))
     (if (and proc (>= (point) (marker-position (process-mark proc))))
         (comint-send-input)
-        ;; (comint-copy-old-input)
-        (goto-char (point-max))
+        (comint-previous-prompt 1)
+        (if (= cur (line-number-at-pos))
+            (comint-copy-old-input)
+            (comint-next-prompt 1)
+            (if (= cur (line-number-at-pos))
+                (comint-copy-old-input)
+                (goto-char (point-max))
+                )
+            )
         )
     )
   )

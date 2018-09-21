@@ -10,7 +10,6 @@
 
 (add-to-list 'load-path (concat user-emacs-directory "configs"))
 (add-to-list 'load-path (concat user-emacs-directory "local/protobuf"))
-(add-to-list 'load-path (concat user-emacs-directory "local/evil"))
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
