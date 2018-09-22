@@ -14,6 +14,15 @@
         (evil-define-key 'visual map (kbd (car key-data)) (cdr key-data)))
       map))
   :config
+    (setq evil-mc-mode-line
+      `(:eval
+        (let ((mode-line-text-prefix "✐"))
+          (if (> (evil-mc-get-cursor-count) 1)
+              (evil-mc-active-mode-line mode-line-text-prefix)
+            (when evil-mc-one-cursor-show-mode-line-text
+              mode-line-text-prefix))))
+      )
+
   (defun evil--mc-make-cursor-at-col (_startcol endcol orig-line)
     (move-to-column endcol)
     (unless (= (line-number-at-pos) orig-line)

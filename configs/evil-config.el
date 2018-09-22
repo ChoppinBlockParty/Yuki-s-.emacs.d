@@ -69,7 +69,9 @@
     evil-shift-width 2
     ;;; If nil then * and # search for words otherwise for symbols.
     evil-symbol-word-search t
-   )
+    )
+
+  (setq undo-tree-mode-lighter nil)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Global

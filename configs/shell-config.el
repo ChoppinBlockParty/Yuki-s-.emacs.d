@@ -114,10 +114,12 @@
 ;;; https://stackoverflow.com/questions/40301732/m-x-shell-open-shell-in-other-windows
 (add-to-list 'display-buffer-alist `(,(regexp-quote "*shell") display-buffer-same-window))
 
-(setq comint-prompt-read-only t
-      ;;; Remember lots of previous commands in shell-mode
-      comint-input-ring-size 100000
-      comint-input-ignoredups t)
+(setq
+  comint-prompt-read-only t
+  ;;; Remember lots of previous commands in shell-mode
+  comint-input-ring-size 100000
+  comint-input-ignoredups t
+  )
 ;;; For ANSI colors
 ;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
@@ -204,11 +206,7 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
       (setq list (cdr list))
       )
     (if new
-        (progn
-          (switch-to-buffer new t t)
-          (my-comint-run-last-command arg)
-          (switch-to-buffer cur t t)
-          )
+        (with-current-buffer new (my-comint-run-last-command arg))
         (my-shell)
         )
     )

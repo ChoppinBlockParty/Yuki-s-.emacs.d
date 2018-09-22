@@ -18,6 +18,11 @@
     counsel-ag-base-command "ag --skip-vcs-ignores --ignore node_modules --ignore .git --ignore .build --ignore archive-contents --nocolor --nogroup %s"
     )
 
+  (modify-syntax-entry ?_ "w" ivy-occur-mode-syntax-table)
+  (modify-syntax-entry ?- "w" ivy-occur-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" ivy-occur-grep-mode-syntax-table)
+  (modify-syntax-entry ?- "w" ivy-occur-grep-mode-syntax-table)
+
   (defun my-ivy-setup-minibuffer ()
     ""
     (let (map)

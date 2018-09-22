@@ -2,7 +2,8 @@
 (use-package projectile
   :config
   (setq
-    ;; automatically dired in projectile-switch-project
+    projectile-mode-line nil
+   ;; automatically dired in projectile-switch-project
     projectile-switch-project-action 'projectile-dired
     projectile-completion-system 'ivy
     projectile-indexing-method 'alien
