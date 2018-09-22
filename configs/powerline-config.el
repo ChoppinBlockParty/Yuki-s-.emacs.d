@@ -1,6 +1,23 @@
-;;;
+;;; powerline-config --- Power mode line
+;;; Commentary:
+;;; Code:
+(use-package which-func
+  :ensure nil
+  :config
+  (defconst my-which-func-current
+    '(:eval
+      (let ((s (or (gethash (selected-window) which-func-table) which-func-unknown)))
+        (replace-regexp-in-string "%" "%%" (substring s 0 (min (length s) 30)))
+        )
+      )
+    )
+  (setq
+     which-func-unknown "☢"
+     which-func-format '((:propertize my-which-func-current))
+    )
+  (which-function-mode 1)
+  )
 
-;;; Code
 (use-package powerline
   :after (all-the-icons)
   :init
@@ -39,25 +56,6 @@
   ;;   (nyan-start-animation)
   ;;   )
 
-  ;;; (defcustom powerline-default-separator 'wave
-  ;;; "The separator to use for the default theme."
-  ;;; :group 'powerline
-  ;;; :type '(choice (const alternate)
-  ;;;                 (const arrow)
-  ;;;                 (const arrow-fade)
-  ;;;                 (const bar)
-  ;;;                 (const box)
-  ;;;                 (const brace)
-  ;;;                 (const butt)
-  ;;;                 (const chamfer)
-  ;;;                 (const contour)
-  ;;;                 (const curve)
-  ;;;                 (const rounded)
-  ;;;                 (const roundstub)
-  ;;;                 (const slant)
-  ;;;                 (const wave)
-  ;;;                 (const zigzag)
-  ;;;                 (const nil)))
   (setq powerline-default-separator 'contour
         powerline-default-separator-dir '(left . right)
         ;; powerline-height 10
@@ -68,8 +66,6 @@
         )
 
   (setq eldoc-minor-mode-string nil)
-  (setq which-func-unknown "☢")
-  (which-function-mode 1)
 
   (defun custom-modeline-modified ()
     "An `all-the-icons' segment depicting the current buffers state"
@@ -89,14 +85,11 @@
       )
     )
 
-  (defun my-mode-line-evil-state ()
+  (defun my-mode-line-filepath ()
   "Displays *my* version of displaying the evil state."
-    (case evil-state
-      ('normal "Ⓝ")
-      ('insert "Ⓘ")
-      ('visual "Ⓥ")
-      ('motion "Ⓜ")
-      (t       "Ⓔ")))
+    (let ((val buffer-file-truename))
+      (if val val "")
+      ))
 
   (defun custom-modeline-mode-icon ()
     "An `all-the-icons' segment indicating the current buffer's mode with an icon"
@@ -117,7 +110,7 @@
                   (`finished (if flycheck-current-errors
                                  (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
                                                 (+ (or .warning 0) (or .error 0)))))
-                                   (format "⚡ %s" count ))
+                                   (format "⚡ %s" count))
                                 "✔"))
                   (`running     "⟲")
                   (`no-checker  "☣")
@@ -156,41 +149,30 @@
             (intern (format "powerline-%s-%s"
                             powerline-default-separator
                             (cdr powerline-default-separator-dir))))
-           (lhs (list ;; (powerline-raw "%*" face0 'l)
-                      (powerline-raw (list (custom-modeline-modified)) face0)
-                      ;; (powerline-raw (list (my-mode-line-evil-state)) face0)
-                      (powerline-buffer-id face0 'l)
-                      (powerline-raw "%4l" face0 'r)
+           (lhs (list (powerline-raw (list (custom-modeline-modified)) face0)
+                      (powerline-buffer-id face0)
+                      (powerline-raw "%4l" face0)
                       (powerline-raw ":" face0)
-                      (powerline-raw "%3c" face0 'r)
-                      (powerline-raw "%6p" face0 'r)
+                      (powerline-raw "%3c" face0)
+                      (powerline-raw "%p" face0 'l)
                       (funcall separator-left face0 face1)
-                      ;; (powerline-hud face2 face1)
-                      ;; (powerline-raw (list (nyan-create)) black-face 'l)
-                      (powerline-raw which-func-format face1 'l)
+                      (powerline-raw which-func-format face1)
                       (powerline-narrow face0 'l)
                       (funcall separator-right face1 face2)
-                      ;; (powerline-major-mode face1 'l)
-                      (powerline-raw (list (custom-modeline-mode-icon)) face2)
+                      (powerline-raw (custom-modeline-mode-icon) face2)
                       (funcall separator-left face2 face1)
                       (custom-modeline-flycheck-status face1)
                       (funcall separator-right face1 face2)
-                      (powerline-minor-modes face2 'l)
-                      ;; (powerline-narrow face1)
+                      (powerline-minor-modes face2)
                       (funcall separator-left face2 face1)
-                      ;; (powerline-vc face1 'r)
-                      ))
-           (rhs (list
-                 ;; (powerline-raw global-mode-string face2 'r)
+                      (powerline-raw (my-mode-line-filepath) face1)
                       )))
            (concat (powerline-render lhs)
-                   (powerline-fill face1 (powerline-width rhs))
-                   (powerline-render rhs)))))))
+                   (powerline-fill face1 0)
+                   ))))))
 
-
-  ;; (powerline-moe-theme)
-  ;; (powerline-vim-theme)
   (powerline-my-theme)
   )
 
 (provide 'powerline-config)
+;;; powerline-config.el ends here

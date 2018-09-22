@@ -1,7 +1,6 @@
 (use-package counsel
   :after (flx)
   :config
-  (ivy-mode t)
   (setq
     ivy-use-virtual-buffers t
     enable-recursive-minibuffers t
@@ -17,6 +16,9 @@
     ivy-initial-inputs-alist nil
     counsel-ag-base-command "ag --skip-vcs-ignores --ignore node_modules --ignore .git --ignore .build --ignore archive-contents --nocolor --nogroup %s"
     )
+
+  (let ((minor (assq 'ivy-mode minor-mode-alist)))
+   (when minor (setcdr minor (list ""))))
 
   (modify-syntax-entry ?_ "w" ivy-occur-mode-syntax-table)
   (modify-syntax-entry ?- "w" ivy-occur-mode-syntax-table)
@@ -130,8 +132,9 @@
       "q" 'quit-window)
     )
 
-   (evil-collection-ivy-setup)
+  (evil-collection-ivy-setup)
 
+  (ivy-mode t)
   )
 
 (use-package ivy-rich

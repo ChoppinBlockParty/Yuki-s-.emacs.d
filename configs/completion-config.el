@@ -17,6 +17,7 @@
 
 
   (setq
+    company-lighter-base ""
     company-idle-delay 0.0
     company-minimum-prefix-length 1
     company-auto-complete nil
@@ -62,6 +63,7 @@
 (use-package ycmd
   :config
   (setq
+    ycmd-mode-line-prefix ""
     ;;; ffs, everything is so complicated,..., this '-u' flag
     ;;; https://github.com/abingham/emacs-ycmd/issues/429
     ycmd-server-command `("python3" "-u" ,(file-truename "~/Data/Sources/ycmd/ycmd"))
