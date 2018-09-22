@@ -1,5 +1,5 @@
-
 (use-package projectile
+  :after (counsel)
   :config
   (setq
     projectile-mode-line nil

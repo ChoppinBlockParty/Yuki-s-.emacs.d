@@ -32,7 +32,7 @@
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'window-numbering-config)
-;; (require 'completion-config)
+(require 'completion-config)
 (require 'shell-config)
 (require 'spell-check-config)
 (require 'moe-theme-config)
@@ -45,8 +45,8 @@
 (require 'flycheck-config)
 (require 'neotree-config)
 ;; ;; (require 'dired-config)
-;; (require 'helm-config (concat user-emacs-directory "configs/helm-config.el"))
-;; (require 'ivy-config)
+(require 'helm-config (concat user-emacs-directory "configs/helm-config.el"))
+(require 'ivy-config)
 (require 'rainbow-mode-config)
 (require 'magit-config)
 (require 'file-modes-config)
