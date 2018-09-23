@@ -56,6 +56,32 @@
       (evil-exit-visual-state)
       (evil-mc-make-cursors-for-all)
       (evil-mc-print-cursors-info "Created")))
+
+  (dolist (hook
+    '(git-rebase-mode-hook
+      magit-mode-hook
+      magit-cherry-mode-hook
+      magit-diff-mode-hook
+      magit-log-mode-hook
+      magit-log-select-mode-hook
+      magit-process-mode-hook
+      magit-reflog-mode-hook
+      magit-refs-mode-hook
+      magit-revision-mode-hook
+      magit-stash-mode-hook
+      magit-stashes-mode-hook
+      magit-status-mode-hook
+      magit-blob-mode-hook
+      magit-gitflow-mode-hook
+      occur-mode-hook
+      ivy-occur-mode-hook
+      ivy-occur-grep-mode-hook
+      grep-mode-hook
+      rg-mode-hook
+      ))
+    (add-hook hook #'turn-off-evil-mc-mode)
+    )
+
   (global-evil-mc-mode 1)
   )
 

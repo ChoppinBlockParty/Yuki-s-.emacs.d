@@ -179,6 +179,8 @@
         )
       ))
 
+  (evil-set-initial-state 'ibuffer-mode 'normal)
+  (evil-set-initial-state 'fundamental-mode 'normal)
   (evil-set-initial-state 'Info-mode 'normal)
   (evil-set-initial-state 'help-mode 'normal)
   (evil-set-initial-state 'apropos-mode 'normal)

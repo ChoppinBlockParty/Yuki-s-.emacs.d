@@ -1,5 +1,7 @@
+;;; ivy-config --- ivy
+;;; Commentary:
+;;; Code:
 (use-package counsel
-  :after (flx)
   :config
   (setq
     ivy-use-virtual-buffers t
@@ -7,7 +9,10 @@
     ivy-do-completion-in-region nil
     ivy-display-style 'fancy
     ivy-count-format "(%d/%d) "
-    ivy-re-builders-alist '((t . ivy--regex-fuzzy))
+    ivy-re-builders-alist '(
+      (swiper . ivy--regex-plus)
+      (t . ivy--regex-fuzzy)
+      )
     ;;; ivy-initial-inputs-alist variable is pretty useful in
     ;;; conjunction with the default matcher. It's usually used to
     ;;; insert ^ into the input area for certain commands. If you're
@@ -17,6 +22,12 @@
     ivy-initial-inputs-alist nil
     counsel-ag-base-command "ag --skip-vcs-ignores --hidden --ignore node_modules --ignore .git --ignore .build --ignore archive-contents --nocolor --nogroup %s"
     counsel-rg-base-command "rg -S --no-ignore-global --no-ignore-vcs --hidden --no-heading --line-number --color never %s ."
+    )
+  (custom-set-faces
+    '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
+    '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
+    '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
+    '(ivy-minibuffer-match-face-4 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
     )
 
   (let ((minor (assq 'ivy-mode minor-mode-alist)))
@@ -165,14 +176,6 @@
              )
            )
         )
-
-  (custom-set-faces
-    '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-    '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-    '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-    '(ivy-minibuffer-match-face-4 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-    )
-
   )
   :config
   (ivy-rich-mode t)
@@ -180,5 +183,5 @@
 
 (use-package counsel-projectile)
 
-
 (provide 'ivy-config)
+;;; ivy-config.el ends here

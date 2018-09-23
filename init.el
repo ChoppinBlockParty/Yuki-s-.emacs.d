@@ -25,13 +25,13 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(require 'evil-config)
-
 (require 'base-config)
 (use-package all-the-icons)
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
+(require 'evil-config)
 (require 'window-numbering-config)
+(require 'minibuffer-config)
 (require 'completion-config)
 (require 'shell-config)
 (require 'moe-theme-config)
@@ -41,6 +41,7 @@
 (require 'easymotion-config)
 (require 'multi-cursor-config)
 (require 'projectile-config)
+(require 'rg-config)
 (require 'flycheck-config)
 (require 'flyspell-config)
 (require 'neotree-config)
@@ -217,25 +218,4 @@
 (modify-syntax-entry ?- "w" use-package-statistics-mode-syntax-table)
 (modify-syntax-entry ?_ "w" git-commit-elisp-text-mode-syntax-table)
 (modify-syntax-entry ?- "w" git-commit-elisp-text-mode-syntax-table)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (projectile ace-jump-buffer window-numbering visual-regexp vimrc-mode use-package rainbow-mode rainbow-delimiters powerline moe-theme markdown-mode magit highlight-symbol highlight-operators helm-themes helm-swoop helm-projectile helm-flycheck helm-ag go-mode flyspell-lazy flycheck-ycmd expand-region evil-surround evil-nerd-commenter evil-leader evil-easymotion elscreen dockerfile-mode docker-compose-mode company-ycmd color-theme-approximate cmake-mode cider ag)))
- '(speedbar-file-unshown-regexp
-   "\\.o\\'\\|~\\'\\|\\.bin\\'\\|\\.lbin\\'\\|\\.so\\'\\|\\.a\\'\\|\\.ln\\'\\|\\.blg\\'\\|\\.bbl\\'\\|\\.elc\\'\\|\\.lof\\'\\|\\.glo\\'\\|\\.idx\\'\\|\\.lot\\'\\|\\.svn/\\'\\|\\.hg/\\'\\|\\.git/\\'\\|\\.bzr/\\'\\|CVS/\\'\\|_darcs/\\'\\|_MTN/\\'\\|\\.fmt\\'\\|\\.tfm\\'\\|\\.class\\'\\|\\.fas\\'\\|\\.lib\\'\\|\\.mem\\'\\|\\.x86f\\'\\|\\.sparcf\\'\\|\\.dfsl\\'\\|\\.pfsl\\'\\|\\.d64fsl\\'\\|\\.p64fsl\\'\\|\\.lx64fsl\\'\\|\\.lx32fsl\\'\\|\\.dx64fsl\\'\\|\\.dx32fsl\\'\\|\\.fx64fsl\\'\\|\\.fx32fsl\\'\\|\\.sx64fsl\\'\\|\\.sx32fsl\\'\\|\\.wx64fsl\\'\\|\\.wx32fsl\\'\\|\\.fasl\\'\\|\\.ufsl\\'\\|\\.fsl\\'\\|\\.dxl\\'\\|\\.lo\\'\\|\\.la\\'\\|\\.gmo\\'\\|\\.mo\\'\\|\\.toc\\'\\|\\.aux\\'\\|\\.cp\\'\\|\\.fn\\'\\|\\.ky\\'\\|\\.pg\\'\\|\\.tp\\'\\|\\.vr\\'\\|\\.cps\\'\\|\\.fns\\'\\|\\.kys\\'\\|\\.pgs\\'\\|\\.tps\\'\\|\\.vrs\\'\\|\\.pyc\\'\\|\\.pyo\\'\\|#[^#]+#$")
- '(speedbar-visiting-file-hook nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(avy-lead-face ((t (:background nil :foreground "#ff2929" :weight bold))))
- '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
- '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
- '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
- '(ivy-minibuffer-match-face-4 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold)))))
+;;; init.el ends here

@@ -6,25 +6,6 @@
 ;;; Code:
 (use-package magit
   :config
-  (dolist (hook
-    '(git-rebase-mode-hook
-      magit-mode-hook
-      magit-cherry-mode-hook
-      magit-diff-mode-hook
-      magit-log-mode-hook
-      magit-log-select-mode-hook
-      magit-process-mode-hook
-      magit-reflog-mode-hook
-      magit-refs-mode-hook
-      magit-revision-mode-hook
-      magit-stash-mode-hook
-      magit-stashes-mode-hook
-      magit-status-mode-hook
-      magit-blob-mode-hook
-      magit-gitflow-mode-hook))
-    (add-hook hook #'turn-off-evil-mc-mode)
-    )
-
   (defcustom evil-magit-use-y-for-yank t
   "When non nil, replace \"y\" for `magit-show-refs-popup' with
   \"yy\" for `evil-yank-line', `ys' `magit-copy-section-value',
