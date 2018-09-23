@@ -1,42 +1,17 @@
-;; flyspell set up for web-mode
-(defun web-mode-flyspell-verify ()
-  (let ((f (get-text-property (- (point) 1) 'face))
-        thing
-        rlt)
-    (cond
-     ((not (memq f '(web-mode-html-attr-value-face
-                     web-mode-html-tag-face
-                     web-mode-html-attr-name-face
-                     web-mode-constant-face
-                     web-mode-doctype-face
-                     web-mode-keyword-face
-                     web-mode-comment-face ;; focus on get html label right
-                     web-mode-function-name-face
-                     web-mode-variable-name-face
-                     web-mode-css-property-name-face
-                     web-mode-css-selector-face
-                     web-mode-css-color-face
-                     web-mode-type-face
-                     web-mode-block-control-face)
-                 ))
-      (setq rlt t))
-     ((memq f '(web-mode-html-attr-value-face))
-      (save-excursion
-        (search-backward-regexp "=['\"]" (line-beginning-position) t)
-        (backward-char)
-        (setq thing (thing-at-point 'symbol))
-        (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$" thing))
-        rlt))
-     (t t))
-    rlt
-    ))
+;;; spell-check-config --- Configures spell checkers
+;;; Commentary:
+;;; Code:
+(use-package flyspell
+  :config
+  (setq
+    flyspell-mode-line-string ""
+    )
+  )
 
-(use-package flyspell)
 (use-package flyspell-lazy
-:config
+  :config
   (flyspell-lazy-mode 1)
-  (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
-)
+  )
 
 ;; better performance
 (setq flyspell-issue-message-flag nil)
@@ -154,3 +129,4 @@
 
 
 (provide 'spell-check-config)
+;;; spell-check-config.el ends here

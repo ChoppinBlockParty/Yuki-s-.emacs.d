@@ -70,12 +70,9 @@
     ;;; If nil then * and # search for words otherwise for symbols.
     evil-symbol-word-search t
     )
-
+  ;;; Disable Undo Tree in mode line
   (setq undo-tree-mode-lighter nil)
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Global
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (defvar my-intercept-mode-map (make-sparse-keymap)
     "High precedence keymap.")
 
@@ -134,8 +131,8 @@
   (define-key evil-normal-state-map (kbd "SPC a") 'ff-find-other-file)
   (define-key evil-normal-state-map (kbd "SPC w") 'kill-this-buffer)
 
-  (evil-define-key 'normal 'global (kbd "SPC r") 'evil-ex-repeat)
-  (evil-define-key 'visual 'global (kbd "SPC r") 'evil-ex-repeat-substitute)
+  (define-key evil-normal-state-map (kbd "SPC r") 'evil-ex-repeat)
+  (define-key evil-visual-state-map (kbd "SPC r") 'evil-ex-repeat-substitute)
 
   ;;; The code is almost a copy-paste from `evil-execute-macro
   (define-key evil-normal-state-map (kbd "SPC e")
@@ -167,14 +164,14 @@
     )
 
   ;;; R must be re-mapable in other modes
-  (evil-define-key 'normal 'global (kbd "R")
+  (define-key evil-normal-state-map (kbd "R")
     (lambda()
       (interactive)
       (let ((str (evil-find-thing nil 'symbol)))
         (evil-ex (format "s/\\<%s\\>/" (regexp-quote str)))
         )
       ))
-  (evil-define-key 'visual 'global (kbd "R")
+  (define-key evil-visual-state-map (kbd "R")
     (lambda(beg end)
       (interactive "r")
       (let ((str (evil-find-thing nil 'symbol)))
@@ -297,8 +294,8 @@
       (goto-char pos)
       )
     )
-  (evil-define-key 'visual my-intercept-mode-map (kbd "C-n") #'my-evil-visualstar-search)
   (evil-define-key 'normal my-intercept-mode-map (kbd "C-n") #'my-evil-ex-search-word)
+  (evil-define-key 'visual my-intercept-mode-map (kbd "C-n") #'my-evil-visualstar-search)
   (evil-define-motion my-evil-ex-search-backward (count)
     "Starts a forward search."
     :jump t
