@@ -1,66 +1,68 @@
 ;;; rg-config --- RG
 ;;; Commentary:
 ;;; Code:
-(use-package rg
+(setq special-mode-map
+  (let ((map (make-sparse-keymap)))
+    ;; (suppress-keymap map)
+    (define-key map "q" 'quit-window)
+    ;; (define-key map " " 'scroll-up-command)
+    ;; (define-key map [?\S-\ ] 'scroll-down-command)
+    ;; (define-key map "\C-?" 'scroll-down-command)
+    ;; (define-key map "?" 'describe-mode)
+    ;; (define-key map "h" 'describe-mode)
+    (define-key map "g" nil)
+    (define-key map "gr" 'revert-buffer)
+    (define-key map "gg" 'beginning-of-buffer)
+    (define-key map "G" 'end-of-buffer)
+    map))
+
+(use-package compile
+  :ensure nil
+  :demand t
   :init
-  (require 'compile)
+  (defvar compilation-minor-mode-map
+    (let ((map (make-sparse-keymap)))
+      (set-keymap-parent map special-mode-map)
+      (define-key map [mouse-2] 'compile-goto-error)
+      (define-key map [follow-link] 'mouse-face)
+      (define-key map "gt" 'compile-goto-error)
+      (define-key map "u" 'compilation-display-error)
+      (define-key map "\C-c\C-c" 'kill-compilation)
+      (define-key map "<" 'compilation-previous-error)
+      (define-key map ">" 'compilation-next-error)
+      (define-key map "}" 'compilation-previous-file)
+      (define-key map "{" 'compilation-next-file)
+      (define-key map "gr" 'recompile) ; revert
+      map)
+    )
+  )
+
+(use-package grep
+  :ensure nil
+  :init
   (defvar grep-mode-map
     (let ((map (make-sparse-keymap)))
       (set-keymap-parent map compilation-minor-mode-map)
       (define-key map " " 'scroll-up-command)
       (define-key map [?\S-\ ] 'scroll-down-command)
       (define-key map "\^?" 'scroll-down-command)
-      (define-key map "g"   nil)
-      (define-key map "gc"  'next-error-follow-minor-mode)
-
+      (define-key map "gc" 'next-error-follow-minor-mode)
       (define-key map "\r" 'compile-goto-error)  ;; ?
+      (define-key map "\t"   (lambda() (interactive) (compile-goto-error) (select-window (previous-window))))
       (define-key map "<" 'previous-error-no-select)
       (define-key map ">" 'next-error-no-select)
-      (define-key map "{" 'compilation-next-file)
       (define-key map "}" 'compilation-previous-file)
-      (define-key map "\t" 'compilation-next-error)
+      (define-key map "{" 'compilation-next-file)
+      ;; (define-key map "\t" 'compilation-next-error)
       (define-key map [backtab] 'compilation-previous-error)
-
-      ;; Set up the menu-bar
-      (define-key map [menu-bar grep]
-        (cons "Grep" (make-sparse-keymap "Grep")))
-
-      (define-key map [menu-bar grep compilation-kill-compilation]
-        '(menu-item "Kill Grep" kill-compilation
-        :help "Kill the currently running grep process"))
-      (define-key map [menu-bar grep compilation-separator2] '("----"))
-      (define-key map [menu-bar grep compilation-compile]
-        '(menu-item "Compile..." compile
-        :help "Compile the program including the current buffer.  Default: run `make'"))
-      (define-key map [menu-bar grep compilation-rgrep]
-        '(menu-item "Recursive grep..." rgrep
-        :help "User-friendly recursive grep in directory tree"))
-      (define-key map [menu-bar grep compilation-lgrep]
-        '(menu-item "Local grep..." lgrep
-        :help "User-friendly grep in a directory"))
-      (define-key map [menu-bar grep compilation-grep-find]
-        '(menu-item "Grep via Find..." grep-find
-        :help "Run grep via find, with user-specified args"))
-      (define-key map [menu-bar grep compilation-grep]
-        '(menu-item "Another grep..." grep
-        :help "Run grep, with user-specified args, and collect output in a buffer."))
-      (define-key map [menu-bar grep compilation-recompile]
-        '(menu-item "Repeat grep" recompile
-        :help "Run grep again"))
-      (define-key map [menu-bar grep compilation-separator2] '("----"))
-      (define-key map [menu-bar grep compilation-first-error]
-        '(menu-item "First Match" first-error
-        :help "Restart at the first match, visit corresponding location"))
-      (define-key map [menu-bar grep compilation-previous-error]
-        '(menu-item "Previous Match" previous-error
-        :help "Visit the previous match and corresponding location"))
-      (define-key map [menu-bar grep compilation-next-error]
-        '(menu-item "Next Match" next-error
-        :help "Visit the next match and corresponding location"))
       map)
-    "Keymap for grep buffers. `compilation-minor-mode-map' is a cdr of this.")
+    )
+  )
+
+(use-package rg
+  :init
   (defvar rg-mode-map
-    (let ((map (make-sparse-keymap)))
+    (let ((map (copy-keymap grep-mode-map)))
       (define-key map "c"    'rg-rerun-toggle-case)
       (define-key map "gt"   'rg-rerun-change-dir)
       (define-key map "f"    'rg-rerun-change-files)
@@ -82,7 +84,6 @@
     )
   (evil-set-initial-state 'rg-mode 'normal)
   )
-
 
 (provide 'rg-config)
 ;;; rg-config.el ends here

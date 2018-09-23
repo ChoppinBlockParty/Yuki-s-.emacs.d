@@ -484,10 +484,13 @@
 
   (my-evil-2-modes-define-key "SPC i r" 'ivy-resume)
   (my-evil-2-modes-define-key "SPC u g" 'magit-status)
+  (my-evil-2-modes-define-key "SPC u m b" 'magit-blame)
+  (my-evil-2-modes-define-key "SPC u m l" 'magit-log)
   (my-evil-2-modes-define-key "SPC u h" 'evil-ex-nohighlight)
-  ;;; it is actually find file command
-  (my-evil-2-modes-define-key "SPC u r" 'counsel-rg)
-  (my-evil-2-modes-define-key "SPC u i" 'counsel-git)
+  (my-evil-2-modes-define-key "SPC u r r" 'rg)
+  (my-evil-2-modes-define-key "SPC u r p" 'rg-project)
+  (my-evil-2-modes-define-key "SPC u r d" 'rg-dwim)
+  (my-evil-2-modes-define-key "SPC u r l" 'rg-literal)
   (my-evil-2-modes-define-key "SPC u s" 'my-shell)
   (my-evil-2-modes-define-key "SPC u ?" 'counsel-apropos)
   )
@@ -499,8 +502,31 @@
 
 (use-package evil-nerd-commenter
   :config
-  (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
-  (define-key evil-visual-state-map (kbd "gc") 'comment-or-uncomment-region)
+  ;; (dolist (hook '(lisp-mode-hook
+  ;;                 emacs-lisp-mode-hook
+  ;;                 scheme-mode-hook
+  ;;                 clojure-mode-hook
+  ;;                 ruby-mode-hook
+  ;;                 yaml-mode
+  ;;                 shell-mode-hook
+  ;;                 php-mode-hook
+  ;;                 css-mode-hook
+  ;;                 haskell-mode-hook
+  ;;                 caml-mode-hook
+  ;;                 c++-mode-hook
+  ;;                 c-mode-hook
+  ;;                 go-mode-hook
+  ;;                 python-mode-hook
+  ;;                 lua-mode-hook
+  ;;                 crontab-mode-hook
+  ;;                 perl-mode-hook
+  ;;                 tcl-mode-hook
+  ;;                 js2-mode-hook))
+  ;;   (add-hook hook (lambda()
+  ;;     (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
+  ;;     (define-key evil-visual-state-map (kbd "gc") 'comment-or-uncomment-region)
+  ;;     ))
+  ;;   )
   )
 
 (use-package evil-surround
