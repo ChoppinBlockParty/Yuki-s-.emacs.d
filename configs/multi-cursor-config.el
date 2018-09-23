@@ -7,7 +7,6 @@
           (keys '(
                    ("TAB"   . my-evil-mc-make-all-cursors)
                    ("<tab>" . my-evil-mc-make-all-cursors)
-                   ("[tab]" . my-evil-mc-make-all-cursors)
                   )))
       (dolist (key-data keys)
         (evil-define-key 'normal map (kbd (car key-data)) (cdr key-data))

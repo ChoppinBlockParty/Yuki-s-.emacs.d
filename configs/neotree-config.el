@@ -5,7 +5,7 @@
   (setq
     neo-theme 'icons
     neo-smart-open t
-    neo-hidden-regexp-list '("\\.\\([o]\\|py[doc]\\|elc\\|so\\|obj\\)$")
+    neo-hidden-regexp-list '("\\.?tags?" "\\.\\([o]\\|py[doc]\\|elc\\|so\\|obj\\)$")
     neo-confirm-change-root 'y-or-n-p
     neo-confirm-create-file 'y-or-n-p
     neo-confirm-create-directory 'y-or-n-p

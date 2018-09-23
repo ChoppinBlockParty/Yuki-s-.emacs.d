@@ -4,6 +4,7 @@
   (setq
     ivy-use-virtual-buffers t
     enable-recursive-minibuffers t
+    ivy-do-completion-in-region nil
     ivy-display-style 'fancy
     ivy-count-format "(%d/%d) "
     ivy-re-builders-alist '((t . ivy--regex-fuzzy))
@@ -14,7 +15,8 @@
     ;;; and simply let flx (hopefully) sort the matches in a nice
     ;;; way:
     ivy-initial-inputs-alist nil
-    counsel-ag-base-command "ag --skip-vcs-ignores --ignore node_modules --ignore .git --ignore .build --ignore archive-contents --nocolor --nogroup %s"
+    counsel-ag-base-command "ag --skip-vcs-ignores --hidden --ignore node_modules --ignore .git --ignore .build --ignore archive-contents --nocolor --nogroup %s"
+    counsel-rg-base-command "rg -S --no-ignore-global --no-ignore-vcs --hidden --no-heading --line-number --color never %s ."
     )
 
   (let ((minor (assq 'ivy-mode minor-mode-alist)))

@@ -1,6 +1,12 @@
 ;;; completion-config --- YCMD, company related configurations
 ;;; Commentary:
 ;;; Code:
+
+(setq
+  ;;; Non-nil means show help message in *Completions* buffer.
+  completion-show-help nil
+  )
+
 ;;; Big discussion on how run Tab completion
 ;;; https://github.com/company-mode/company-mode/pull/706
 ;;; Described in [Switch from AC](https://github.com/company-mode/company-mode/wiki/Switching-from-AC)

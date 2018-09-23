@@ -91,12 +91,20 @@
       (evil-get-auxiliary-keymap my-intercept-mode-map state t t)
       state))
 
-  (defun my-global-define-key (key func)
+  (defun my-evil-all-modes-define-key (key func)
     "Define globally in evil"
-    (evil-define-key 'motion my-intercept-mode-map key func)
-    (evil-define-key 'emacs my-intercept-mode-map key func)
-    (evil-define-key 'insert my-intercept-mode-map key func)
+    (evil-define-key 'normal my-intercept-mode-map (kbd key) func)
+    (evil-define-key 'visual my-intercept-mode-map (kbd key) func)
+    (evil-define-key 'emacs  my-intercept-mode-map (kbd key) func)
+    (evil-define-key 'insert my-intercept-mode-map (kbd key) func)
     )
+
+  (defun my-evil-2-modes-define-key (key func)
+    "Define globally in evil"
+    (evil-define-key 'normal my-intercept-mode-map (kbd key) func)
+    (evil-define-key 'visual my-intercept-mode-map (kbd key) func)
+    )
+
   (defun my-switch-to-previous-buffer ()
     "Switch to most recent buffer. Repeated calls toggle back and forth between the most recent two buffers."
     (interactive)
@@ -106,22 +114,20 @@
     (interactive)
     (select-window (previous-window))
     )
-  (my-global-define-key (kbd "M-1") 'counsel-switch-to-shell-buffer)
-  (my-global-define-key (kbd "M-2") 'my-switch-to-previous-window)
-  (my-global-define-key (kbd "M-3") 'my-switch-to-previous-buffer)
+  (my-evil-all-modes-define-key "M-1" 'counsel-switch-to-shell-buffer)
+  (my-evil-all-modes-define-key "M-2" 'my-switch-to-previous-window)
+  (my-evil-all-modes-define-key "M-3" 'my-switch-to-previous-buffer)
 
   ;;; Only for testing emacs configuration, REMOVE ME
-  (my-global-define-key (kbd "C-q") 'kill-emacs)
+  (my-evil-all-modes-define-key "C-q" 'kill-emacs)
   (defun run-emacs ()
     "Usefull for testing Emacs configuration."
     (interactive)
     (start-process-shell-command "emacs" nil "emacs --debug-init ~/Others/Vim/Keybindings.py")
     )
-  (my-global-define-key (kbd "C-1") 'run-emacs)
+  (my-evil-all-modes-define-key "C-1" 'run-emacs)
 
-  (evil-define-key 'insert my-intercept-mode-map [f12] 'evil-command-window-ex)
-  (evil-define-key 'visual my-intercept-mode-map [f12] 'evil-command-window-ex)
-  (evil-define-key 'normal my-intercept-mode-map [f12] 'evil-command-window-ex)
+  (my-evil-all-modes-define-key "<f12>" 'evil-command-window-ex)
 
   ;;; Do not do this
   ;;; (define-key evil-normal-state-map (kbd ":") 'helm-M-x)
@@ -176,6 +182,8 @@
         )
       ))
 
+  (evil-set-initial-state 'help-mode 'normal)
+  (evil-set-initial-state 'apropos-mode 'normal)
   (evil-set-initial-state 'flycheck-error-list-mode 'normal)
   (evil-set-initial-state 'git-commit-mode 'insert)
 
@@ -187,8 +195,8 @@
         (end-of-line)
         (newline-and-indent)))
 
-  (evil-define-key 'motion my-intercept-mode-map (kbd "\\") 'evil-window-vsplit)
-  (evil-define-key 'motion my-intercept-mode-map (kbd "-") 'evil-window-split)
+  (my-evil-2-modes-define-key "\\" 'evil-window-vsplit)
+  (my-evil-2-modes-define-key "-" 'evil-window-split)
 
   (define-key global-map (kbd "RET") 'newline-and-indent)
   (define-key evil-normal-state-map (kbd "RET") 'newline-and-indent)
@@ -197,15 +205,15 @@
 
   (define-key evil-insert-state-map (kbd "<S-backspace>") 'backward-delete-char-untabify)
 
-  (define-key evil-normal-state-map (kbd "C-u")   'universal-argument)
+  (my-evil-2-modes-define-key "C-u" 'universal-argument)
 
-  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC h") 'evil-window-left)
-  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC j") 'evil-window-down)
-  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC k") 'evil-window-up)
-  (evil-define-key 'motion my-intercept-mode-map (kbd "SPC l") 'evil-window-right)
+  (my-evil-2-modes-define-key "SPC h" 'evil-window-left)
+  (my-evil-2-modes-define-key "SPC j" 'evil-window-down)
+  (my-evil-2-modes-define-key "SPC k" 'evil-window-up)
+  (my-evil-2-modes-define-key "SPC l" 'evil-window-right)
 
-  (define-key evil-normal-state-map "\C-\\" 'evil-window-delete)
-  (define-key evil-normal-state-map "q" 'evil-window-delete)
+  (evil-define-key 'normal 'global "q" 'evil-window-delete)
+  (evil-define-key 'visual 'global "q" 'evil-window-delete)
   (with-eval-after-load 'with-editor
     (evil-define-key 'normal with-editor-mode-map "q" 'with-editor-finish))
 
@@ -291,7 +299,6 @@
     )
   (evil-define-key 'visual my-intercept-mode-map (kbd "C-n") #'my-evil-visualstar-search)
   (evil-define-key 'normal my-intercept-mode-map (kbd "C-n") #'my-evil-ex-search-word)
-
   (evil-define-motion my-evil-ex-search-backward (count)
     "Starts a forward search."
     :jump t
@@ -299,22 +306,15 @@
     (evil-ex-start-search 'backward count)
     (setq evil-ex-search-direction 'forward)
     )
-  (define-key evil-motion-state-map "?" 'my-evil-ex-search-backward)
+  (my-evil-2-modes-define-key "?" 'my-evil-ex-search-backward)
+  (my-evil-2-modes-define-key "C-s" 'evil-write)
 
-  (define-key evil-motion-state-map (kbd "C-s") 'evil-write)
-
-  (define-key evil-motion-state-map (kbd "M-h") 'evil-jump-backward)
-  (define-key evil-motion-state-map (kbd "M-l") 'evil-jump-forward)
-
-  (define-key evil-motion-state-map (kbd "M-c") 'evil-visual-block)
+  (my-evil-2-modes-define-key "M-h" 'evil-jump-backward)
+  (my-evil-2-modes-define-key "M-l" 'evil-jump-forward)
+  (my-evil-2-modes-define-key "M-c" 'evil-visual-block)
 
   (define-key evil-normal-state-map "U" 'redo)
-  (define-key evil-normal-state-map "Y" 'evil-join)
-  (define-key evil-motion-state-map "Y" 'evil-join)
-
-  (evil-ex-define-cmd "Q"  'evil-quit)
-  (evil-ex-define-cmd "Qa" 'evil-quit-all)
-  (evil-ex-define-cmd "QA" 'evil-quit-all)
+  (my-evil-2-modes-define-key "Y" 'evil-join)
 
   ;; ex command line
   (define-key evil-ex-completion-map "\d" #'evil-ex-delete-backward-char)
@@ -462,34 +462,34 @@
                 :keymap counsel-projectile-map
                 :caller 'counsel-projectile)))
 
-  (my-global-define-key (kbd "M-w") 'my-counsel-projectile)
+  (my-evil-all-modes-define-key "M-w" 'my-counsel-projectile)
   ;;; find-file sucks - only searchs in cwd
   ;;; find-jump sucks - bad performance
-  (my-global-define-key (kbd "M-e") 'counsel-fzf)
-  (my-global-define-key (kbd "M-a") 'counsel-projectile-rg)
-  (my-global-define-key (kbd "M-s") 'counsel-projectile-git-grep)
-  (my-global-define-key (kbd "M-d") (lambda ()
+  (my-evil-all-modes-define-key "M-e" 'counsel-fzf)
+  (my-evil-all-modes-define-key "M-a" 'counsel-projectile-rg)
+  (my-evil-all-modes-define-key "M-s" 'counsel-projectile-git-grep)
+  (my-evil-all-modes-define-key "M-d" (lambda ()
     (interactive)
     (if (not (projectile-project-p))
         (counsel-find-file)
         (counsel-git)
         )
     ))
+  (my-evil-all-modes-define-key "M-x" 'counsel-M-x)
 
-  (my-global-define-key (kbd "M-x") 'counsel-M-x)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "DEL") 'swiper)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "C-DEL") 'swiper-all)
-  (evil-define-key 'normal my-intercept-mode-map [backspace] 'swiper)
-  (evil-define-key 'normal my-intercept-mode-map [(control backspace)] 'swiper-all)
+  (my-evil-2-modes-define-key "DEL" 'swiper)
+  (my-evil-2-modes-define-key "C-DEL" 'swiper-all)
+  (my-evil-2-modes-define-key "<backspace>" 'swiper)
+  (my-evil-2-modes-define-key "C-<backspace>" 'swiper-all)
 
-  (evil-define-key 'normal my-intercept-mode-map (kbd "SPC i r") 'ivy-resume)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "SPC u g") 'magit-status)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "SPC u h") 'evil-ex-nohighlight)
+  (my-evil-2-modes-define-key "SPC i r" 'ivy-resume)
+  (my-evil-2-modes-define-key "SPC u g" 'magit-status)
+  (my-evil-2-modes-define-key "SPC u h" 'evil-ex-nohighlight)
   ;;; it is actually find file command
-  (evil-define-key 'normal my-intercept-mode-map (kbd "SPC u r") 'counsel-rg)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "SPC u i") 'counsel-git)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "SPC u s") 'my-shell)
-  (evil-define-key 'normal my-intercept-mode-map (kbd "SPC u ?") 'counsel-apropos)
+  (my-evil-2-modes-define-key "SPC u r" 'counsel-rg)
+  (my-evil-2-modes-define-key "SPC u i" 'counsel-git)
+  (my-evil-2-modes-define-key "SPC u s" 'my-shell)
+  (my-evil-2-modes-define-key "SPC u ?" 'counsel-apropos)
   )
 
 (use-package expand-region
