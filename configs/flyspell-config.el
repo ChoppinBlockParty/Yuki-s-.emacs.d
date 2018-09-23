@@ -1,4 +1,4 @@
-;;; spell-check-config --- Configures spell checkers
+;;; flyspell-config --- Configures spell checkers
 ;;; Commentary:
 ;;; Code:
 (use-package flyspell
@@ -98,35 +98,34 @@
 ;; Add auto spell-checking in comments for all programming language modes
 ;; if and only if there is enough memory
 ;; You can use prog-mode-hook instead.
-  (dolist (hook '(lisp-mode-hook
-                  emacs-lisp-mode-hook
-                  scheme-mode-hook
-                  clojure-mode-hook
-                  ruby-mode-hook
-                  yaml-mode
-                  python-mode-hook
-                  shell-mode-hook
-                  php-mode-hook
-                  css-mode-hook
-                  haskell-mode-hook
-                  caml-mode-hook
-                  c++-mode-hook
-                  c-mode-hook
-                  lua-mode-hook
-                  crontab-mode-hook
-                  perl-mode-hook
-                  tcl-mode-hook
-                  js2-mode-hook))
-    (add-hook hook 'flyspell-prog-mode))
-  (dolist (hook '(latex-mode-hook
-                  text-mode-hook))
-    (add-hook hook 'flyspell-mode))
+(dolist (hook '(lisp-mode-hook
+                emacs-lisp-mode-hook
+                scheme-mode-hook
+                clojure-mode-hook
+                ruby-mode-hook
+                yaml-mode
+                shell-mode-hook
+                php-mode-hook
+                css-mode-hook
+                haskell-mode-hook
+                caml-mode-hook
+                c++-mode-hook
+                c-mode-hook
+                go-mode-hook
+                python-mode-hook
+                lua-mode-hook
+                crontab-mode-hook
+                perl-mode-hook
+                tcl-mode-hook
+                js2-mode-hook))
+  (add-hook hook 'flyspell-prog-mode))
+(dolist (hook '(git-commit-mode-hook
+                latex-mode-hook
+                text-mode-hook))
+  (add-hook hook 'flyspell-mode))
 
 
-(with-eval-after-load 'evil
-  (define-key evil-normal-state-map (kbd "z c") 'flyspell-auto-correct-word)
-)
+(define-key evil-normal-state-map (kbd "z c") 'flyspell-auto-correct-word)
 
-
-(provide 'spell-check-config)
-;;; spell-check-config.el ends here
+(provide 'flyspell-config)
+;;; flyspell-config.el ends here

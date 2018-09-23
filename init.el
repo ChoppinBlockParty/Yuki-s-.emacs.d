@@ -42,7 +42,7 @@
 (require 'multi-cursor-config)
 (require 'projectile-config)
 (require 'flycheck-config)
-(require 'spell-check-config)
+(require 'flyspell-config)
 (require 'neotree-config)
 ;; ;; (require 'dired-config)
 (require 'helm-config (concat user-emacs-directory "configs/helm-config.el"))

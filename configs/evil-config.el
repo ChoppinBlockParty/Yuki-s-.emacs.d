@@ -179,6 +179,7 @@
         )
       ))
 
+  (evil-set-initial-state 'Info-mode 'normal)
   (evil-set-initial-state 'help-mode 'normal)
   (evil-set-initial-state 'apropos-mode 'normal)
   (evil-set-initial-state 'flycheck-error-list-mode 'normal)
