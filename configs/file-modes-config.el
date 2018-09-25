@@ -1,23 +1,14 @@
 ;;; file-modes-config --- Miscellaneous file modes.
 ;;; Commentary:
 ;;; Code:
-(use-package clang-format)
-
-(defun my-formatting ()
-  ""
-  (interactive)
-  (cond
-    ((equal major-mode 'go-mode) (gofmt))
-    ((equal major-mode 'c++-mode) (clang-format-buffer))
-    (t nil))
+(use-package protobuf-mode
+  :ensure nil
+  :load-path "local/protobuf"
+  :config
+  (modify-syntax-entry ?_ "w" protobuf-mode-syntax-table)
+  (modify-syntax-entry ?- "w" protobuf-mode-syntax-table)
+  (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
   )
-
-(define-key evil-normal-state-map (kbd "SPC s") 'my-formatting)
-
-(require 'protobuf-mode)
-(modify-syntax-entry ?_ "w" protobuf-mode-syntax-table)
-(modify-syntax-entry ?- "w" protobuf-mode-syntax-table)
-(add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
 
 (use-package cmake-mode
   :config

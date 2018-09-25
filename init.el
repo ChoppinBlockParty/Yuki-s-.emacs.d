@@ -9,7 +9,6 @@
 (setq gc-cons-threshold 20000000)
 
 (add-to-list 'load-path (concat user-emacs-directory "configs"))
-(add-to-list 'load-path (concat user-emacs-directory "local/protobuf"))
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
@@ -30,6 +29,7 @@
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'evil-config)
+(require 'generic-config)
 (require 'window-numbering-config)
 (require 'minibuffer-config)
 (require 'completion-config)
@@ -41,6 +41,7 @@
 (require 'easymotion-config)
 (require 'multi-cursor-config)
 (require 'projectile-config)
+(require 'wgrep-config)
 (require 'rg-config)
 (require 'flycheck-config)
 (require 'flyspell-config)
@@ -219,3 +220,21 @@
 (modify-syntax-entry ?_ "w" git-commit-elisp-text-mode-syntax-table)
 (modify-syntax-entry ?- "w" git-commit-elisp-text-mode-syntax-table)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (wgrep xterm-color window-numbering vimrc-mode use-package smex rg rainbow-mode rainbow-delimiters powerline neotree moe-theme markdown-mode magit ivy-rich highlight-symbol highlight-operators helm-swoop helm-flycheck go-mode flyspell-lazy flycheck-ycmd flx expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit evil-leader evil-easymotion dockerfile-mode docker-compose-mode counsel-projectile company-ycmd cmake-mode clang-format auctex all-the-icons))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(avy-lead-face ((t (:background nil :foreground "#ff2929" :weight bold))))
+ '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
+ '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
+ '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
+ '(ivy-minibuffer-match-face-4 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold)))))

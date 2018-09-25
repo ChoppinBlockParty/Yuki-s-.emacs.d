@@ -98,30 +98,9 @@
 ;; Add auto spell-checking in comments for all programming language modes
 ;; if and only if there is enough memory
 ;; You can use prog-mode-hook instead.
-(dolist (hook '(lisp-mode-hook
-                emacs-lisp-mode-hook
-                scheme-mode-hook
-                clojure-mode-hook
-                ruby-mode-hook
-                yaml-mode
-                shell-mode-hook
-                php-mode-hook
-                css-mode-hook
-                haskell-mode-hook
-                caml-mode-hook
-                c++-mode-hook
-                c-mode-hook
-                go-mode-hook
-                python-mode-hook
-                lua-mode-hook
-                crontab-mode-hook
-                perl-mode-hook
-                tcl-mode-hook
-                js2-mode-hook))
+(dolist (hook my-prog-modes-hook-list)
   (add-hook hook 'flyspell-prog-mode))
-(dolist (hook '(git-commit-mode-hook
-                latex-mode-hook
-                text-mode-hook))
+(dolist (hook my-markup-modes-hook-list)
   (add-hook hook 'flyspell-mode))
 
 

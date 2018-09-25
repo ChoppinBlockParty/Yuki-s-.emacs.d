@@ -109,7 +109,8 @@
     )
   (defun my-switch-to-previous-window ()
     (interactive)
-    (select-window (previous-window))
+    ;;; (get-mru-window &optional ALL-FRAMES DEDICATED NOT-SELECTED)
+    (select-window (get-mru-window t nil t))
     )
   (my-evil-all-modes-define-key "M-1" 'counsel-switch-to-shell-buffer)
   (my-evil-all-modes-define-key "M-2" 'my-switch-to-previous-window)
@@ -129,6 +130,7 @@
   ;;; Do not do this
   ;;; (define-key evil-normal-state-map (kbd ":") 'helm-M-x)
   (define-key evil-normal-state-map (kbd "SPC a") 'ff-find-other-file)
+  (define-key evil-normal-state-map (kbd "SPC s") 'my-buffer-formatting)
   (define-key evil-normal-state-map (kbd "SPC w") 'kill-this-buffer)
 
   (define-key evil-normal-state-map (kbd "SPC r") 'evil-ex-repeat)
@@ -217,22 +219,22 @@
   (with-eval-after-load 'with-editor
     (evil-define-key 'normal with-editor-mode-map "q" 'with-editor-finish))
 
-  (defun get-digit-function (digit)
+  (defun make-digit-function (digit)
     `(lambda (arg)
        (interactive "P")
        (setq last-command-event (+ ,digit ?0))
        (digit-argument arg)))
 
-  (define-key evil-motion-state-map "!" (get-digit-function 1))
-  (define-key evil-normal-state-map "@" (get-digit-function 2))
-  (define-key evil-motion-state-map "#" (get-digit-function 3))
-  (define-key evil-motion-state-map "$" (get-digit-function 4))
-  (define-key evil-motion-state-map "%" (get-digit-function 5))
-  (define-key evil-motion-state-map "^" (get-digit-function 6))
-  (define-key evil-normal-state-map "&" (get-digit-function 7))
-  (define-key evil-motion-state-map "*" (get-digit-function 8))
-  (define-key evil-motion-state-map "(" (get-digit-function 9))
-  (define-key evil-motion-state-map ")" (get-digit-function 0))
+  (define-key evil-motion-state-map "!" (make-digit-function 1))
+  (define-key evil-normal-state-map "@" (make-digit-function 2))
+  (define-key evil-motion-state-map "#" (make-digit-function 3))
+  (define-key evil-motion-state-map "$" (make-digit-function 4))
+  (define-key evil-motion-state-map "%" (make-digit-function 5))
+  (define-key evil-motion-state-map "^" (make-digit-function 6))
+  (define-key evil-normal-state-map "&" (make-digit-function 7))
+  (define-key evil-motion-state-map "*" (make-digit-function 8))
+  (define-key evil-motion-state-map "(" (make-digit-function 9))
+  (define-key evil-motion-state-map ")" (make-digit-function 0))
 
   (define-key evil-motion-state-map (kbd "0") 'evil-beginning-of-line)
   (define-key evil-normal-state-map "2" 'evil-record-macro)
@@ -477,10 +479,25 @@
     ))
   (my-evil-all-modes-define-key "M-x" 'counsel-M-x)
 
-  (my-evil-2-modes-define-key "DEL" 'swiper)
-  (my-evil-2-modes-define-key "C-DEL" 'swiper-all)
-  (my-evil-2-modes-define-key "<backspace>" 'swiper)
-  (my-evil-2-modes-define-key "C-<backspace>" 'swiper-all)
+  (defun my-swiper-with-initial-input (fun)
+    "Swiper with initial input."
+    `(lambda ()
+      (interactive)
+      (if (use-region-p)
+          (let ((beg (region-beginning))
+                (end (region-end)))
+            (evil-exit-visual-state)
+            (funcall #',fun (buffer-substring beg end))
+            )
+          (funcall #',fun)
+          )
+      )
+    )
+
+  (my-evil-2-modes-define-key "DEL" (my-swiper-with-initial-input #'swiper))
+  (my-evil-2-modes-define-key "<backspace>" (my-swiper-with-initial-input #'swiper))
+  (my-evil-2-modes-define-key "C-DEL" (my-swiper-with-initial-input #'swiper-all))
+  (my-evil-2-modes-define-key "C-<backspace>" (my-swiper-with-initial-input #'swiper-all))
 
   (my-evil-2-modes-define-key "SPC i r" 'ivy-resume)
   (my-evil-2-modes-define-key "SPC u g" 'magit-status)
@@ -495,38 +512,14 @@
   (my-evil-2-modes-define-key "SPC u ?" 'counsel-apropos)
   )
 
-(use-package expand-region
-  :config
-    ;; (define-key evil-motion-state-map (kbd "7") 'er/expand-symbol)
-  )
-
 (use-package evil-nerd-commenter
   :config
-  ;; (dolist (hook '(lisp-mode-hook
-  ;;                 emacs-lisp-mode-hook
-  ;;                 scheme-mode-hook
-  ;;                 clojure-mode-hook
-  ;;                 ruby-mode-hook
-  ;;                 yaml-mode
-  ;;                 shell-mode-hook
-  ;;                 php-mode-hook
-  ;;                 css-mode-hook
-  ;;                 haskell-mode-hook
-  ;;                 caml-mode-hook
-  ;;                 c++-mode-hook
-  ;;                 c-mode-hook
-  ;;                 go-mode-hook
-  ;;                 python-mode-hook
-  ;;                 lua-mode-hook
-  ;;                 crontab-mode-hook
-  ;;                 perl-mode-hook
-  ;;                 tcl-mode-hook
-  ;;                 js2-mode-hook))
-  ;;   (add-hook hook (lambda()
-  ;;     (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
-  ;;     (define-key evil-visual-state-map (kbd "gc") 'comment-or-uncomment-region)
-  ;;     ))
-  ;;   )
+  (dolist (hook (append my-prog-modes-hook-list my-markup-modes-hook-list))
+    (add-hook hook (lambda()
+      (define-key evil-normal-state-map (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
+      (define-key evil-visual-state-map (kbd "gc") 'comment-or-uncomment-region)
+      ))
+    )
   )
 
 (use-package evil-surround
@@ -537,7 +530,7 @@
   ;;; Change surrounding
   ;;; You can change a surrounding with cs<old-textobject><new-textobject>.
   ;;; Delete surrounding
-  ;;; Y ou can delete a surrounding with ds<textobject>.
+  ;;; You can delete a surrounding with ds<textobject>.
   (global-evil-surround-mode t)
   )
 

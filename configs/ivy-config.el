@@ -47,7 +47,8 @@
       (define-key map [down-mouse-1] 'ignore)
       (define-key map [mouse-1] 'ivy-mouse-done)
       (define-key map [mouse-3] 'ivy-mouse-dispatching-done)
-      (define-key map (kbd "C-o") 'ivy-dispatching-done)
+      (define-key map (kbd "C-g") nil)
+      (define-key map (kbd "C-g l") 'ivy-dispatching-done)
       (define-key map (kbd "C-u") 'ivy-call)
       (define-key map (kbd "C-M-u") 'ivy-immediate-done)
       ;; Complete the minibuffer text as much as possible.
@@ -82,7 +83,6 @@
       (define-key map (kbd "C-n") 'ivy-next-history-element)
       (define-key map (kbd "M-p") 'ivy-previous-history-element)
       (define-key map (kbd "M-n") 'ivy-next-history-element)
-      (define-key map (kbd "C-g") 'minibuffer-keyboard-quit)
       (define-key map (kbd "<escape>") 'minibuffer-keyboard-quit)
       (define-key map [remap scroll-up-command] 'ivy-scroll-up-command)
       (define-key map [remap scroll-down-command] 'ivy-scroll-down-command)
@@ -119,22 +119,18 @@
 
     (evil-define-key 'normal ivy-occur-grep-mode-map
       "d" 'ivy-occur-delete-candidate
-      (kbd "C-x C-q") 'ivy-wgrep-change-to-wgrep-mode
+      ;; (kbd "C-x C-q") 'ivy-wgrep-change-to-wgrep-mode
       "i" 'ivy-wgrep-change-to-wgrep-mode
-      "gd" 'ivy-occur-delete-candidate
       [mouse-1] 'ivy-occur-click
       (kbd "<return>") 'ivy-occur-press-and-switch
       "j" 'ivy-occur-next-line
       "k" 'ivy-occur-previous-line
       "h" 'evil-backward-char
       "l" 'evil-forward-char
-      "g" nil
-      "gg" 'evil-goto-first-line
-      "gf" 'ivy-occur-press
       "gr" 'ivy-occur-revert-buffer
       "ga" 'ivy-occur-read-action
       "go" 'ivy-occur-dispatch
-      "gc" 'ivy-occur-toggle-calling
+      "zf" 'ivy-occur-toggle-calling
 
       "0" 'evil-digit-argument-or-evil-beginning-of-line
 

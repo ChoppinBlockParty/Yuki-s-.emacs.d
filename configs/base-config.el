@@ -208,5 +208,64 @@
   (recentf-mode 1)
   )
 
+(defconst my-prog-modes-hook-list
+  (list
+    'git-commit-mode-hook
+    'c++-mode-hook
+    'c-mode-hook
+    'cmake-mode-hook
+    'shell-script-mode
+    'makefile-mo
+    'dockerfile-mode-hook
+    'docker-compose-mode-hook
+    'go-mode-hook
+    'python-mode-hook
+    'java-mode-hook
+    'objc-mode-hook
+    'lisp-mode-hook
+    'emacs-lisp-mode-hook
+    'markdown-mode-hook
+    'latex-mode-hook
+    'vimrc-mode-hook
+    'lua-mode-hook
+    'crontab-mode-hook
+    'js2-mode-hook
+    'scheme-mode-hook
+    'clojure-mode-hook
+    'ruby-mode-hook
+    'yaml-mode
+    'css-mode-hook
+    'php-mode-hook
+    'perl-mode-hook
+    'haskell-mode-hook
+    'org-mode-hook
+    'caml-mode-hook
+    'rst-mode-hook
+    'tcl-mode-hook
+    )
+  )
+
+(defconst my-markup-modes-hook-list
+  (list
+    'git-commit-mode-hook
+    'markdown-mode-hook
+    'latex-mode-hook
+    'org-mode-hook
+    'text-mode-hook
+    )
+  )
+
+(use-package clang-format)
+
+(defun my-buffer-formatting ()
+  "Format buffer."
+  (interactive)
+  (cond
+    ((equal major-mode 'go-mode)  (gofmt))
+    ((equal major-mode 'c++-mode) (clang-format-buffer))
+    ((equal major-mode 'c-mode)   (clang-format-buffer))
+    (t nil))
+  )
+
 (provide 'base-config)
 ;;; base-config.el ends here

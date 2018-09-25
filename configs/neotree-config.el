@@ -45,7 +45,7 @@
       (kbd "gr")      'neotree-refresh
       (kbd "gt")      'neotree-change-root
       (kbd "gf")      'find-file-other-window
-      (kbd "cd")      'neotree-dir
+      (kbd "gcd")      'neotree-dir
       (kbd "z")       nil
       (kbd "zh")      'neotree-hidden-file-toggle
     )

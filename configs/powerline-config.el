@@ -20,7 +20,6 @@
   )
 
 (use-package powerline
-  :after (all-the-icons)
   :init
  (defface powerline-active1 '((t (:foreground "#d0d0f0" :background "purple" :inherit mode-line)))
    "Powerline face 1."

@@ -33,7 +33,7 @@
     )
 
   (defun evil-collection-eshell-interrupt-process ()
-    "Interupt `eshell' process and enter insert state."
+    "Interrupt `eshell' process and enter insert state."
     (interactive)
     (eshell-interrupt-process)
     (evil-insert t)
@@ -46,7 +46,6 @@
     ;; (define-key eshell-mode-map (kbd "C-r") 'helm-eshell-history)
     (evil-define-key 'normal 'eshell-mode-map
       ;; (kbd "C-r") 'helm-eshell-history
-      ;; motion
       "[" 'eshell-previous-input
       "]" 'eshell-next-input
       (kbd "C-k") 'eshell-previous-input
@@ -63,7 +62,6 @@
       (kbd "C-c C-c") 'evil-collection-eshell-interrupt-process)
     (evil-define-key 'insert 'eshell-mode-map
       ;; (kbd "C-r") 'helm-eshell-history
-      ;; motion
       (kbd "C-k") 'eshell-previous-input
       (kbd "C-j") 'eshell-next-input
       (kbd "M-k") 'eshell-previous-input
@@ -71,7 +69,6 @@
       (kbd "C-h") 'eshell-backward-argument
       (kbd "C-l") 'eshell-forward-argument)
     (evil-define-key 'visual 'shell-mode-map
-      ;; motion
       ;; TODO: This does not work with `evil-visual-line'.
       (kbd "C-k") 'eshell-previous-input
       (kbd "C-j") 'eshell-next-input
