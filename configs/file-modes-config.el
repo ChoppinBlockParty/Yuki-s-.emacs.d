@@ -1,6 +1,18 @@
 ;;; file-modes-config --- Miscellaneous file modes.
 ;;; Commentary:
 ;;; Code:
+(use-package cc-mode
+  :ensure nil
+  :config
+  (dolist (hook (list 'c++-mode-hook 'c-mode-hook))
+    (add-hook hook (add-to-list 'ispell-skip-region-alist '("^#include" forward-line))))
+  (modify-syntax-entry ?_ "w" c++-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" c++-template-syntax-table)
+  (modify-syntax-entry ?_ "w" c-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" c-identifier-syntax-table)
+  (modify-syntax-entry ?_ "w" c-no-parens-syntax-table)
+  )
+
 (use-package protobuf-mode
   :ensure nil
   :load-path "local/protobuf"
@@ -19,7 +31,6 @@
 (use-package go-mode
   :config
   (modify-syntax-entry ?_ "w" go-mode-syntax-table)
-  (modify-syntax-entry ?- "w" go-mode-syntax-table)
   )
 
 (use-package markdown-mode
@@ -31,7 +42,6 @@
 (use-package vimrc-mode
   :config
   (modify-syntax-entry ?_ "w" vimrc-mode-syntax-table)
-  (modify-syntax-entry ?- "w" vimrc-mode-syntax-table)
   (add-to-list 'auto-mode-alist '("\\.vim\\'" . vimrc-mode))
   (add-to-list 'auto-mode-alist '("[._]?g?vimrc\\'" . vimrc-mode))
   (add-to-list 'auto-mode-alist '("\\.exrc\\'" . vimrc-mode))
@@ -47,6 +57,14 @@
   (modify-syntax-entry ?_ "w" docker-compose-mode-syntax-table)
   (modify-syntax-entry ?- "w" docker-compose-mode-syntax-table)
   )
+
+(use-package lua-mode
+  :ensure nil
+  :load-path "local/lua-mode"
+  :config
+  (modify-syntax-entry ?_ "w" lua-mode-syntax-table)
+  )
+
 
 (provide 'file-modes-config)
 ;;; file-modes-config.el ends here

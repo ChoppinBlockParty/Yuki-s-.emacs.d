@@ -1,4 +1,6 @@
-
+;;; multi-cursor-config --- evil-mc
+;;; Commentary:
+;;; Code:
 (use-package evil-mc
   :after (flyspell)
   :init
@@ -11,6 +13,8 @@
       (dolist (key-data keys)
         (evil-define-key 'normal map (kbd (car key-data)) (cdr key-data))
         (evil-define-key 'visual map (kbd (car key-data)) (cdr key-data)))
+      (evil-define-key 'visual 'global "7" #'my-evil-mc-make-vertical-cursors)
+      (evil-define-key 'normal 'global "7" #'my-evil-mc-make-all-cursors)
       map))
   :config
     (setq evil-mc-mode-line
@@ -27,6 +31,7 @@
     (unless (= (line-number-at-pos) orig-line)
       (evil-mc-make-cursor-here))
     )
+
   ;;; During visual selection point has +1 value
   (defun my-evil-mc-make-vertical-cursors (beg end)
     (interactive (list (region-beginning) (- (region-end) 1)))
@@ -41,8 +46,7 @@
     ;;; same column as the others
     (move-to-column (evil-mc-column-number end))
     )
-  (evil-define-key 'visual 'global "7" #'my-evil-mc-make-vertical-cursors)
-  (evil-define-key 'normal 'global "7" #'my-evil-mc-make-all-cursors)
+
   (evil-define-command my-evil-mc-make-all-cursors ()
     "Initialize `evil-mc-pattern' and make cursors for all matches."
     :repeat ignore
@@ -73,11 +77,6 @@
       magit-status-mode-hook
       magit-blob-mode-hook
       magit-gitflow-mode-hook
-      occur-mode-hook
-      ivy-occur-mode-hook
-      ivy-occur-grep-mode-hook
-      grep-mode-hook
-      rg-mode-hook
       ))
     (add-hook hook #'turn-off-evil-mc-mode)
     )
@@ -86,3 +85,4 @@
   )
 
 (provide 'multi-cursor-config)
+;;; multi-cursor-config.el ends here

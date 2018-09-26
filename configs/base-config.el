@@ -210,7 +210,6 @@
 
 (defconst my-prog-modes-hook-list
   (list
-    'git-commit-mode-hook
     'c++-mode-hook
     'c-mode-hook
     'cmake-mode-hook
