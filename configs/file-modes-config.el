@@ -5,7 +5,7 @@
   :ensure nil
   :config
   (dolist (hook (list 'c++-mode-hook 'c-mode-hook))
-    (add-hook hook (add-to-list 'ispell-skip-region-alist '("^#include" forward-line))))
+    (add-hook hook (lambda() (add-to-list 'ispell-skip-region-alist '("^#include" forward-line)))))
   (modify-syntax-entry ?_ "w" c++-mode-syntax-table)
   (modify-syntax-entry ?_ "w" c++-template-syntax-table)
   (modify-syntax-entry ?_ "w" c-mode-syntax-table)

@@ -1,4 +1,4 @@
-;;; generic-config --- General definitions
+;;; generic-config --- General settings
 ;;; Commentary:
 ;;; Code:
 (setq special-mode-map
@@ -50,6 +50,8 @@
         )
       map)
     )
+  :config
+  (modify-syntax-entry ?_ "w" grep-mode-syntax-table)
   )
 
 (provide 'generic-config)

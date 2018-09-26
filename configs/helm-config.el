@@ -3,7 +3,6 @@
 ;;; Code:
 
 (use-package helm
-  :after (evil)
   :config
   ;; helm-find-files: one command that handles all the files related commands (bind to C-x C-f).
   ;; helm-buffers-list: provides enhanced buffers listing.

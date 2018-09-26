@@ -1,7 +1,6 @@
 ;;; completion-config --- YCMD, company related configurations
 ;;; Commentary:
 ;;; Code:
-
 (setq
   ;;; Non-nil means show help message in *Completions* buffer.
   completion-show-help nil
@@ -78,9 +77,7 @@
     ycmd-global-config "~/.ycm_extra_conf.py")
 
   (modify-syntax-entry ?_ "w" ycmd-view-mode-syntax-table)
-  (modify-syntax-entry ?- "w" ycmd-view-mode-syntax-table)
   (modify-syntax-entry ?_ "w" ycmd-fixit-mode-syntax-table)
-  (modify-syntax-entry ?- "w" ycmd-fixit-mode-syntax-table)
 
   ;; (add-hook 'after-init-hook #'global-ycmd-mode)
   ;; (add-hook 'after-init-hook #'global-ycmd-mode)
@@ -132,7 +129,6 @@
   :config
 
   (modify-syntax-entry ?_ "w" flycheck-error-list-mode-syntax-table)
-  (modify-syntax-entry ?- "w" flycheck-error-list-mode-syntax-table)
 
 
   ;;; Make sure the flycheck cache sees the parse results

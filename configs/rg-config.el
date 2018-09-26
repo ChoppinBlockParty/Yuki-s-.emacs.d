@@ -25,6 +25,8 @@
     rg-ignore-case 'smart
     )
   (evil-set-initial-state 'rg-mode 'normal)
+
+  (modify-syntax-entry ?_ "w" rg-mode-syntax-table)
   )
 
 (provide 'rg-config)

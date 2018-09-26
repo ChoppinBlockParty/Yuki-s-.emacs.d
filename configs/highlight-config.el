@@ -1,7 +1,6 @@
 ;;; highlight-config --- summary
 ;;; Commentary:
 ;;; Code:
-
 (use-package highlight-symbol
   :config
   (setq
@@ -19,10 +18,9 @@
   ;; (defun enable-highlight-operators-mode()
   ;;   (highlight-operators-mode) nil)
   ;;   )
-  (dolist (hook my-prog-modes-hook-list)
+  (dolist (hook (remq 'emacs-lisp-mode-hook my-prog-modes-hook-list))
     (add-hook hook 'highlight-operators-mode))
   )
-
 
 ;;; Highlights current line
 ;; (global-hl-line-mode t)
