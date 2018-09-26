@@ -19,3 +19,4 @@
 
 !.gitignore
 !init.el
+!init_zsh.sh
