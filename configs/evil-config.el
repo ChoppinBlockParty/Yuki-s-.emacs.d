@@ -14,6 +14,11 @@
   ;;;   use `evil-search-forward/backward`
   (evil-select-search-module 'evil-search-module 'evil-search)
 
+  ;;; Do not see any reason to have motion mode, make everything normal.
+  ;;; The main reason is that in many cases I bind different function for
+  ;;; normal and visual modes, then those are unavailable in motion mode.
+  (fset 'evil-motion-state 'evil-normal-state)
+
   (setq
     evil-toggle-key "C-z"
     evil-echo-state nil
@@ -54,7 +59,7 @@
     evil-ex-search-highlight-all t
     evil-ex-substitute-highlight-all t
     ;;; If non-nil matches remain highlighted when the search ends.
-    evil-ex-search-persistent-highlight t
+    evil-ex-search-persistent-highlight nil
     ;;; Determine in which windows the interactive highlighting should be shown.
     evil-ex-interactive-search-highlight 'all-windows
     ;;; If non-nil substitute patterns are global by default. Usually (if this variable
@@ -181,8 +186,10 @@
         )
       ))
 
-  (evil-set-initial-state 'ibuffer-mode 'normal)
+  (evil-set-initial-state 'evil-list-view-mode 'normal)
+  (evil-set-initial-state 'tabulated-list-mode 'normal)
   (evil-set-initial-state 'fundamental-mode 'normal)
+  (evil-set-initial-state 'ibuffer-mode 'normal)
   (evil-set-initial-state 'Info-mode 'normal)
   (evil-set-initial-state 'help-mode 'normal)
   (evil-set-initial-state 'apropos-mode 'normal)
@@ -406,8 +413,8 @@
         (setq last (point))
         (call-interactively #'evil-forward-word-end))
     ))
-  (evilem-define "H" #'my-evilem-backward-word-begin)
-  (evilem-define "J" #'my-evilem-backward-word-end)
+  (evilem-define "H" #'my-evilem-backward-word-end)
+  (evilem-define "J" #'my-evilem-backward-word-begin)
   (evilem-define "K" #'my-evilem-forward-word-begin)
   (evilem-define "L" #'my-evilem-forward-word-end)
   )

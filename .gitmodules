@@ -1,3 +1,6 @@
 [submodule "evil"]
 	path = local/evil
 	url = git@github.com:ChoppinBlockParty/evil.git
+[submodule "local/avy"]
+	path = local/avy
+	url = git@github.com:ChoppinBlockParty/avy.git

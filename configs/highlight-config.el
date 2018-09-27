@@ -13,11 +13,12 @@
   )
 
 (use-package highlight-operators
-  :ensure t
+  :init
+  (defface highlight-operators-face '((t (:foreground "#d75f87" :weight normal)))
+    "Face for operators (e.g. '+' or '&') in programming modes.
+  This face is only used if `highlight-operators-mode' is turned on."
+    :group 'highlight-operators)
   :config
-  ;; (defun enable-highlight-operators-mode()
-  ;;   (highlight-operators-mode) nil)
-  ;;   )
   (dolist (hook (remq 'emacs-lisp-mode-hook my-prog-modes-hook-list))
     (add-hook hook 'highlight-operators-mode))
   )

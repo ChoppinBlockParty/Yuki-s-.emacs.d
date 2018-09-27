@@ -20,20 +20,6 @@
   )
 
 (use-package powerline
-  :init
- (defface powerline-active1 '((t (:foreground "#d0d0f0" :background "purple" :inherit mode-line)))
-   "Powerline face 1."
-   :group 'powerline)
- (defface powerline-active2 '((t (:foreground "#63b132" :background "black" :inherit mode-line)))
-   "Powerline face 2."
-   :group 'powerline)
- (defface powerline-active0 '((t (:foreground "purple" :background "#d0d0f0" :inherit mode-line)))
-   "Powerline face 0."
-   :group 'powerline)
- (defface powerline-inactive0
-   '((t (:background "black" :inherit mode-line-inactive)))
-   "Powerline face 0."
-   :group 'powerline)
   :config
   ;;; Nyan is dumbly amazing, but... CPU cycles, omg...
   ;; (use-package nyan-mode

@@ -22,14 +22,14 @@
 ;;; https://github.com/Fanael/rainbow-delimiters
 (use-package rainbow-delimiters
   :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'latex-mode-hook 'rainbow-delimiters-mode)
+  (dolist (hook (append my-prog-modes-hook-list my-markup-modes-hook-list))
+    (add-hook hook #'rainbow-delimiters-mode))
 
   (cl-loop
     for index from 1 to rainbow-delimiters-max-face-count
     do
     (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
-      (cl-callf color-saturate-name (face-foreground face) 30)
+      (cl-callf color-saturate-name (face-foreground face) 75)
       ))
 
   (set-face-attribute 'rainbow-delimiters-unmatched-face nil

@@ -34,8 +34,8 @@
 (require 'minibuffer-config)
 (require 'completion-config)
 (require 'shell-config)
-(require 'moe-theme-config)
 (require 'powerline-config)
+(require 'color-theme-config)
 (require 'highlight-config)
 (require 'paren-config)
 (require 'easymotion-config)
@@ -69,14 +69,10 @@
 (modify-syntax-entry ?- "w" rfc2047-syntax-table)
 (modify-syntax-entry ?_ "w" sh-mode-syntax-table)
 (modify-syntax-entry ?- "w" sh-mode-syntax-table)
-(modify-syntax-entry ?_ "w" org-mode-syntax-table)
-(modify-syntax-entry ?- "w" org-mode-syntax-table)
 (modify-syntax-entry ?_ "w" gfm-mode-syntax-table)
 (modify-syntax-entry ?- "w" gfm-mode-syntax-table)
 (modify-syntax-entry ?_ "w" idl-mode-syntax-table)
 (modify-syntax-entry ?- "w" idl-mode-syntax-table)
-(modify-syntax-entry ?_ "w" rst-mode-syntax-table)
-(modify-syntax-entry ?- "w" rst-mode-syntax-table)
 (modify-syntax-entry ?_ "w" prog-mode-syntax-table)
 (modify-syntax-entry ?- "w" prog-mode-syntax-table)
 (modify-syntax-entry ?_ "w" java-mode-syntax-table)
@@ -119,10 +115,6 @@
 (modify-syntax-entry ?- "w" ibuffer-mode-syntax-table)
 (modify-syntax-entry ?_ "w" message-mode-syntax-table)
 (modify-syntax-entry ?- "w" message-mode-syntax-table)
-(modify-syntax-entry ?_ "w" calendar-mode-syntax-table)
-(modify-syntax-entry ?- "w" calendar-mode-syntax-table)
-(modify-syntax-entry ?_ "w" rst-toc-mode-syntax-table)
-(modify-syntax-entry ?- "w" rst-toc-mode-syntax-table)
 (modify-syntax-entry ?_ "w" epa-key-mode-syntax-table)
 (modify-syntax-entry ?- "w" epa-key-mode-syntax-table)
 (modify-syntax-entry ?_ "w" log-edit-mode-syntax-table)
@@ -197,8 +189,6 @@
 (modify-syntax-entry ?- "w" magit-log-select-mode-syntax-table)
 (modify-syntax-entry ?_ "w" select-tags-table-mode-syntax-table)
 (modify-syntax-entry ?- "w" select-tags-table-mode-syntax-table)
-(modify-syntax-entry ?_ "w" org-mode-transpose-word-syntax-table)
-(modify-syntax-entry ?- "w" org-mode-transpose-word-syntax-table)
 (modify-syntax-entry ?_ "w" evil-command-window-mode-syntax-table)
 (modify-syntax-entry ?- "w" evil-command-window-mode-syntax-table)
 (modify-syntax-entry ?_ "w" magit-merge-preview-mode-syntax-table)
@@ -215,14 +205,10 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (wgrep xterm-color window-numbering vimrc-mode use-package smex rg rainbow-mode rainbow-delimiters powerline neotree moe-theme markdown-mode magit ivy-rich highlight-symbol highlight-operators helm-swoop helm-flycheck go-mode flyspell-lazy flycheck-ycmd flx expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit evil-leader evil-easymotion dockerfile-mode docker-compose-mode counsel-projectile company-ycmd cmake-mode clang-format auctex all-the-icons))))
+    (kaolin-themes zerodark-theme xterm-color window-numbering wgrep vimrc-mode use-package spacemacs-theme smex rg rainbow-mode rainbow-delimiters powerline neotree moe-theme markdown-mode magit ivy-rich iedit highlight-symbol highlight-operators helm-swoop helm-flycheck grandshell-theme go-mode flyspell-lazy flycheck-ycmd flx expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit evil-leader evil-easymotion dockerfile-mode docker-compose-mode counsel-projectile company-ycmd cmake-mode clang-format auctex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(avy-lead-face ((t (:background nil :foreground "#ff2929" :weight bold))))
- '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
- '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
- '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
- '(ivy-minibuffer-match-face-4 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold)))))
+ '(avy-lead-face ((t (:background nil :foreground "#ff2929" :weight bold)))))

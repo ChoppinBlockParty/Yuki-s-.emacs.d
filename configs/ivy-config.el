@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 (use-package counsel
+  :ensure nil
+  :load-path "local/swiper"
   :config
   (setq
     ivy-use-virtual-buffers t
@@ -22,12 +24,6 @@
     ivy-initial-inputs-alist nil
     counsel-ag-base-command "ag --skip-vcs-ignores --hidden --ignore node_modules --ignore .git --ignore .build --ignore archive-contents --nocolor --nogroup %s"
     counsel-rg-base-command "rg -S --no-ignore-global --no-ignore-vcs --hidden --no-heading --line-number --color never %s ."
-    )
-  (custom-set-faces
-    '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-    '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-    '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-    '(ivy-minibuffer-match-face-4 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
     )
 
   (let ((minor (assq 'ivy-mode minor-mode-alist)))

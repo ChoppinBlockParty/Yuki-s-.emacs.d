@@ -212,6 +212,7 @@
   (list
     'c++-mode-hook
     'c-mode-hook
+    'c-mode-common-hook
     'cmake-mode-hook
     'shell-script-mode
     'makefile-mo
@@ -223,7 +224,6 @@
     'objc-mode-hook
     'lisp-mode-hook
     'emacs-lisp-mode-hook
-    'markdown-mode-hook
     'latex-mode-hook
     'vimrc-mode-hook
     'lua-mode-hook
@@ -260,9 +260,10 @@
   "Format buffer."
   (interactive)
   (cond
-    ((equal major-mode 'go-mode)  (gofmt))
-    ((equal major-mode 'c++-mode) (clang-format-buffer))
-    ((equal major-mode 'c-mode)   (clang-format-buffer))
+    ((equal major-mode 'go-mode)      (gofmt))
+    ((equal major-mode 'c++-mode)     (clang-format-buffer))
+    ((equal major-mode 'c-mode)       (clang-format-buffer))
+    ((equal major-mode 'proto-mode)   (clang-format-buffer))
     (t nil))
   )
 

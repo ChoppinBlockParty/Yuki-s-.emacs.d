@@ -6,6 +6,8 @@
   :config
   (dolist (hook (list 'c++-mode-hook 'c-mode-hook))
     (add-hook hook (lambda() (add-to-list 'ispell-skip-region-alist '("^#include" forward-line)))))
+  (dolist (mode (list 'c++-mode 'c-mode))
+    (font-lock-add-keywords mode '(("\\<\\(\\sw+\\) ?(" 1 'font-lock-function-name-face))))
   (modify-syntax-entry ?_ "w" c++-mode-syntax-table)
   (modify-syntax-entry ?_ "w" c++-template-syntax-table)
   (modify-syntax-entry ?_ "w" c-mode-syntax-table)
