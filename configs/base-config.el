@@ -214,8 +214,8 @@
     'c-mode-hook
     'c-mode-common-hook
     'cmake-mode-hook
-    'shell-script-mode
-    'makefile-mo
+    'makefile-mode-hook
+    'sh-mode-hook
     'dockerfile-mode-hook
     'docker-compose-mode-hook
     'go-mode-hook
@@ -232,7 +232,7 @@
     'scheme-mode-hook
     'clojure-mode-hook
     'ruby-mode-hook
-    'yaml-mode
+    'yaml-mode-hook
     'css-mode-hook
     'php-mode-hook
     'perl-mode-hook

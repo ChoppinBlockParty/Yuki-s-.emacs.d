@@ -1,6 +1,18 @@
 Yuki's .emacs.d
 ===============
 
+After 8 years of Vim, I have finally switch to Emacs. The only regret I have is that I had not done this earlier. Emacs has everything that Vim has and much more.
+
+Build Emacs from source
+-----------------------
+
+``` shell
+
+```
+
+Packages
+--------
+
  - [use-package](https://github.com/jwiegley/use-package)
  - [flx](https://github.com/lewang/flx)
  - [smex](https://github.com/nonsequitur/smex)
@@ -10,7 +22,7 @@ Yuki's .emacs.d
  - [company-mode](https://github.com/company-mode/company-mode)
  - [emacs-ycmd](https://github.com/abingham/emacs-ycmd)
  - [xterm-color](https://github.com/atomontage/xterm-color)
- - [zerodark-theme](https://github.com/NicolasPetton/zedark-theme)
+ - [zerodark-theme](https://github.com/NicolasPetton/zerodark-theme)
  - [powerline](https://github.com/milkypostman/powerline)
  - [rainbow-delimiters](https://github.com/Fanael/rainbow-delimiters)
  - [highlight-symbol.el](https://github.com/nschum/highlight-symbol.el)
@@ -25,3 +37,4 @@ Yuki's .emacs.d
  - [clang-format](https://github.com/emacsorphanage/clang-format)
  - [lua-mode](https://github.com/immerrr/lua-mode)
  - [go-mode.el](https://github.com/dominikh/go-mode.el)
+

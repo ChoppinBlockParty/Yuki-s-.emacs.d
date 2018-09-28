@@ -133,7 +133,7 @@
   )
 
 (use-package ivy-rich
-  :init
+  :config
   (defun ivy-rich-switch-buffer-icon (candidate)
     (with-current-buffer
       (get-buffer candidate)
@@ -143,14 +143,14 @@
                 icon)
         )
       )
+    )
   (setq ivy-rich--display-transformers-list
         '(ivy-switch-buffer
            (:columns
-             ((ivy-rich-switch-buffer-icon :width 2)
-              (ivy-rich-candidate (:width 30))
+             ((ivy-rich-candidate (:width 30))
               (ivy-rich-switch-buffer-size (:width 7))
               (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-              (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+              (ivy-rich-switch-buffer-icon :width 2)
               (ivy-rich-switch-buffer-project (:width 15 :face success))
               (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3)))))
               )
@@ -158,8 +158,6 @@
              )
            )
         )
-  )
-  :config
   (ivy-rich-mode t)
   )
 
