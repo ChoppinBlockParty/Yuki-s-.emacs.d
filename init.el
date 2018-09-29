@@ -25,11 +25,11 @@
 (setq use-package-always-ensure t)
 
 (require 'base-config)
-(use-package all-the-icons)
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'evil-config)
 (require 'generic-config)
+(require 'all-the-icons-config)
 (require 'window-numbering-config)
 (require 'minibuffer-config)
 (require 'completion-config)

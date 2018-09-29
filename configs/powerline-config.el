@@ -53,7 +53,7 @@
 
   (setq eldoc-minor-mode-string nil)
 
-  (defun custom-modeline-modified ()
+  (defun my-mode-line-modified ()
     "An `all-the-icons' segment depicting the current buffers state"
     (let* ((buffer-state (format-mode-line "%*"))
            (icon (cond
@@ -77,28 +77,40 @@
       (if val val "")
       ))
 
-  (setq all-the-icons-mode-icon-alist
-    (append all-the-icons-mode-icon-alist
-            '((sh-mode all-the-icons-alltheicon "terminal" :face all-the-icons-lblue))
-            '((vimrc-mode all-the-icons-faicon "vimeo" :face all-the-icons-lblue))
-            '((gitattributes-mode all-the-icons-alltheicon "git" :face all-the-icons-lblue))
-            '((gitconfig-mode all-the-icons-alltheicon "git" :face all-the-icons-lblue))
-            '((gitignore-mode all-the-icons-alltheicon "git" :face all-the-icons-lblue))
-            )
-    )
-  (defun custom-modeline-mode-icon ()
+  (defun my-mode-line-mode-icon ()
     "An `all-the-icons' segment indicating the current buffer's mode with an icon"
     (let ((icon (all-the-icons-icon-for-mode major-mode)))
         (unless (symbolp icon)
           (propertize icon
                       'help-echo (format "Major-mode: `%s'" major-mode)
                       'display '(raise 0)
-                      'face `(:family ,(all-the-icons-icon-family-for-mode major-mode)
+                      'face `(:height 1.0
+                              :family ,(all-the-icons-icon-family-for-mode major-mode)
                               :inherit)
                       )
           )
         )
-     )
+    )
+
+  (defun my-mode-line-window-number ()
+    "Return the number of the window."
+    (let* ((window-number (window-numbering-get-number))
+           (str (cond
+              ((not window-number)  "")
+              ((= window-number 1)  "➊")
+              ((= window-number 2)  "➋")
+              ((= window-number 3)  "➌")
+              ((= window-number 4)  "➍")
+              ((= window-number 5)  "➎")
+              ((= window-number 6)  "❻")
+              ((= window-number 7)  "➐")
+              ((= window-number 8)  "➑")
+              ((= window-number 9)  "➒")
+              ((= window-number 0)  "➓")
+              )))
+          (propertize str 'face '(:height 1.2 :inherit))
+          )
+    )
 
   (defun custom-modeline-flycheck-status (face)
     (let* ((text (pcase flycheck-last-status-change
@@ -144,7 +156,8 @@
             (intern (format "powerline-%s-%s"
                             powerline-default-separator
                             (cdr powerline-default-separator-dir))))
-           (lhs (list (powerline-raw (list (custom-modeline-modified)) face0)
+           (lhs (list (powerline-raw (my-mode-line-window-number) face0)
+                      (powerline-raw (my-mode-line-modified) face0)
                       (powerline-buffer-id face0)
                       (powerline-raw "%4l" face0)
                       (powerline-raw ":" face0)
@@ -154,7 +167,7 @@
                       (powerline-raw which-func-format face1)
                       (powerline-narrow face0 'l)
                       (funcall separator-right face1 face2)
-                      (powerline-raw (custom-modeline-mode-icon) face2)
+                      (powerline-raw (my-mode-line-mode-icon) face2)
                       (funcall separator-left face2 face1)
                       (custom-modeline-flycheck-status face1)
                       (funcall separator-right face1 face2)

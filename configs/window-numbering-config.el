@@ -35,22 +35,6 @@
     (kbd "SPC 9") 'select-window-9)
 
   (window-numbering-mode t)
-
-  ;; "Return the number of the window."
-  ;; (let* ((num (window-numbering-get-number))
-  ;;         (str (if num (int-to-string num))))
-  ;; (cond
-  ;;     ((not dotspacemacs-mode-line-unicode-symbols) str)
-  ;;     ((equal str "1")  "➊")
-  ;;     ((equal str "2")  "➋")
-  ;;     ((equal str "3")  "➌")
-  ;;     ((equal str "4")  "➍")
-  ;;     ((equal str "5")  "➎")
-  ;;     ((equal str "6")  "❻")
-  ;;     ((equal str "7")  "➐")
-  ;;     ((equal str "8")  "➑")
-  ;;     ((equal str "9")  "➒")
-  ;;     ((equal str "0")  "➓")))
   )
 
 (provide 'window-numbering-config)
