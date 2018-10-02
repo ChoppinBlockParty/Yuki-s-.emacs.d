@@ -17,6 +17,9 @@
 !/themes
 !/themes/*.el
 
+!/tools
+!/tools/*.sh
+
 !.gitignore
 !init.el
 !init_zsh.sh

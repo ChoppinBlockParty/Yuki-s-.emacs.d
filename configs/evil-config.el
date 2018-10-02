@@ -69,6 +69,7 @@
     ;;; substitution works on all matches unless the 'g' pattern is specified, then is
     ;;; works only on the first match.
     evil-ex-substitute-global t
+    evil-ex-hl-skip-major-mode-list (list 'pdf-view-mode 'doc-view-mode)
     )
   (setq-default
     evil-shift-width 2
