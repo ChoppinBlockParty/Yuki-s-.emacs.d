@@ -59,6 +59,7 @@
     )
 
   (evil-set-initial-state 'doc-view-mode 'normal)
+
   (evil-define-key 'normal doc-view-mode-map
     "q" 'quit-window
     (kbd "C-j") 'doc-view-next-page
@@ -75,8 +76,8 @@
 
     ;; zoom
     "0" 'doc-view-scale-reset
-    (kbd "C-=") 'doc-view-enlarge
     (kbd "C--") 'doc-view-shrink
+    (kbd "C-=") 'doc-view-enlarge
 
     "W" 'doc-view-fit-width-to-window ; Like evil-image.
     "H" 'doc-view-fit-height-to-window ; Like evil-image.
@@ -97,11 +98,74 @@
     ;; refresh
     (kbd "gr") 'doc-view-revert-buffer)
 
-  ;; TODO: What if the user changes `evil-want-C-u-scroll' after this is run?
   (when evil-want-C-u-scroll
     (evil-define-key 'normal doc-view-mode-map
       (kbd "C-u") 'backward-page))
   )
+
+(use-package image-mode
+  :ensure nil
+  :config
+  (use-package image+)
+  ;; TODO: pdf and doc-view conflict with image.
+  ;; See https://github.com/emacs-evil/evil-collection/issues/23.
+
+  (evil-set-initial-state 'image-mode 'normal)
+
+  (evil-define-key 'normal image-mode-map
+    ;; motion
+    "gg" 'image-bob
+    "G" 'image-eob
+    "h" 'image-backward-hscroll
+    "l" 'image-forward-hscroll
+    "j" 'image-next-line
+    "k" 'image-previous-line
+    "0" 'image-bol
+    "^" 'image-bol
+    "$" 'image-eol
+    (kbd "C--") 'imagex-sticky-zoom-out
+    (kbd "C-=") 'imagex-sticky-zoom-in
+    "M" 'imagex-sticky-maximize
+    "O" 'imagex-sticky-restore-original
+    "S" 'imagex-sticky-save-image
+    "r" 'imagex-sticky-rotate-left
+    "R" 'imagex-sticky-rotate-right
+    (kbd "C-u") 'image-scroll-down
+    (kbd "C-i") 'image-scroll-up
+    (kbd "M-u") 'image-scroll-down
+    (kbd "M-i") 'image-scroll-up
+    ;; animation
+    (kbd "<return>") 'image-toggle-animation
+    "a0" 'image-reset-speed
+    "ar" 'image-reverse-speed
+    "F" 'image-goto-frame
+    "," 'image-previous-frame ; mplayer/mpv style
+    "." 'image-next-frame ; mplayer/mpv style
+    ";" 'image-next-frame ; Evil style
+    "{" 'image-decrease-speed ; mplayer/mpv style
+    "}" 'image-increase-speed ; mplayer/mpv style
+
+    "H" 'image-transform-fit-to-height
+    "W" 'image-transform-fit-to-width
+
+    "[" 'image-previous-file
+    "]" 'image-next-file
+    "gk" 'image-previous-file
+    "gj" 'image-next-file
+    (kbd "C-k") 'image-previous-file
+    (kbd "C-j") 'image-next-file
+
+    (kbd "C-c C-c") 'image-toggle-display
+
+    ;; quit
+    "q" 'quit-window
+    "ZQ" 'evil-quit
+    "ZZ" 'quit-window)
+  )
+
+(provide 'evil-collection-image)
+;;; evil-collection-image.el ends here
+
 
 (provide 'generic-config)
 ;;; generic-config.el ends here

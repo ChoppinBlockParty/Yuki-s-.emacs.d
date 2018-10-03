@@ -21,6 +21,8 @@ packages=(
   libsystemd-dev
   libcairo2-dev
   libxml2-dev
+  # Improve image manipulion
+  libmagickwand-dev
   # FreeType-based font drawing library for X (
   libxft-dev
   libotf-dev

@@ -18,7 +18,6 @@
   ;;; The main reason is that in many cases I bind different function for
   ;;; normal and visual modes, then those are unavailable in motion mode.
   (fset 'evil-motion-state 'evil-normal-state)
-
   (setq
     evil-toggle-key "C-z"
     evil-echo-state nil
@@ -30,9 +29,9 @@
     ;;; Whether \"cw\" behaves like \"ce\".
     evil-want-change-word-to-end nil
     evil-emacs-state-cursor    '("#dfaf8f" bar)
-    evil-normal-state-cursor   '("#00ced1" box)
+    evil-normal-state-cursor   '("#ffec9c" box)
     evil-visual-state-cursor   '("orange" box)
-    evil-insert-state-cursor   '("#00ced1" bar)
+    evil-insert-state-cursor   '("#ffec9c" bar)
     evil-replace-state-cursor  '("#cc9393" box)
     evil-operator-state-cursor '("red" hollow)
     evil-want-fine-undo nil ; googled it, people say it is buggy
@@ -71,6 +70,11 @@
     evil-ex-substitute-global t
     evil-ex-hl-skip-major-mode-list (list 'pdf-view-mode 'doc-view-mode)
     )
+
+  ;;; So far color does not work, the color preserved from the last cursor look.
+  (evil-set-cursor-color "#ff6c6b")
+  (evil-set-cursor '("#ff6c6b" bar))
+
   (setq-default
     evil-shift-width 2
     ;;; If nil then * and # search for words otherwise for symbols.
