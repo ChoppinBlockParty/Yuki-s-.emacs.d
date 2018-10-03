@@ -104,7 +104,9 @@
 ;;; Amazing xterm-256color package
 (use-package xterm-color)
 
-;;; Part of Emacs
+(modify-syntax-entry ?_ "w" shell-mode-syntax-table)
+(modify-syntax-entry ?- "w" shell-mode-syntax-table)
+
 ;; (require 'ansi-color)
 
 ;;; `shell` uses (pop-to-buffer buffer) instead of (switch-to-buffer buffer)

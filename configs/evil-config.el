@@ -68,13 +68,11 @@
     ;;; substitution works on all matches unless the 'g' pattern is specified, then is
     ;;; works only on the first match.
     evil-ex-substitute-global t
-    evil-ex-hl-skip-major-mode-list (list 'pdf-view-mode 'doc-view-mode)
+    evil-ex-hl-skip-major-mode-list (list 'image-mode 'pdf-view-mode 'doc-view-mode)
     )
-
   ;;; So far color does not work, the color preserved from the last cursor look.
   (evil-set-cursor-color "#ff6c6b")
   (evil-set-cursor '("#ff6c6b" bar))
-
   (setq-default
     evil-shift-width 2
     ;;; If nil then * and # search for words otherwise for symbols.
