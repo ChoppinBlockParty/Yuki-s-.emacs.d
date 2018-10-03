@@ -7,9 +7,11 @@ Build Emacs from source
 -----------------------
 
 ``` shell
+git https://github.com/emacs-mirror/emacs.git
+git checkout emacs-26
 sudo ./tools/install-prerequisits.sh
-git 
-sudo ./tools/install-prerequisits.sh
+sudo ./tools/build-emacs.sh /opt/emacs
+ln -s /opt/emacs ~/bin
 ```
 
 Packages

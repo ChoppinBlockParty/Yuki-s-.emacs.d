@@ -1,89 +1,6 @@
 ;;; shell-config --- Configures eshell and shell modes
 ;;; Commentary:
 ;;; Code:
-(use-package eshell
-  :after (counsel)
-  :config
-  ;; use helm to list eshell history
-  ;; (add-hook 'eshell-mode-hook
-  ;;         #'(lambda ()
-  ;;             (substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
-
-  (defconst evil-collection-eshell-maps '(eshell-mode-map))
-
-  (defun evil-collection-eshell-next-prompt ()
-  "`evil' wrapper around `eshell-next-prompt'."
-  (when (get-text-property (point) 'read-only)
-      ;; If at end of prompt, `eshell-next-prompt' will not move, so go backward.
-      (beginning-of-line)
-      (eshell-next-prompt 1)))
-
-  (defun evil-collection-eshell-next-prompt-on-insert ()
-    "Go to next prompt on `evil' replace/insert enter."
-    (dolist (hook '(evil-replace-state-entry-hook evil-insert-state-entry-hook))
-      (add-hook hook 'evil-collection-eshell-next-prompt nil t)
-      )
-    )
-
-  (defun my-evil-eshell-setup ()
-    ""
-    ;; (eshell-cmpl-initialize)
-    ;; (define-key eshell-mode-map [remap eshell-pcomplete] 'helm-esh-pcomplete)
-    (evil-collection-eshell-next-prompt-on-insert)
-    )
-
-  (defun evil-collection-eshell-interrupt-process ()
-    "Interrupt `eshell' process and enter insert state."
-    (interactive)
-    (eshell-interrupt-process)
-    (evil-insert t)
-    )
-
-  ;;; `eshell-mode-map' is reset when Eshell is initialized in `eshell-mode'. We
-  ;;; need to add bindings to `eshell-first-time-mode-hook'.
-  (defun evil-collection-eshell-setup-keys ()
-    "Set up `evil' bindings for `eshell'."
-    ;; (define-key eshell-mode-map (kbd "C-r") 'helm-eshell-history)
-    (evil-define-key 'normal 'eshell-mode-map
-      ;; (kbd "C-r") 'helm-eshell-history
-      "[" 'eshell-previous-input
-      "]" 'eshell-next-input
-      (kbd "C-k") 'eshell-previous-input
-      (kbd "C-j") 'eshell-next-input
-      (kbd "M-k") 'eshell-previous-input
-      (kbd "M-j") 'eshell-next-input
-      "gk" 'eshell-previous-input
-      "gj" 'eshell-next-input
-      "0" 'eshell-bol
-      "^" 'eshell-bol
-      (kbd "M-h") 'eshell-backward-argument
-      (kbd "M-l") 'eshell-forward-argument
-      (kbd "<return>") 'eshell-send-input
-      (kbd "C-c C-c") 'evil-collection-eshell-interrupt-process)
-    (evil-define-key 'insert 'eshell-mode-map
-      ;; (kbd "C-r") 'helm-eshell-history
-      (kbd "C-k") 'eshell-previous-input
-      (kbd "C-j") 'eshell-next-input
-      (kbd "M-k") 'eshell-previous-input
-      (kbd "M-j") 'eshell-next-input
-      (kbd "C-h") 'eshell-backward-argument
-      (kbd "C-l") 'eshell-forward-argument)
-    (evil-define-key 'visual 'shell-mode-map
-      ;; TODO: This does not work with `evil-visual-line'.
-      (kbd "C-k") 'eshell-previous-input
-      (kbd "C-j") 'eshell-next-input
-      (kbd "M-k") 'eshell-previous-input
-      (kbd "M-j") 'eshell-next-input
-      "gk" 'eshell-previous-input
-      "gj" 'eshell-next-input
-      "0" 'eshell-bol
-      "^" 'eshell-bol)
-    )
-
-  (add-hook 'eshell-mode-hook 'my-evil-eshell-setup)
-  (add-hook 'eshell-first-time-mode-hook 'evil-collection-eshell-setup-keys)
-  )
-
 (with-eval-after-load 'counsel
 (with-eval-after-load 'helm
 (defun my-shell ()
@@ -160,7 +77,7 @@
 
   ;;; Stop the usual shell directory tracking
   (shell-dirtrack-mode 0)
-  (set-variable 'dirtrack-list '("[[:blank:][:cntrl:]]+\\[38;5;81m\\([^[:cntrl:]]+\\)[[:cntrl:]]\\[39m$" 1 nil))
+  (set-variable 'dirtrack-list '("[[:blank:][:cntrl:]]+[[:cntrl:]]\\[38;5;81m\\([^[:cntrl:]]+\\)[[:cntrl:]]\\[39m$" 1 nil))
   ;;; Enable alternative tracking strategy
   (dirtrack-mode 1)
   (add-hook 'comint-preoutput-filter-functions 'dirtrack nil t)

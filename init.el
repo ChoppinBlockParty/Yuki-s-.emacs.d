@@ -52,6 +52,7 @@
 (require 'rainbow-mode-config)
 (require 'magit-config)
 (require 'pdf-config)
+(require 'org-config)
 (require 'file-modes-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver

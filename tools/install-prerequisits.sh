@@ -1,6 +1,9 @@
 #! /usr/bin/env bash
 
 packages=(
+  ### clang compiler
+  llvm-7
+
   ### Required for pdf-tools
   zlib1g-dev
   libpoppler-glib-dev
