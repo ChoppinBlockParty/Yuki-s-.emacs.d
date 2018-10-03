@@ -99,7 +99,10 @@
   )
 
 (require 'comint)
-(use-package xterm-color :ensure t)
+;;; For better shell directory tracking, used below
+(require 'dirtrack)
+;;; Amazing xterm-256color package
+(use-package xterm-color)
 
 ;;; Part of Emacs
 ;; (require 'ansi-color)
@@ -152,8 +155,28 @@
   (setq comint-input-ring-separator "\n: \\([0-9]+\\):\\([0-9]+\\);")
 
   (comint-read-input-ring nil)
+
+  ;;; Stop the usual shell directory tracking
+  (shell-dirtrack-mode 0)
+  (set-variable 'dirtrack-list '("[[:blank:][:cntrl:]]+\\[38;5;81m\\([^[:cntrl:]]+\\)[[:cntrl:]]\\[39m$" 1 nil))
+  ;;; Enable alternative tracking strategy
+  (dirtrack-mode 1)
+  (add-hook 'comint-preoutput-filter-functions 'dirtrack nil t)
+
+  ;;; {{{ This is for fine tuning of the dirtrack regexp for the prompt
+  ;; (add-hook 'comint-preoutput-filter-functions
+  ;;           'dirtrack-filter-out-pwd-prompt nil t)
+  ;; (defun dirtrack-filter-out-pwd-prompt (string)
+  ;;   (print (format "!!!|%s|!!!" string))
+  ;;   (if (and (stringp string) (string-match (first dirtrack-list) string))
+  ;;     (print (format "@@@|%s|@@@" (match-string 1 string))))
+  ;;   string)
+  ;;; }}}
   )
 (add-hook 'shell-mode-hook 'my-shell-mode-hook)
+
+;;; popular pagers do not work in shell-mode
+(setenv "PAGER" "cat")
 
 ;; Replaces RET behavior
 (defun my-comint-send-input-maybe ()

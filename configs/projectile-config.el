@@ -1,8 +1,11 @@
 (use-package projectile
   :after (counsel)
+  :init
+  (defconst projectile-mode-line-prefix nil)
   :config
   (setq
-    projectile-mode-line nil
+    projectile-mode-line-fn nil
+    projectile-dynamic-mode-line nil
    ;; automatically dired in projectile-switch-project
     projectile-switch-project-action 'projectile-dired
     projectile-completion-system 'ivy

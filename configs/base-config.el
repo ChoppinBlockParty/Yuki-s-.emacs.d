@@ -9,6 +9,8 @@
 (scroll-bar-mode -1)
 ;;; Disable menu bar for all (trying this out)
 (menu-bar-mode -1)
+;;; No dialog boxes, rather show message in minibuffer
+(setq use-dialog-box nil)
 
 ;;; Break long lines at word boundaries
 (visual-line-mode t)
@@ -260,10 +262,10 @@
   "Format buffer."
   (interactive)
   (cond
-    ((equal major-mode 'go-mode)      (gofmt))
-    ((equal major-mode 'c++-mode)     (clang-format-buffer))
-    ((equal major-mode 'c-mode)       (clang-format-buffer))
-    ((equal major-mode 'proto-mode)   (clang-format-buffer))
+    ((equal major-mode 'go-mode)         (gofmt))
+    ((equal major-mode 'c++-mode)        (clang-format-buffer))
+    ((equal major-mode 'c-mode)          (clang-format-buffer))
+    ((equal major-mode 'protobuf-mode)   (clang-format-buffer))
     (t nil))
   )
 
