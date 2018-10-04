@@ -1,7 +1,9 @@
 Yuki's .emacs.d
 ===============
 
-After 8 years of Vim, I have finally switched to Emacs. The only regret I have is that I had not done this sooner. Emacs has everything that Vim has and much more. All Vim states (normal, visual, operator, etc.), search (`/`), commands (`:`, including substitution `:s/...`) are already in Emacs, just enable glorious [evil](https://github.com/emacs-evil/evil) package.
+After 8 years of Vim, I have finally switched to Emacs. The only regret I have is that I had not done this sooner. Emacs has everything that Vim has and much more.
+
+All Vim states (normal, visual, operator, etc.), search (`/`), commands (`:`, including substitution `:s/...`) are already in Emacs, just enable glorious [evil](https://github.com/emacs-evil/evil) package.
 
 Here is a video that gives quite good reasoning why Vim is even better inside Emacs.
 
@@ -9,6 +11,8 @@ Here is a video that gives quite good reasoning why Vim is even better inside Em
 
 Build Emacs from source
 -----------------------
+
+Every new Emacs release is better than the previous one, I prefer the latest Emacs. Here is how I build Emacs from source on Ubuntu (see the scripts inside [tools](tools)).
 
 ``` shell
 git https://github.com/emacs-mirror/emacs.git
