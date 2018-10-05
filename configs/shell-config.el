@@ -57,8 +57,8 @@
   (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)
   ;;; For ANSI colors
   ;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-  ;;; Removes face inherited from minibuffer
-  (face-remap-set-base 'comint-highlight-prompt :inherit nil)
+  ;;; Removes face inherited from minibuffer. FIXME: Do I need it?
+  ;; (face-remap-set-base 'comint-highlight-prompt)
   ;;; You can highlight some text based on regexp (useful to see "OK" or warnings):
   ;; (add-hook 'shell-mode-hook (lambda () (highlight-regexp "\\[OK\\]" "hi-green-b")))
   ;;; Make URLs clickable

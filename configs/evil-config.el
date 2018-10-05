@@ -509,17 +509,8 @@
   (my-evil-2-modes-define-key "C-DEL" (my-swiper-with-initial-input #'swiper-all))
   (my-evil-2-modes-define-key "C-<backspace>" (my-swiper-with-initial-input #'swiper-all))
 
-  (my-evil-2-modes-define-key "SPC i r" 'ivy-resume)
-  (my-evil-2-modes-define-key "SPC u g" 'magit-status)
-  (my-evil-2-modes-define-key "SPC u m b" 'magit-blame)
-  (my-evil-2-modes-define-key "SPC u m l" 'magit-log)
   (my-evil-2-modes-define-key "SPC u h" 'evil-ex-nohighlight)
-  (my-evil-2-modes-define-key "SPC u r r" 'rg)
-  (my-evil-2-modes-define-key "SPC u r p" 'rg-project)
-  (my-evil-2-modes-define-key "SPC u r d" 'rg-dwim)
-  (my-evil-2-modes-define-key "SPC u r l" 'rg-literal)
   (my-evil-2-modes-define-key "SPC u s" 'my-shell)
-  (my-evil-2-modes-define-key "SPC u ?" 'counsel-apropos)
   )
 
 (use-package evil-nerd-commenter

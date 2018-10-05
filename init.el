@@ -29,6 +29,7 @@
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'evil-config)
 (require 'generic-config)
+(require 'global-key-binding-config)
 (require 'all-the-icons-config)
 (require 'window-numbering-config)
 (require 'minibuffer-config)

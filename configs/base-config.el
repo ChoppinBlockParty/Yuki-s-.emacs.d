@@ -251,6 +251,7 @@
 
 (defconst my-markup-modes-hook-list
   (list
+    'fundamental-mode-hook
     'git-commit-mode-hook
     'markdown-mode-hook
     'latex-mode-hook
