@@ -2,278 +2,331 @@
 ;;; Commentary:
 ;;; Code:
 
-;;; When you choose a directory to visit, it is normally visited in a new buffer – the
-;;; Dired buffer you chose it in is not deleted.
-;;; Disable this behavior by disabling `dired-find-alternate-file`.
-(put 'dired-find-alternate-file 'disabled nil)
-
-;; (use-package dired-x
-;;   :ensure nil
-;;   :init
-;;   (add-hook 'dired-load-hook (lambda() (load "dired-x")))
-;;   )
-;; (use-package dired-subtree
-;;   :config
-;;   )
-
-(defun my-configure-dired ()
-  "Setup dired and dired-x. For use with dired-mode-hook."
-  ; (dired-omit-mode 1)
-  (dired-hide-details-mode t)
-  )
-
-(add-hook 'dired-mode-hook 'my-configure-dired)
-
-(setq dired-listing-switches "-kABhl --group-directories-first")
-
-(defun my-dired-up-directory ()
-  "Take dired up one directory, but behave like dired-find-alternate-file"
-  (interactive)
-  (let ((old (current-buffer)))
-    (dired-up-directory)
-    (kill-buffer old)))
-
-(defun my-dired-next-line (count)
-  "Move to next line, always staying on the dired filename."
-  (interactive "p")
-  (dired-next-line count)
-  (dired-move-to-filename))
-
-(defun my-dired-previous-line (count)
-  "Move to previous line, always staying on the dired filename."
-  (interactive "p")
-  (dired-previous-line count)
-  (dired-move-to-filename))
-
-(defun my-dired-interact-with-file ()
-  "Interact with a dired file!"
-  (interactive)
-  (let ((this-file (dired-get-file-for-visit)))
-    (if (file-directory-p this-file)
-        (dired-maybe-insert-subdir this-file)
-      (dired-find-file))))
-
-(defun my-dired-at-title ()
-  "Returns the current dir if point is at the title of a directory in dired. Otherwise, returns nil."
-  (interactive)
-  (let* ((cur-dir (dired-current-directory))
-	 (hidden-p (dired-subdir-hidden-p cur-dir))
-	 (elt (assoc cur-dir dired-subdir-alist))
-         (begin-pos (save-excursion
-                      (goto-char (dired-get-subdir-min elt))
-                      (point)))
-         (end-pos (save-excursion
-         (goto-char (dired-get-subdir-min elt))
-         (skip-chars-forward "^\n\r")
-         (point)))
-         (at-title (and (> (+ 1 (point)) begin-pos)
-                        (< (+ 1 (point)) end-pos)))
-         buffer-read-only)
-        (if at-title elt nil)))
-
-(defun my-dired-remove-from-buffer ()
-  (interactive)
-  (if (my-dired-at-title)
-      (dired-kill-subdir)))
-
-(defun create-new-file (file-list)
-  (defun exsitp-untitled-x (file-list cnt)
-    (while (and (car file-list) (not (string= (car file-list) (concat "untitled" (number-to-string cnt) ".txt"))))
-      (setq file-list (cdr file-list)))
-    (car file-list))
-
-  (defun exsitp-untitled (file-list)
-    (while (and (car file-list) (not (string= (car file-list) "untitled.txt")))
-      (setq file-list (cdr file-list)))
-    (car file-list))
-
-  (if (not (exsitp-untitled file-list))
-      "untitled.txt"
-    (let ((cnt 2))
-      (while (exsitp-untitled-x file-list cnt)
-        (setq cnt (1+ cnt)))
-      (concat "untitled" (number-to-string cnt) ".txt"))))
-
-(defun my-dired-create-file (file)
-  "Create a new file in current dire directory. FILE to create."
-  (interactive
-    (list (read-file-name "Create file: " (dired-current-directory) ))
+(use-package dired
+  :ensure nil
+  :init
+  (defvar dired-mode-map
+    ;; This looks ugly when substitute-command-keys uses C-d instead d:
+    ;;  (define-key dired-mode-map "\C-d" 'dired-flag-file-deletion)
+    (let ((map (make-keymap)))
+      (set-keymap-parent map special-mode-map)
+      map)
+    "Local keymap for Dired mode buffers.")
+  :config
+  (setq
+    dired-listing-switches "-Ahl --group-directories-first"
     )
-  (write-region "" nil (expand-file-name file) t)
-  (dired-add-file file)
-  (revert-buffer)
-  (dired-goto-file (expand-file-name file))
+
+  ;;; When you choose a directory to visit, it is normally visited in a new buffer – the
+  ;;; Dired buffer you chose it in is not deleted.
+  ;;; Disable this behavior by disabling `dired-find-alternate-file`.
+  (put 'dired-find-alternate-file 'disabled nil)
+
+  (defun my-dired-up-directory ()
+    "Take dired up one directory, but behave like dired-find-alternate-file."
+    (interactive)
+    (let ((old (current-buffer)))
+      (dired-up-directory)
+      (kill-buffer old)))
+
+  (defun my-dired-create-file (file)
+    "Create a file called FILE. If FILE already exists, signal an error."
+    (interactive (list (read-file-name "Create file: " (dired-current-directory))))
+    (let* ((expanded (expand-file-name file))
+           (try expanded)
+           (dir (directory-file-name (file-name-directory expanded)))
+           new)
+          (if (file-exists-p expanded)
+              (error "Cannot create file %s: file exists" expanded)
+              ;; Find the topmost nonexistent parent dir (variable `new')
+              (while (and try (not (file-exists-p try)) (not (equal new try)))
+                (setq new try
+                      try (directory-file-name (file-name-directory try))))
+              (when (not (file-exists-p dir)) (make-directory dir t))
+              (write-region "" nil expanded t)
+              (when new
+                (dired-add-file new)
+                (dired-revert)
+                )
+              )
+          )
+    )
+
+  (defun my-dired-create-directory (directory)
+    "Create a directory called DIRECTORY.
+  Parent directories of DIRECTORY are created as needed.
+  If DIRECTORY already exists, signal an error."
+    (interactive
+     (list (read-file-name "Create directory: " (dired-current-directory))))
+    (let* ((expanded (directory-file-name (expand-file-name directory)))
+           (try expanded)
+           new)
+      (if (file-exists-p expanded)
+          (error "Cannot create directory %s: file exists" expanded))
+          ;; Find the topmost nonexistent parent dir (variable `new')
+          (while (and try (not (file-exists-p try)) (not (equal new try)))
+            (setq new try
+                  try (directory-file-name (file-name-directory try)))
+            )
+          (make-directory expanded t)
+          (when new
+                (dired-add-file new)
+                (dired-revert)
+                )
+      )
+    )
+
+  (evil-define-key 'normal dired-mode-map
+      "q" 'quit-window
+      "j" 'dired-next-line
+      "k" 'dired-previous-line
+      [mouse-2] 'dired-mouse-find-file-other-window
+      [follow-link] 'mouse-face
+      ;; Commands to mark or flag certain categories of files
+      ;; "#" 'dired-flag-auto-save-files
+      ;; "." 'dired-clean-directory
+      ;; "~" 'dired-flag-backup-files
+      ;;; Byte compile marked (or next ARG) Emacs Lisp files.
+      ;; "B" 'dired-do-byte-compile
+      ;; "A" 'dired-do-find-regexp
+      "C" 'dired-do-copy
+      "D" 'dired-do-delete
+      "R" 'dired-do-rename
+      ;; "gG" 'dired-do-chgrp ;; FIXME: This can probably live on a better binding.
+      ;; "H" 'dired-do-hardlink
+      ;; "L" 'dired-do-load
+      "zM" 'dired-do-chmod
+      "zO" 'dired-do-chown
+      ;; "P" 'dired-do-print
+      ;; "Q" 'dired-do-find-regexp-and-replace
+      ;; "S" 'dired-do-symlink
+      ;; "T" 'dired-do-touch
+      ;; "X" 'dired-do-shell-command
+      ;; "Z" 'dired-do-compress
+      ;; "c" 'dired-do-compress-to
+      ;; "!" 'dired-do-shell-command
+      ;; "&" 'dired-do-async-shell-command
+      ;; Comparison commands
+      "zc" 'dired-diff
+      ;; Tree Dired commands
+      ;; (kbd "M-C-?") 'dired-unmark-all-files
+      ;; (kbd "M-C-d") 'dired-tree-down
+      ;; (kbd "M-C-u") 'dired-tree-up
+      ;; (kbd "M-C-n") 'dired-next-subdir
+      ;; (kbd "M-C-p") 'dired-prev-subdir
+      ;; move to marked files
+      ;; (kbd "M-{") 'dired-prev-marked-file
+      ;; (kbd "M-}") 'dired-next-marked-file
+      ;; Make all regexp commands share a `%' prefix:
+      ;; We used to get to the submap via a symbol dired-regexp-prefix,
+      ;; but that seems to serve little purpose, and copy-keymap
+      ;; does a better job without it.
+      ;; "1" nil
+      ;; "1u" 'dired-upcase
+      ;; "1l" 'dired-downcase
+      ;; "1d" 'dired-flag-files-regexp
+      ;; "1g" 'dired-mark-files-containing-regexp
+      ;; "1m" 'dired-mark-files-regexp
+      ;; "1r" 'dired-do-rename-regexp
+      ;; "1C" 'dired-do-copy-regexp
+      ;; "1H" 'dired-do-hardlink-regexp
+      ;; "1R" 'dired-do-rename-regexp
+      ;; "1S" 'dired-do-symlink-regexp
+      ;; "1&" 'dired-flag-garbage-files
+      ;; mark
+      "z" nil
+      ;; "z*" 'dired-mark-executables
+      ;; "z/" 'dired-mark-directories
+      ;; "z@" 'dired-mark-symlinks
+      ;; "z%" 'dired-mark-files-regexp
+      ;; "z(" 'dired-mark-sexp
+      "z." 'dired-mark-extension
+      ;; "zO" 'dired-mark-omitted
+      ;; "zc"  'dired-change-marks
+      ;; "zs" 'dired-mark-subdir-files
+      "s"  'dired-mark
+      "u"  'dired-unmark
+      "U"  'dired-unmark-all-marks
+      "zd" 'dired-hide-details-mode
+      "zt" 'dired-toggle-marks
+      ;; (kbd "* <delete>") 'dired-unmark-backward
+      ;; (kbd "* C-n") 'dired-next-marked-file
+      ;; (kbd "* C-p") 'dired-prev-marked-file
+      ;; Lower keys for commands not operating on all the marked files
+      "d" 'dired-flag-file-deletion
+      (kbd "C-m") 'dired-find-file
+      "gr" 'revert-buffer
+      "zww" 'dired-toggle-read-only
+      ;; "I"   'dired-maybe-insert-subdir
+      ;; "K"   'dired-do-kill-lines
+      ;; "r" 'dired-do-redisplay
+      "go" 'browse-url-of-dired-file
+      "x" 'dired-do-flagged-delete
+      "ga" 'dired-show-file-type ;; FIXME: This could probably go on a better key.
+      "gf" 'find-file
+      "gn" 'my-dired-create-file
+      "gN" 'my-dired-create-directory
+      "Y"  'dired-copy-filename-as-kill
+      ;;; open
+      "o" (lambda () (interactive) (dired-subtree-toggle) (dired-revert))
+      (kbd "<return>") 'dired-find-file
+      (kbd "S-<return>") 'dired-find-file-other-window
+      ;;; Like preview
+      (kbd "M-<return>") 'dired-display-file
+      ;; "gO" 'dired-find-file-other-window
+      ;; "go" 'dired-view-file
+      ;; sort
+      ;; "o" 'dired-sort-toggle-or-edit
+      ;; moving
+      ;; "gj" 'dired-next-dirline
+      ;; "gk" 'dired-prev-dirline
+      "[" 'dired-prev-dirline
+      "]" 'dired-next-dirline
+      "<" 'my-dired-up-directory
+      ">" 'dired-view-file
+      [?\S-\ ] 'dired-previous-line
+      [remap next-line] 'dired-next-line
+      [remap previous-line] 'dired-previous-line
+      ;; hiding
+      "g$" 'dired-hide-subdir ;; FIXME: This can probably live on a better binding.
+      (kbd "M-$") 'dired-hide-all
+      "(" 'dired-hide-details-mode
+      ;; isearch
+      (kbd "M-s a C-s")   'dired-do-isearch
+      (kbd "M-s a M-C-s") 'dired-do-isearch-regexp
+      (kbd "M-s f C-s")   'dired-isearch-filenames
+      (kbd "M-s f M-C-s") 'dired-isearch-filenames-regexp
+      ;; misc
+      [remap read-only-mode] 'dired-toggle-read-only
+      "g?" 'dired-summary
+      (kbd "<delete>") 'dired-unmark-backward
+      [remap undo] 'dired-undo
+      [remap advertised-undo] 'dired-undo
+      ;; thumbnail manipulation (image-dired)
+      (kbd "C-t d") 'image-dired-display-thumbs
+      (kbd "C-t t") 'image-dired-tag-files
+      (kbd "C-t r") 'image-dired-delete-tag
+      (kbd "C-t j") 'image-dired-jump-thumbnail-buffer
+      (kbd "C-t i") 'image-dired-dired-display-image
+      (kbd "C-t x") 'image-dired-dired-display-external
+      (kbd "C-t a") 'image-dired-display-thumbs-append
+      (kbd "C-t .") 'image-dired-display-thumb
+      (kbd "C-t c") 'image-dired-dired-comment-files
+      (kbd "C-t f") 'image-dired-mark-tagged-files
+      (kbd "C-t C-t") 'image-dired-dired-toggle-marked-thumbs
+      (kbd "C-t e") 'image-dired-dired-edit-comment-and-tags
+      ;; encryption and decryption (epa-dired)
+      ;; ";d" 'epa-dired-do-decrypt
+      ;; ";v" 'epa-dired-do-verify
+      ;; ";s" 'epa-dired-do-sign
+      ;; ";e" 'epa-dired-do-encrypt
+      )
   )
 
+(use-package wdired
+  :ensure nil
+  :init
+  (defvar wdired-mode-map
+    (let ((map (make-sparse-keymap)))
+      map)
+    "Keymap used in `wdired-mode'.")
+  :config
+  (setq
+    wdired-allow-to-change-permissions t
+    )
+  (evil-set-initial-state 'wdired-mode 'normal)
 
-(with-eval-after-load 'evil
-  ;;
-  ;; These are plain ol' dired bindings, kept here for reference and future
-  ;; modification.
-  ;;
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (evil-define-key nil wdired-mode-map [remap evil-write] 'wdired-finish-edit)
 
-  (evil-define-key 'normal dired-mode-map "#" 'dired-flag-auto-save-files)
-  (evil-define-key 'normal dired-mode-map "." 'dired-clean-directory)
-  (evil-define-key 'normal dired-mode-map "~" 'dired-flag-backup-files)
-  ;; Upper case keys (except !) for operating on the marked files
-  (evil-define-key 'normal dired-mode-map "A" 'dired-do-search)
-  (evil-define-key 'normal dired-mode-map "C" 'dired-do-copy)
-  (evil-define-key 'normal dired-mode-map "B" 'dired-do-byte-compile)
-  (evil-define-key 'normal dired-mode-map "D" 'dired-do-delete)
-  (evil-define-key 'normal dired-mode-map "G" 'dired-do-chgrp)
-  (evil-define-key 'normal dired-mode-map "H" 'dired-do-hardlink)
-  (evil-define-key 'normal dired-mode-map "L" 'dired-do-load)
-  (evil-define-key 'normal dired-mode-map "M" 'dired-do-chmod)
-  (evil-define-key 'normal dired-mode-map "O" 'dired-do-chown)
-  (evil-define-key 'normal dired-mode-map "P" 'dired-do-print)
-  (evil-define-key 'normal dired-mode-map "Q" 'dired-do-query-replace-regexp)
-  (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-  (evil-define-key 'normal dired-mode-map "S" 'dired-do-symlink)
-  (evil-define-key 'normal dired-mode-map "T" 'dired-do-touch)
-  (evil-define-key 'normal dired-mode-map "X" 'dired-do-shell-command)
-  (evil-define-key 'normal dired-mode-map "Z" 'dired-do-compress)
-  (evil-define-key 'normal dired-mode-map "!" 'dired-do-shell-command)
-  (evil-define-key 'normal dired-mode-map "&" 'dired-do-async-shell-command)
-  ;; Comparison commands
-  (evil-define-key 'normal dired-mode-map "=" 'dired-diff)
-  ;; Tree Dired commands
-  (evil-define-key 'normal dired-mode-map "\M-\C-?" 'dired-unmark-all-files)
-  (evil-define-key 'normal dired-mode-map "\M-\C-d" 'dired-tree-down)
-  (evil-define-key 'normal dired-mode-map "\M-\C-u" 'dired-tree-up)
-  (evil-define-key 'normal dired-mode-map "\M-\C-n" 'dired-next-subdir)
-  (evil-define-key 'normal dired-mode-map "\M-\C-p" 'dired-prev-subdir)
-  ;; move to marked files
-  (evil-define-key 'normal dired-mode-map "\M-{" 'dired-prev-marked-file)
-  (evil-define-key 'normal dired-mode-map "\M-}" 'dired-next-marked-file)
-  ;; Make all regexp commands share a `%' prefix:
-  ;; We used to get to the submap via a symbol dired-regexp-prefix,
-  ;; but that seems to serve little purpose, and copy-keymap
-  ;; does a better job without it.
-  (evil-define-key 'normal dired-mode-map "%" nil)
-  (evil-define-key 'normal dired-mode-map "%u" 'dired-upcase)
-  (evil-define-key 'normal dired-mode-map "%l" 'dired-downcase)
-  (evil-define-key 'normal dired-mode-map "%d" 'dired-flag-files-regexp)
-  (evil-define-key 'normal dired-mode-map "%g" 'dired-mark-files-containing-regexp)
-  (evil-define-key 'normal dired-mode-map "%m" 'dired-mark-files-regexp)
-  (evil-define-key 'normal dired-mode-map "%r" 'dired-do-rename-regexp)
-  (evil-define-key 'normal dired-mode-map "%C" 'dired-do-copy-regexp)
-  (evil-define-key 'normal dired-mode-map "%H" 'dired-do-hardlink-regexp)
-  (evil-define-key 'normal dired-mode-map "%R" 'dired-do-rename-regexp)
-  (evil-define-key 'normal dired-mode-map "%S" 'dired-do-symlink-regexp)
-  (evil-define-key 'normal dired-mode-map "%&" 'dired-flag-garbage-files)
-  ;; Commands for marking and unmarking.
-  (evil-define-key 'normal dired-mode-map "*" nil)
-  (evil-define-key 'normal dired-mode-map "**" 'dired-mark-executables)
-  (evil-define-key 'normal dired-mode-map "*/" 'dired-mark-directories)
-  (evil-define-key 'normal dired-mode-map "*@" 'dired-mark-symlinks)
-  (evil-define-key 'normal dired-mode-map "*%" 'dired-mark-files-regexp)
-  (evil-define-key 'normal dired-mode-map "*c" 'dired-change-marks)
-  (evil-define-key 'normal dired-mode-map "*s" 'dired-mark-subdir-files)
-  (evil-define-key 'normal dired-mode-map "*m" 'dired-mark)
-  (evil-define-key 'normal dired-mode-map "*u" 'dired-unmark)
-  (evil-define-key 'normal dired-mode-map "*?" 'dired-unmark-all-files)
-  (evil-define-key 'normal dired-mode-map "*!" 'dired-unmark-all-marks)
-  (evil-define-key 'normal dired-mode-map "U" 'dired-unmark-all-marks)
-  (evil-define-key 'normal dired-mode-map "*\177" 'dired-unmark-backward)
-  (evil-define-key 'normal dired-mode-map "*\C-n" 'dired-next-marked-file)
-  (evil-define-key 'normal dired-mode-map "*\C-p" 'dired-prev-marked-file)
-  (evil-define-key 'normal dired-mode-map "*t" 'dired-toggle-marks)
-  ;; Lower keys for commands not operating on all the marked files
-  (evil-define-key 'normal dired-mode-map "a" 'dired-find-alternate-file)
-  (evil-define-key 'normal dired-mode-map "d" 'dired-flag-file-deletion)
-  (evil-define-key 'normal dired-mode-map "e" 'dired-find-file)
-  (evil-define-key 'normal dired-mode-map "f" 'dired-find-file)
-  (evil-define-key 'normal dired-mode-map "\C-m" 'dired-find-file)
-  (put 'dired-find-file :advertised-binding "\C-m")
-  ; (evil-define-key 'normal dired-mode-map "g" 'revert-buffer)
-  (evil-define-key 'normal dired-mode-map "i" 'dired-maybe-insert-subdir)
-  (evil-define-key 'normal dired-mode-map "j" 'dired-goto-file)
-  (evil-define-key 'normal dired-mode-map "k" 'dired-do-kill-lines)
-  (evil-define-key 'normal dired-mode-map "l" 'dired-do-redisplay)
-  (evil-define-key 'normal dired-mode-map "m" 'dired-mark)
-  (evil-define-key 'normal dired-mode-map "n" 'dired-next-line)
-  (evil-define-key 'normal dired-mode-map "o" 'dired-find-file-other-window)
-  (evil-define-key 'normal dired-mode-map "\C-o" 'dired-display-file)
-  (evil-define-key 'normal dired-mode-map "p" 'dired-previous-line)
-  (evil-define-key 'normal dired-mode-map "s" 'dired-sort-toggle-or-edit)
-  (evil-define-key 'normal dired-mode-map "t" 'dired-toggle-marks)
-  (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
-  (evil-define-key 'normal dired-mode-map "v" 'dired-view-file)
-  (evil-define-key 'normal dired-mode-map "w" 'dired-copy-filename-as-kill)
-  (evil-define-key 'normal dired-mode-map "x" 'dired-do-flagged-delete)
-  (evil-define-key 'normal dired-mode-map "y" 'dired-show-file-type)
-  (evil-define-key 'normal dired-mode-map "+" 'dired-create-directory)
-  ;; moving
-  (evil-define-key 'normal dired-mode-map "<" 'dired-prev-dirline)
-  (evil-define-key 'normal dired-mode-map ">" 'dired-next-dirline)
-  (evil-define-key 'normal dired-mode-map "^" 'dired-up-directory)
-  (evil-define-key 'normal dired-mode-map " "  'dired-next-line)
-  (evil-define-key 'normal dired-mode-map [remap next-line] 'dired-next-line)
-  (evil-define-key 'normal dired-mode-map [remap previous-line] 'dired-previous-line)
-  ;; hiding
-  (evil-define-key 'normal dired-mode-map "\M-$" 'dired-hide-all)
-  (evil-define-key 'normal dired-mode-map "(" 'dired-hide-details-mode)
-  ;; isearch
-  (evil-define-key 'normal dired-mode-map (kbd "M-s a C-s")   'dired-do-isearch)
-  (evil-define-key 'normal dired-mode-map (kbd "M-s a M-C-s") 'dired-do-isearch-regexp)
-  (evil-define-key 'normal dired-mode-map (kbd "M-s f C-s")   'dired-isearch-filenames)
-  (evil-define-key 'normal dired-mode-map (kbd "M-s f M-C-s") 'dired-isearch-filenames-regexp)
-  ;; misc
-  ;; `toggle-read-only' is an obsolete alias for `read-only-mode'
-  (evil-define-key 'normal dired-mode-map "?" 'dired-summary)
-  (evil-define-key 'normal dired-mode-map "\177" 'dired-unmark-backward)
-  (evil-define-key 'normal dired-mode-map [remap undo] 'dired-undo)
-  (evil-define-key 'normal dired-mode-map [remap advertised-undo] 'dired-undo)
-  ;; thumbnail manipulation (image-dired)
-  (evil-define-key 'normal dired-mode-map "\C-td" 'image-dired-display-thumbs)
-  (evil-define-key 'normal dired-mode-map "\C-tt" 'image-dired-tag-files)
-  (evil-define-key 'normal dired-mode-map "\C-tr" 'image-dired-delete-tag)
-  (evil-define-key 'normal dired-mode-map "\C-tj" 'image-dired-jump-thumbnail-buffer)
-  (evil-define-key 'normal dired-mode-map "\C-ti" 'image-dired-dired-display-image)
-  (evil-define-key 'normal dired-mode-map "\C-tx" 'image-dired-dired-display-external)
-  (evil-define-key 'normal dired-mode-map "\C-ta" 'image-dired-display-thumbs-append)
-  (evil-define-key 'normal dired-mode-map "\C-t." 'image-dired-display-thumb)
-  (evil-define-key 'normal dired-mode-map "\C-tc" 'image-dired-dired-comment-files)
-  (evil-define-key 'normal dired-mode-map "\C-tf" 'image-dired-mark-tagged-files)
-  (evil-define-key 'normal dired-mode-map "\C-t\C-t" 'image-dired-dired-toggle-marked-thumbs)
-  (evil-define-key 'normal dired-mode-map "\C-te" 'image-dired-dired-edit-comment-and-tags)
-  ;; encryption and decryption (epa-dired)
+  (evil-define-key 'normal wdired-mode-map
+    "ZQ" 'wdired-abort-changes
+    "ZZ" 'wdired-finish-edit
+    (kbd "<escape>") 'wdired-exit))
 
-  ;;
-  ;; My bindings.
-  ;; Replaces original dired binding (above).
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ; (define-key evil-normal-state-map "`" 'direx:jump-to-directory)
-  ;; (define-key evil-normal-state-map "`" 'dired-jump)
+(use-package dired-subtree)
+(use-package dired-collapse)
 
-  (evil-define-key 'normal dired-mode-map (kbd "C-j") 'dired-next-subdir)
-  (evil-define-key 'normal dired-mode-map (kbd "C-k") 'dired-prev-subdir)
-  (evil-define-key 'normal dired-mode-map "h" 'my-dired-up-directory)
-  (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
-  (evil-define-key 'normal dired-mode-map "L" 'dired-find-alternate-file)
-  (evil-define-key 'normal dired-mode-map "j" 'my-dired-next-line)
-  (evil-define-key 'normal dired-mode-map "k" 'my-dired-previous-line)
-  (evil-define-key 'normal dired-mode-map "a" 'ag-dired)
-  (evil-define-key 'normal dired-mode-map "o" 'dired-find-file)
-  (evil-define-key 'normal dired-mode-map (kbd "RET") 'dired-find-file)
-  (evil-define-key 'normal dired-mode-map "g" nil)
-  (evil-define-key 'normal dired-mode-map (kbd "g N") 'dired-create-directory)
-  (evil-define-key 'normal dired-mode-map (kbd "g n") 'my-dired-create-file)
-  (evil-define-key 'normal dired-mode-map "p" 'dired-display-file)
-  (evil-define-key 'normal dired-mode-map "v" 'dired-mark)
-  (evil-define-key 'normal dired-mode-map "V" 'dired-unmark-all-marks)
-  (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
-  (evil-define-key 'normal dired-mode-map "U" 'dired-toggle-marks)
-  (evil-define-key 'normal dired-mode-map "c" 'dired-create-directory)
-  (evil-define-key 'normal dired-mode-map "q" 'kill-this-buffer)
-  (evil-define-key 'normal dired-mode-map "/" 'evil-search-forward)
-  (evil-define-key 'normal dired-mode-map "n" 'evil-search-next)
-  (evil-define-key 'normal dired-mode-map "N" 'evil-search-previous)
-  (evil-define-key 'normal dired-mode-map (kbd "TAB") 'dired-hide-subdir)
-  (evil-define-key 'normal dired-mode-map (kbd "<backspace>") 'my-dired-remove-from-buffer)
-  (evil-define-key 'normal dired-mode-map "f" 'dired-find-file)
+(defface all-the-icons-dired-dir-face
+  '((((background dark)) :foreground "white")
+    (((background light)) :foreground "black"))
+  "Face for the directory icon"
+  :group 'all-the-icons-faces)
+
+(defcustom all-the-icons-dired-v-adjust 0.01
+  "The default vertical adjustment of the icon in the dired buffer."
+  :group 'all-the-icons
+  :type 'number)
+
+(defvar-local all-the-icons-dired-displayed nil
+  "Flags whether icons have been added.")
+
+(defun all-the-icons-dired--display ()
+  "Display the icons of files in a dired buffer."
+  (when (and (not all-the-icons-dired-displayed) dired-subdir-alist)
+    (setq-local all-the-icons-dired-displayed t)
+    (let ((inhibit-read-only t)
+          (remote-p (and (fboundp 'tramp-tramp-file-p) (tramp-tramp-file-p default-directory)))
+          (max (1- (dired-subdir-max)))
+          last
+          )
+          (save-excursion
+            (goto-char (point-min))
+            (setq last (point))
+            (dired-goto-next-file)
+            (while (and (not (= (point) last))
+                        (< (point) max))
+              (setq last (point))
+              (let ((filename (dired-get-filename 'verbatim t)))
+                (unless (member filename '("." ".."))
+                  (let ((filepath (dired-get-filename nil t)))
+                    (cond ((file-directory-p filepath)
+                           (let* ((matcher (all-the-icons-match-to-alist filename all-the-icons-dir-icon-alist))
+                                  (icon (cond
+                                    (remote-p
+                                    (all-the-icons-octicon "file-directory" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+                                    ((file-symlink-p filepath)
+                                    (all-the-icons-octicon "file-symlink-directory" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+                                    ((all-the-icons-dir-is-submodule filepath)
+                                    (all-the-icons-octicon "file-submodule" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+                                    ((file-exists-p (format "%s/.git" filepath))
+                                    (all-the-icons-octicon "repo" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+                                    (t (apply (car matcher) (list (cadr matcher) :face 'all-the-icons-dired-dir-face :v-adjust all-the-icons-dired-v-adjust))))))
+                                  (insert (concat icon " "))
+                             )
+                           )
+                          ((file-exists-p filepath)
+                           (insert (concat (all-the-icons-icon-for-file filename) " "))
+                           )
+                          (t nil)
+                          )
+                    )
+                  )
+                )
+              (forward-line 1)
+              ;;; Buffer has changed since we inserted an icon, update `max`
+              (setq max (1- (dired-subdir-max)))
+              (while (and (not (dired-move-to-filename)) (< (point) max))
+                (forward-line 1))
+              )
+            )
+          )
+    )
   )
+
+(defun all-the-icons-dired--reset (&optional _arg _noconfirm)
+  "Functions used as advice when redisplaying buffer."
+  (setq-local all-the-icons-dired-displayed nil))
+
+(defun all-the-icons-dired-mode-hook()
+  "Hook to setup all-the-icons."
+  (dired-hide-details-mode 1)
+  (dired-collapse-mode 1)
+  (add-hook 'dired-after-readin-hook 'all-the-icons-dired--display t t)
+  (all-the-icons-dired--display)
+  )
+(advice-add 'dired-revert :before #'all-the-icons-dired--reset)
+(add-hook 'dired-mode-hook #'all-the-icons-dired-mode-hook)
+
 
 (provide 'dired-config)
 ;;; dired-config.el ends here

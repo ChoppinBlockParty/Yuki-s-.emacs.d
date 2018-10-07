@@ -26,7 +26,6 @@
       (kbd "\\")      (neotree-make-executor :file-fn 'neo-open-file-vertical-split)
       (kbd "-")       (neotree-make-executor :file-fn 'neo-open-file-horizontal-split)
       (kbd "a")       (neotree-make-executor :file-fn 'neo-open-file-ace-window)
-      (kbd "d")       (neotree-make-executor :dir-fn 'neo-open-dired)
       (kbd "u")       'neotree-quick-look
       (kbd "q")       'neotree-hide
       (kbd "k")       'neotree-previous-line
@@ -35,13 +34,14 @@
       (kbd "h")       'neotree-select-up-node
       (kbd "l")       'neotree-enter
       (kbd "o")       'neotree-enter
-      (kbd "S")       'neotree-select-previous-sibling-node
-      (kbd "s")       'neotree-select-next-sibling-node
+      (kbd "}")       'neotree-select-previous-sibling-node
+      (kbd "{")       'neotree-select-next-sibling-node
       (kbd "O")       'neotree-open-file-in-system-application
       (kbd "C")       'neotree-create-node
       (kbd "D")       'neotree-delete-node
       (kbd "R")       'neotree-rename-node
       (kbd "g")       nil
+      (kbd "gd")       (neotree-make-executor :dir-fn  'neo-open-dired)
       (kbd "gr")      'neotree-refresh
       (kbd "gt")      'neotree-change-root
       (kbd "gf")      'find-file-other-window

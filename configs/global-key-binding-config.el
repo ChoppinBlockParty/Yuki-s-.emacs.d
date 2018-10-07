@@ -1,4 +1,4 @@
-;;; global-key-binding --- My global bindings
+;;; global-key-binding-config --- My global bindings
 ;;; Commentary:
 ;;; Code:
 
@@ -10,6 +10,7 @@
   (setq
     guide-key/guide-key-sequence '(
       "SPC u i"
+      "SPC u f"
       "SPC u m"
       "SPC u p"
       "SPC u r"
@@ -20,7 +21,6 @@
       ))
   ;; (setq guide-key/guide-key-sequence t)
   (setq
-    guide-key/idle-delay 0
     guide-key/popup-window-position 'bottom
     guide-key/text-scale-amount -1.1
     guide-key/recursive-key-sequence-flag t
@@ -43,6 +43,8 @@
 (my-evil-2-modes-define-key "SPC u i u"   'counsel-unicode-char)
 (my-evil-2-modes-define-key "SPC u i s"   'counsel-info-lookup-symbol)
 
+(my-evil-2-modes-define-key "SPC u f d"   'dired)
+
 (my-evil-2-modes-define-key "SPC u g"     'magit-status)
 (my-evil-2-modes-define-key "SPC u m b"   'magit-blame)
 (my-evil-2-modes-define-key "SPC u m d c" 'magit-diff-buffer-file-popup)
@@ -54,11 +56,11 @@
 (my-evil-2-modes-define-key "SPC u m p"   'magit-pull)
 (my-evil-2-modes-define-key "SPC u m s"   'magit-stash)
 
-(my-evil-2-modes-define-key "SPC u p d"   'projectile-find-dir)
+(my-evil-2-modes-define-key "SPC u p d"   'counsel-projectile-find-dir)
 (my-evil-2-modes-define-key "SPC u p g a" 'counsel-projectile-ag)
 (my-evil-2-modes-define-key "SPC u p g r" 'counsel-projectile-rg)
 (my-evil-2-modes-define-key "SPC u p r"   'projectile-recentf)
-(my-evil-2-modes-define-key "SPC u p s"   'projectile-switch-project)
+(my-evil-2-modes-define-key "SPC u p s"   'counsel-projectile-switch-project)
 
 (my-evil-2-modes-define-key "SPC u r r"   'rg)
 (my-evil-2-modes-define-key "SPC u r p"   'rg-project)
@@ -68,14 +70,14 @@
 (my-evil-2-modes-define-key "SPC c"       'ycmd-goto-definition)
 (my-evil-2-modes-define-key "SPC d"       'ycmd-goto-declaration)
 (my-evil-2-modes-define-key "SPC u y ."   'ycmd-goto)
+(my-evil-2-modes-define-key "SPC u y ?"   'ycmd-show-documentation)
 (my-evil-2-modes-define-key "SPC u y c"   'ycmd-close)
 (my-evil-2-modes-define-key "SPC u y C"   'ycmd-clear-compilation-flag-cache)
-(my-evil-2-modes-define-key "SPC u y f"   'ycmd-fixit)
 (my-evil-2-modes-define-key "SPC u y e"   'ycmd-goto-references)
+(my-evil-2-modes-define-key "SPC u y f"   'ycmd-fixit)
 (my-evil-2-modes-define-key "SPC u y i"   'ycmd-goto-include)
 (my-evil-2-modes-define-key "SPC u y l"   'ycmd-goto-implementation)
 (my-evil-2-modes-define-key "SPC u y m"   'ycmd-goto-imprecise)
-(my-evil-2-modes-define-key "SPC u y ?"   'ycmd-show-documentation)
 (my-evil-2-modes-define-key "SPC u y o"   'ycmd-open)
 (my-evil-2-modes-define-key "SPC u y O"   'ycmd-restart-semantic-server)
 (my-evil-2-modes-define-key "SPC u y r"   'ycmd-refactor-rename)
@@ -88,4 +90,4 @@
 
 
 (provide 'global-key-binding-config)
-;;; global-key-binding.el ends here
+;;; global-key-binding-config.el ends here

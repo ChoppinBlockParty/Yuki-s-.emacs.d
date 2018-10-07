@@ -4,10 +4,10 @@
 (setq special-mode-map
   (let ((map (make-sparse-keymap)))
     (evil-define-key 'normal map
-      "q" 'quit-window
+      "q"  'quit-window
       "gr" 'revert-buffer
       "gg" 'beginning-of-buffer
-      "G" 'end-of-buffer
+      "G"  'end-of-buffer
       )
     map))
 

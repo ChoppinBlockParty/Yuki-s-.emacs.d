@@ -25,9 +25,13 @@
 (setq use-package-always-ensure t)
 
 (require 'base-config)
+;;; Important enhancements to standard library `font-lock.el'
+;;; Fixes issues with all-the-icons
+(use-package font-lock+ :load-path "local/font-lock+")
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'evil-config)
+(require 'dired-config)
 (require 'generic-config)
 (require 'global-key-binding-config)
 (require 'all-the-icons-config)
@@ -47,7 +51,6 @@
 (require 'flycheck-config)
 (require 'flyspell-config)
 (require 'neotree-config)
-;; ;; (require 'dired-config)
 (require 'helm-config (concat user-emacs-directory "configs/helm-config.el"))
 (require 'ivy-config)
 (require 'rainbow-mode-config)

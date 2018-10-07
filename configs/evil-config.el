@@ -123,13 +123,17 @@
   (my-evil-all-modes-define-key "M-1" 'counsel-switch-to-shell-buffer)
   (my-evil-all-modes-define-key "M-2" 'my-switch-to-previous-window)
   (my-evil-all-modes-define-key "M-3" 'my-switch-to-previous-buffer)
+  (my-evil-all-modes-define-key "C-s" 'evil-write)
+  (my-evil-all-modes-define-key "C-q" 'kill-emacs)
+  (define-key evil-normal-state-map "ZZ" nil)
+  (define-key evil-normal-state-map "ZQ" nil)
 
   ;;; Only for testing emacs configuration, REMOVE ME
-  (my-evil-all-modes-define-key "C-q" 'kill-emacs)
   (defun run-emacs ()
     "Usefull for testing Emacs configuration."
     (interactive)
-    (start-process-shell-command "emacs" nil "emacs --debug-init ~/Others/Vim/Keybindings.py")
+    ;; (start-process-shell-command "emacs" nil "emacs --debug-init ~/Others/Vim/Keybindings.py")
+    (start-process-shell-command "emacs" nil "emacs --debug-init ~/Downloads/removemeplz/")
     )
   (my-evil-all-modes-define-key "C-1" 'run-emacs)
 
@@ -257,23 +261,18 @@
   (define-key evil-motion-state-map "}" 'evil-backward-paragraph)
 
   (define-key evil-normal-state-map "a"           'evil-append)
-
   (define-key evil-motion-state-map "h"           'evil-backward-char)
   (define-key evil-motion-state-map "j"           'evil-next-visual-line)
   (define-key evil-motion-state-map "k"           'evil-previous-visual-line)
   (define-key evil-motion-state-map "l"           'evil-forward-char)
   (define-key evil-motion-state-map (kbd "M-u")   'evil-scroll-down)
   (define-key evil-motion-state-map (kbd "M-i")   'evil-scroll-up)
+  (define-key evil-motion-state-map "gd"          'dired-jump)
 
   (define-key isearch-mode-map (kbd "<up>")   'isearch-ring-retreat)
   (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance)
   (define-key isearch-mode-map (kbd "M-k")    'isearch-ring-retreat)
   (define-key isearch-mode-map (kbd "M-j")    'isearch-ring-advance)
-  (define-key evil-ex-search-keymap (kbd "M-k") 'previous-history-element)
-  (define-key evil-ex-search-keymap (kbd "M-j") 'next-history-element)
-  (define-key evil-ex-search-keymap (kbd "C-k") 'previous-history-element)
-  (define-key evil-ex-search-keymap (kbd "C-j") 'next-history-element)
-  (define-key evil-ex-search-keymap (kbd "C-w") 'backward-kill-word)
 
   ;;; https://github.com/bling/evil-visualstar
   (defun evil-visualstar-begin-search (beg end direction)
@@ -319,7 +318,6 @@
     (setq evil-ex-search-direction 'forward)
     )
   (my-evil-2-modes-define-key "?" 'my-evil-ex-search-backward)
-  (my-evil-2-modes-define-key "C-s" 'evil-write)
 
   (my-evil-2-modes-define-key "M-h" 'evil-jump-backward)
   (my-evil-2-modes-define-key "M-l" 'evil-jump-forward)
@@ -370,6 +368,7 @@
   (define-key evil-ex-search-keymap "\M-l" [right])
   (define-key evil-ex-search-keymap "\C-h" [left])
   (define-key evil-ex-search-keymap "\C-l" [right])
+  (define-key evil-ex-search-keymap (kbd "C-w") 'backward-kill-word)
   )
 
 (with-eval-after-load 'evil-easymotion

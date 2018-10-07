@@ -322,9 +322,6 @@ any other prefixes following \"C-x\"."
 (defvar guide-key/polling-timer nil
   "Polling timer to check an input key sequence.")
 
-(defvar guide-key/idle-timer nil
-  "Idle timer to wait before popping up guide buffer.")
-
 (defvar guide-key/guide-buffer-name " *guide-key*"
   "Buffer name of guide buffer.")
 
@@ -410,7 +407,6 @@ window.  Otherwise, return the width of popup window"
   "Close guide buffer."
   (when (eq popwin:popup-buffer (get-buffer guide-key/guide-buffer-name))
     (popwin:close-popup-window))
-  (guide-key/turn-off-idle-timer)
   )
 
 (add-hook 'pre-command-hook 'guide-key/close-guide-buffer)
@@ -454,17 +450,7 @@ For example, both \"C-x r\" and \"\\C-xr\" are converted to [24 114]"
 
 (defun guide-key/turn-on-idle-timer ()
   "Turn on an idle timer for popping up guide buffer."
-  (when (null guide-key/idle-timer)
-    (setq guide-key/idle-timer
-          (run-with-idle-timer guide-key/idle-delay t 'guide-key/popup-function))
-    ))
-
-(defun guide-key/turn-off-idle-timer ()
-  "Turn off the idle timer."
-  (when guide-key/idle-timer
-    (cancel-timer guide-key/idle-timer))
-  (setq guide-key/idle-timer nil))
-
+  (guide-key/popup-function))
 
 (defun guide-key/turn-on-timer ()
   "Turn on a polling timer."
