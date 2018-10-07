@@ -50,7 +50,7 @@
 (require 'rg-config)
 (require 'flycheck-config)
 (require 'flyspell-config)
-(require 'neotree-config)
+;; (require 'neotree-config)
 (require 'helm-config (concat user-emacs-directory "configs/helm-config.el"))
 (require 'ivy-config)
 (require 'rainbow-mode-config)

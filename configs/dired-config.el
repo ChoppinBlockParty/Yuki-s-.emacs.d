@@ -246,6 +246,26 @@
 (use-package dired-subtree)
 (use-package dired-collapse)
 
+(use-package dired-sidebar
+  :ensure t
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (setq
+    dired-sidebar-disable-dired-collapse nil
+    dired-sidebar-theme 'none
+    ;; dired-sidebar-use-term-integration t
+    ;; dired-sidebar-use-custom-font t
+    )
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (define-key evil-normal-state-map "`" 'dired-sidebar-toggle-sidebar)
+  )
+
 (defface all-the-icons-dired-dir-face
   '((((background dark)) :foreground "white")
     (((background light)) :foreground "black"))
@@ -320,9 +340,8 @@
 (defun all-the-icons-dired-mode-hook()
   "Hook to setup all-the-icons."
   (dired-hide-details-mode 1)
-  (dired-collapse-mode 1)
+  ;; (dired-collapse-mode 1)
   (add-hook 'dired-after-readin-hook 'all-the-icons-dired--display t t)
-  (all-the-icons-dired--display)
   )
 (advice-add 'dired-revert :before #'all-the-icons-dired--reset)
 (add-hook 'dired-mode-hook #'all-the-icons-dired-mode-hook)
