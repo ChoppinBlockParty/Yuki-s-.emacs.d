@@ -125,7 +125,7 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
 ;; (define-key shell-mode-map (kbd "C-r") 'counsel-shell-history)
 
 (defun my-comint-run-last-command(arg)
-  "Run last command in shell mode. ARG is number."
+  "Run last command in shell mode. ARG is a number."
   (interactive "*p")
   (let ((proc (get-buffer-process (current-buffer))))
     (unless (and proc (>= (point) (marker-position (process-mark proc))))
@@ -137,6 +137,7 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
   )
 
 (defun my-run-last-command-in-shell-mode(arg)
+  "Run last command in the last shell-buffer. ARG is a number."
   (interactive "p")
   (save-buffer)
   (let ((current-window (frame-selected-window)) (shell-buffer) (buf) (list (buffer-list)))
@@ -148,11 +149,13 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
     (if shell-buffer
         (progn
           (with-current-buffer shell-buffer (my-comint-run-last-command arg))
-          (dolist (win (window-list nil -1 nil))
-            (when (eq shell-buffer (window-buffer win))
-                  (select-window win t)
-                  (goto-char (point-max))
-                  )
+          (dolist (frame (frame-list))
+            (dolist (win (window-list frame 0 nil))
+              (when (eq shell-buffer (window-buffer win))
+                    (select-window win t)
+                    (goto-char (point-max))
+                    )
+              )
             )
           (select-window current-window t)
           )
