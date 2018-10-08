@@ -31,12 +31,12 @@
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'evil-config)
-(require 'dired-config)
 (require 'generic-config)
 (require 'global-key-binding-config)
 (require 'all-the-icons-config)
 (require 'window-numbering-config)
 (require 'minibuffer-config)
+(require 'dired-config)
 (require 'completion-config)
 (require 'shell-config)
 (require 'powerline-config)

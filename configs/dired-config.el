@@ -6,8 +6,6 @@
   :ensure nil
   :init
   (defvar dired-mode-map
-    ;; This looks ugly when substitute-command-keys uses C-d instead d:
-    ;;  (define-key dired-mode-map "\C-d" 'dired-flag-file-deletion)
     (let ((map (make-keymap)))
       (set-keymap-parent map special-mode-map)
       map)
@@ -80,106 +78,32 @@
       "q" 'quit-window
       "j" 'dired-next-line
       "k" 'dired-previous-line
-      [mouse-2] 'dired-mouse-find-file-other-window
-      [follow-link] 'mouse-face
-      ;; Commands to mark or flag certain categories of files
-      ;; "#" 'dired-flag-auto-save-files
-      ;; "." 'dired-clean-directory
-      ;; "~" 'dired-flag-backup-files
-      ;;; Byte compile marked (or next ARG) Emacs Lisp files.
-      ;; "B" 'dired-do-byte-compile
-      ;; "A" 'dired-do-find-regexp
       "C" 'dired-do-copy
       "D" 'dired-do-delete
       "R" 'dired-do-rename
-      ;; "gG" 'dired-do-chgrp ;; FIXME: This can probably live on a better binding.
-      ;; "H" 'dired-do-hardlink
-      ;; "L" 'dired-do-load
+      "zc" 'dired-diff
+      "zd" 'dired-hide-details-mode
       "zM" 'dired-do-chmod
       "zO" 'dired-do-chown
-      ;; "P" 'dired-do-print
-      ;; "Q" 'dired-do-find-regexp-and-replace
-      ;; "S" 'dired-do-symlink
-      ;; "T" 'dired-do-touch
-      ;; "X" 'dired-do-shell-command
-      ;; "Z" 'dired-do-compress
-      ;; "c" 'dired-do-compress-to
-      ;; "!" 'dired-do-shell-command
-      ;; "&" 'dired-do-async-shell-command
-      ;; Comparison commands
-      "zc" 'dired-diff
-      ;; Tree Dired commands
-      ;; (kbd "M-C-?") 'dired-unmark-all-files
-      ;; (kbd "M-C-d") 'dired-tree-down
-      ;; (kbd "M-C-u") 'dired-tree-up
-      ;; (kbd "M-C-n") 'dired-next-subdir
-      ;; (kbd "M-C-p") 'dired-prev-subdir
-      ;; move to marked files
-      ;; (kbd "M-{") 'dired-prev-marked-file
-      ;; (kbd "M-}") 'dired-next-marked-file
-      ;; Make all regexp commands share a `%' prefix:
-      ;; We used to get to the submap via a symbol dired-regexp-prefix,
-      ;; but that seems to serve little purpose, and copy-keymap
-      ;; does a better job without it.
-      ;; "1" nil
-      ;; "1u" 'dired-upcase
-      ;; "1l" 'dired-downcase
-      ;; "1d" 'dired-flag-files-regexp
-      ;; "1g" 'dired-mark-files-containing-regexp
-      ;; "1m" 'dired-mark-files-regexp
-      ;; "1r" 'dired-do-rename-regexp
-      ;; "1C" 'dired-do-copy-regexp
-      ;; "1H" 'dired-do-hardlink-regexp
-      ;; "1R" 'dired-do-rename-regexp
-      ;; "1S" 'dired-do-symlink-regexp
-      ;; "1&" 'dired-flag-garbage-files
-      ;; mark
-      "z" nil
-      ;; "z*" 'dired-mark-executables
-      ;; "z/" 'dired-mark-directories
-      ;; "z@" 'dired-mark-symlinks
-      ;; "z%" 'dired-mark-files-regexp
-      ;; "z(" 'dired-mark-sexp
+      "zt" 'dired-toggle-marks
       "z." 'dired-mark-extension
-      ;; "zO" 'dired-mark-omitted
-      ;; "zc"  'dired-change-marks
-      ;; "zs" 'dired-mark-subdir-files
       "s"  'dired-mark
       "u"  'dired-unmark
       "U"  'dired-unmark-all-marks
-      "zd" 'dired-hide-details-mode
-      "zt" 'dired-toggle-marks
-      ;; (kbd "* <delete>") 'dired-unmark-backward
-      ;; (kbd "* C-n") 'dired-next-marked-file
-      ;; (kbd "* C-p") 'dired-prev-marked-file
-      ;; Lower keys for commands not operating on all the marked files
-      "d" 'dired-flag-file-deletion
       (kbd "C-m") 'dired-find-file
       "gr" 'revert-buffer
       "zww" 'dired-toggle-read-only
-      ;; "I"   'dired-maybe-insert-subdir
-      ;; "K"   'dired-do-kill-lines
-      ;; "r" 'dired-do-redisplay
       "go" 'browse-url-of-dired-file
-      "x" 'dired-do-flagged-delete
       "ga" 'dired-show-file-type ;; FIXME: This could probably go on a better key.
       "gf" 'find-file
       "gn" 'my-dired-create-file
       "gN" 'my-dired-create-directory
       "Y"  'dired-copy-filename-as-kill
-      ;;; open
       "o" (lambda () (interactive) (dired-subtree-toggle) (dired-revert))
+      ;; "o" 'dired-subtree-toggle
       (kbd "<return>") 'dired-find-file
-      (kbd "S-<return>") 'dired-find-file-other-window
-      ;;; Like preview
-      (kbd "M-<return>") 'dired-display-file
-      ;; "gO" 'dired-find-file-other-window
-      ;; "go" 'dired-view-file
-      ;; sort
-      ;; "o" 'dired-sort-toggle-or-edit
-      ;; moving
-      ;; "gj" 'dired-next-dirline
-      ;; "gk" 'dired-prev-dirline
+      (kbd "S-<return>") 'dired-display-file ;; preview
+      (kbd "M-<return>") 'dired-find-file-other-window
       "[" 'dired-prev-dirline
       "]" 'dired-next-dirline
       "<" 'my-dired-up-directory
@@ -220,6 +144,8 @@
       ;; ";v" 'epa-dired-do-verify
       ;; ";s" 'epa-dired-do-sign
       ;; ";e" 'epa-dired-do-encrypt
+      [mouse-2] 'dired-mouse-find-file-other-window
+      [follow-link] 'mouse-face
       )
   )
 
@@ -243,11 +169,25 @@
     "ZZ" 'wdired-finish-edit
     (kbd "<escape>") 'wdired-exit))
 
-(use-package dired-subtree)
+(use-package dired-subtree
+  :config
+  (defun my-dired-subtree-prefix(depth)
+    (let ((str ""))
+         (while (< 0 depth)
+                (setq
+                  str   (concat str "●-")
+                  depth (1- depth)
+                  )
+                )
+         str)
+    )
+  (setq
+    dired-subtree-line-prefix 'my-dired-subtree-prefix
+    )
+  )
 (use-package dired-collapse)
 
 (use-package dired-sidebar
-  :ensure t
   :init
   (add-hook 'dired-sidebar-mode-hook
             (lambda ()
@@ -257,6 +197,7 @@
   (setq
     dired-sidebar-disable-dired-collapse nil
     dired-sidebar-theme 'none
+    dired-sidebar-refresh-on-projectile-switch nil
     ;; dired-sidebar-use-term-integration t
     ;; dired-sidebar-use-custom-font t
     )
@@ -337,14 +278,14 @@
   "Functions used as advice when redisplaying buffer."
   (setq-local all-the-icons-dired-displayed nil))
 
-(defun all-the-icons-dired-mode-hook()
+(defun my-dired-mode-hook()
   "Hook to setup all-the-icons."
   (dired-hide-details-mode 1)
   ;; (dired-collapse-mode 1)
   (add-hook 'dired-after-readin-hook 'all-the-icons-dired--display t t)
   )
 (advice-add 'dired-revert :before #'all-the-icons-dired--reset)
-(add-hook 'dired-mode-hook #'all-the-icons-dired-mode-hook)
+(add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
 
 (provide 'dired-config)

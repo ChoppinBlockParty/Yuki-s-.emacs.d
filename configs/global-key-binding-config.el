@@ -27,6 +27,11 @@
     )
   (guide-key-mode 1)
   (setcdr (assq 'guide-key-mode minor-mode-alist) (list ""))
+
+  (defun guide-key/my-dired-hook ()
+    (guide-key/add-local-guide-key-sequence "C-t")
+    (guide-key/add-local-highlight-command-regexp "\\(dired\\|image\\|epa\\)-"))
+  (add-hook 'dired-mode-hook 'guide-key/my-dired-hook)
   )
 
 
