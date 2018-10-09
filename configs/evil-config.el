@@ -194,10 +194,11 @@
       ))
 
   (evil-set-initial-state 'evil-list-view-mode 'normal)
-  (evil-set-initial-state 'tabulated-list-mode 'normal)
   (evil-set-initial-state 'fundamental-mode 'normal)
+  (evil-set-initial-state 'tabulated-list-mode 'normal)
   (evil-set-initial-state 'ibuffer-mode 'normal)
   (evil-set-initial-state 'Info-mode 'normal)
+  (evil-set-initial-state 'debugger-mode 'normal)
   (evil-set-initial-state 'help-mode 'normal)
   (evil-set-initial-state 'apropos-mode 'normal)
   (evil-set-initial-state 'flycheck-error-list-mode 'normal)
