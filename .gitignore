@@ -14,6 +14,9 @@
 !/local/**
 !/local/**/*.el
 
+!/screenshots
+!/screenshots/*.jpg
+
 !/themes
 !/themes/*.el
 

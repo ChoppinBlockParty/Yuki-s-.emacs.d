@@ -9,6 +9,8 @@ Here is a video that gives quite good reasoning why Vim is even better inside Em
 
 [![Why Vim is even better inside Emacs](http://img.youtube.com/vi/JWD1Fpdd4Pc/0.jpg)](http://www.youtube.com/watch?v=JWD1Fpdd4Pc "Why Vim is even better inside Emacs")
 
+![Dired, Shell, Magit, Rg, C++](screenshots/dired-shell-magit-rg-c++-ivy.jpg?raw=true "Dired, Shell, Magit, Rg, C++")
+
 Build Emacs from source
 -----------------------
 
