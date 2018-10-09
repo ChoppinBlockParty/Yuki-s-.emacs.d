@@ -30,10 +30,10 @@
     evil-want-change-word-to-end nil
     evil-emacs-state-cursor    '("#dfaf8f" bar)
     evil-normal-state-cursor   '("#ffec9c" box)
-    evil-visual-state-cursor   '("orange" box)
+    evil-visual-state-cursor   '("orange"  box)
     evil-insert-state-cursor   '("#ffec9c" bar)
     evil-replace-state-cursor  '("#cc9393" box)
-    evil-operator-state-cursor '("red" hollow)
+    evil-operator-state-cursor '("red"     hollow)
     evil-want-fine-undo nil ; googled it, people say it is buggy
     evil-want-change-word-to-end t
     evil-auto-indent t
