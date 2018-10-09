@@ -16,8 +16,8 @@
   (defun company-preview-if-not-tng-frontend (command)
       "`company-preview-frontend', but not when tng is active."
       (unless (and (eq command 'post-command)
-                  company-selection-changed
-                  (memq 'company-tng-frontend company-frontends))
+                   company-selection-changed
+                   (memq 'company-tng-frontend company-frontends))
       (company-preview-frontend command)))
 
 
@@ -34,8 +34,11 @@
     ;; company-dabbrev-downcase nil
     company-frontends '(company-tng-frontend
                         company-echo-metadata-frontend
-                        company-pseudo-tooltip-unless-just-one-frontend
-                        company-preview-if-not-tng-frontend)
+                        company-pseudo-tooltip-frontend
+                        ;; company-pseudo-tooltip-unless-just-one-frontend
+                        ;;; Fancy frontend, but lagging
+                        ;; company-preview-if-not-tng-frontend
+                        )
     )
   )
 
