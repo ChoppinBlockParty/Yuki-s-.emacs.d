@@ -54,7 +54,7 @@
     (define-key map (kbd "M-j") 'ivy-next-line)
     (define-key map (kbd "C-s") 'ivy-next-line-or-history)
     ;;; Enter a recursive ‘ivy-read’ session using the current history.
-    (define-key map (kbd "C-r") 'ivy-reverse-i-search)
+    ;; (define-key map (kbd "C-r") 'ivy-reverse-i-search)
     (define-key map (kbd "SPC") 'self-insert-command)
     (define-key map [remap delete-backward-char] 'ivy-backward-delete-char)
     (define-key map [remap backward-delete-char-untabify] 'ivy-backward-delete-char)
@@ -86,6 +86,7 @@
     (define-key map (kbd "M-r") 'ivy-toggle-regexp-quote)
     ;; (define-key map (kbd "C-y") 'ivy-insert-current)
     (define-key map (kbd "C-y") 'ivy-yank-symbol)
+    (define-key map (kbd "C-r") 'evil-paste-from-register)
     (define-key map [remap kill-line] 'ivy-kill-line)
     (define-key map [remap kill-whole-line] 'ivy-kill-whole-line)
     (define-key map (kbd "S-SPC") 'ivy-restrict-to-matches)

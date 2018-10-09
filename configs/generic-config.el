@@ -52,6 +52,15 @@
   (modify-syntax-entry ?_ "w" grep-mode-syntax-table)
   )
 
+(use-package with-editor
+  :config
+  (evil-define-key 'normal with-editor-mode-map
+    "q" 'with-editor-finish
+    "ZQ" 'with-editor-cancel
+    "ZZ" 'with-editor-finish
+    )
+  )
+
 (use-package doc-view
   :config
   (setq

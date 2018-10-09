@@ -230,8 +230,6 @@
 
   (evil-define-key 'normal 'global "q" 'evil-window-delete)
   (evil-define-key 'visual 'global "q" 'evil-window-delete)
-  (with-eval-after-load 'with-editor
-    (evil-define-key 'normal with-editor-mode-map "q" 'with-editor-finish))
 
   (defun make-digit-function (digit)
     `(lambda (arg)
