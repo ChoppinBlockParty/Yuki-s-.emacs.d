@@ -7,6 +7,14 @@
 ;;; If the number is too big, initialization is fast, but
 ;;; emacs gets lags during usage.
 (setq gc-cons-threshold 20000000)
+(defun minibuffer-gc-cons-threshold-setup ()
+  (setq-local init-minibuffer-gc-cons-threshold gc-cons-threshold)
+  (setq                       gc-cons-threshold most-positive-fixnum))
+(add-hook 'minibuffer-setup-hook #'minibuffer-gc-cons-threshold-setup)
+(defun minibuffer-gc-cons-threshold-exit ()
+  (when (local-variable-p 'init-minibuffer-gc-cons-threshold)
+    (setq gc-cons-threshold init-minibuffer-gc-cons-threshold)))
+(add-hook 'minibuffer-exit-hook  #'minibuffer-gc-cons-threshold-exit)
 
 (add-to-list 'load-path (concat user-emacs-directory "configs"))
 
