@@ -68,7 +68,7 @@
   (compilation-shell-minor-mode)
 
   ;;; For some reasons must be in a hook
-  (setq comint-input-ring-file-name "~/.config/zsh/.zhistory")
+  (setq comint-input-ring-file-name "~/.cache/zsh/.zhistory")
                                     ; Ignore timestamps in history file.  Assumes that zsh
                                     ; EXTENDED_HISTORY option is in use.
   (setq comint-input-ring-separator "\n: \\([0-9]+\\):\\([0-9]+\\);")
