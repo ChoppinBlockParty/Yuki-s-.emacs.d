@@ -4,12 +4,6 @@
 
 (use-package dired
   :ensure nil
-  :init
-  (defvar dired-mode-map
-    (let ((map (make-keymap)))
-      (set-keymap-parent map special-mode-map)
-      map)
-    "Local keymap for Dired mode buffers.")
   :config
   (setq
     dired-listing-switches "-Ahl --group-directories-first"
