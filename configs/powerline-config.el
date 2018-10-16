@@ -3,7 +3,6 @@
 ;;; Code:
 (use-package which-func
   :ensure nil
-
   :config
   (defconst my-which-func-current
     '(:eval

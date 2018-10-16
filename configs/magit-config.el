@@ -9,6 +9,37 @@
 (use-package gitignore-mode)
 (use-package magit
   :config
+  (modify-syntax-entry ?_ "w" magit-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-log-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-log-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-log-select-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-log-select-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-refs-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-refs-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-diff-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-diff-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-merge-preview-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-merge-preview-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-stash-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-stash-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-popup-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-popup-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-cherry-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-cherry-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-reflog-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-reflog-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-status-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-status-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-stashes-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-stashes-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-process-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-process-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-repolist-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-repolist-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" magit-revision-mode-syntax-table)
+  (modify-syntax-entry ?- "w" magit-revision-mode-syntax-table)
+
   (defcustom evil-magit-use-y-for-yank t
   "When non nil, replace \"y\" for `magit-show-refs-popup' with
   \"yy\" for `evil-yank-line', `ys' `magit-copy-section-value',

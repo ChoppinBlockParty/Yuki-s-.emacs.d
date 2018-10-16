@@ -9,5 +9,9 @@
                minibuffer-local-isearch-map))
   (define-key map (kbd "<escape>") 'abort-recursive-edit)
   )
+
+(modify-syntax-entry ?_ "w" minibuffer-inactive-mode-syntax-table)
+(modify-syntax-entry ?- "w" minibuffer-inactive-mode-syntax-table)
+
 (provide 'minibuffer-config)
 ;;; minibuffer-config.el ends here

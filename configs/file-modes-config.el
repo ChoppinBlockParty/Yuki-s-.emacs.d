@@ -14,7 +14,24 @@
   (modify-syntax-entry ?_ "w" c-mode-syntax-table)
   (modify-syntax-entry ?_ "w" c-identifier-syntax-table)
   (modify-syntax-entry ?_ "w" c-no-parens-syntax-table)
+  (modify-syntax-entry ?_ "w" java-mode-syntax-table)
+  (modify-syntax-entry ?- "w" java-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" objc-mode-syntax-table)
+  (modify-syntax-entry ?- "w" objc-mode-syntax-table)
   )
+
+(use-package sh-script
+  :config
+  (modify-syntax-entry ?_ "w" sh-mode-syntax-table)
+  (modify-syntax-entry ?- "w" sh-mode-syntax-table)
+  )
+
+(use-package diff-mode
+  :config
+  (modify-syntax-entry ?_ "w" diff-mode-syntax-table)
+  (modify-syntax-entry ?- "w" diff-mode-syntax-table)
+  )
+
 
 (use-package protobuf-mode
   :ensure nil
@@ -34,6 +51,9 @@
 (use-package go-mode
   :config
   (modify-syntax-entry ?_ "w" go-mode-syntax-table)
+
+  (modify-syntax-entry ?_ "w" godoc-mode-syntax-table)
+  (modify-syntax-entry ?- "w" godoc-mode-syntax-table)
   )
 
 (use-package markdown-mode

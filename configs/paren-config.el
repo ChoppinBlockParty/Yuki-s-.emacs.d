@@ -25,6 +25,7 @@
   (dolist (hook (append my-prog-modes-hook-list my-markup-modes-hook-list))
     (add-hook hook #'rainbow-delimiters-mode))
 
+  (require 'color)
   (cl-loop
     for index from 1 to rainbow-delimiters-max-face-count
     do

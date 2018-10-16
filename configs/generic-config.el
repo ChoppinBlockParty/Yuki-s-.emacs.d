@@ -1,6 +1,35 @@
 ;;; generic-config --- General settings
 ;;; Commentary:
 ;;; Code:
+
+(use-package message
+  :ensure nil
+  :config
+  (modify-syntax-entry ?_ "w" message-mode-syntax-table)
+  (modify-syntax-entry ?- "w" message-mode-syntax-table)
+  )
+
+(use-package log-edit
+  :ensure nil
+  :config
+  (modify-syntax-entry ?_ "w" log-edit-mode-syntax-table)
+  (modify-syntax-entry ?- "w" log-edit-mode-syntax-table)
+  )
+
+(use-package url-util
+  :ensure nil
+  :config
+  (modify-syntax-entry ?_ "w" url-parse-args-syntax-table)
+  (modify-syntax-entry ?- "w" url-parse-args-syntax-table)
+  )
+
+(use-package url-cookie
+  :ensure nil
+  :config
+  (modify-syntax-entry ?_ "w" url-cookie-mode-syntax-table)
+  (modify-syntax-entry ?- "w" url-cookie-mode-syntax-table)
+  )
+
 (setq special-mode-map
   (let ((map (make-sparse-keymap)))
     (evil-define-key 'normal map
