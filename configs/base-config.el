@@ -85,15 +85,6 @@
   `(eval-after-load ,feature
      '(progn ,@body)))
 
-;; (use-package color-theme-approximate
-;;   :ensure t
-;;   :demand
-;;   :config
-;;   (progn
-;;     (color-theme-approximate-on)
-;;   )
-;; )
-
 ;;; Hide startup messages
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
@@ -141,9 +132,166 @@
 ;;; Show me the new saved file if the contents change on disk when editing.
 (global-auto-revert-mode 1)
 
+(defvar my-last-preferred-splits '())
+
+(defun my-reuse-last-preferred-split-save (win new-win)
+  "Save WIN NEW-WIN for reuse."
+  (when new-win
+    (add-to-list 'my-last-preferred-splits `(,win . ,new-win))
+    )
+  new-win)
+
+(defun my-reuse-last-preferred-split (window)
+  "Reuse split for WINDOW."
+  (let ((new-list '()))
+    (dolist (val my-last-preferred-splits)
+      (when (and (window-live-p (car val)) (window-live-p (cdr val)))
+        (add-to-list 'new-list val)
+        )
+      )
+    (setq my-last-preferred-splits new-list)
+  )
+  (let ((old-win (cdr (assq window my-last-preferred-splits))))
+    old-win)
+  )
+
+(setq split-window-preferred-function (lambda (&optional window)
+  "Split WINDOW."
+  (let
+    ((window (or window (selected-window))))
+    (or
+      (my-reuse-last-preferred-split window)
+      (and (window-splittable-p window)
+           (my-reuse-last-preferred-split-save
+             window
+             (with-selected-window window (split-window-below))
+             )
+           )
+      (and (window-splittable-p window t)
+           (my-reuse-last-preferred-split-save
+             window
+             (with-selected-window window (split-window-right))
+             )
+           )
+      (and
+        ;; If WINDOW is the only usable window on its frame (it is
+        ;; the only one or, not being the only one, all the other
+        ;; ones are dedicated) and is not the minibuffer window, try
+        ;; to split it vertically disregarding the value of
+        ;; `split-height-threshold'.
+        (let ((frame (window-frame window)))
+          (or
+           (eq window (frame-root-window frame))
+           (catch 'done
+             (walk-window-tree (lambda (w)
+                                 (unless (or (eq w window)
+                                             (window-dedicated-p w))
+                                   (throw 'done nil)))
+                               frame)
+             t)))
+         (not (window-minibuffer-p window))
+         (let ((split-height-threshold 0))
+              (when (window-splittable-p window)
+                    (my-reuse-last-preferred-split-save
+                      window
+                      (with-selected-window window (split-window-below))
+                      )
+                    )
+              )
+         )
+      (and
+         (let ((split-height-threshold 0))
+              (when (window-splittable-p window)
+                    (my-reuse-last-preferred-split-save
+                      window
+                      (with-selected-window window (split-window-below))
+                      )
+                    )
+              )
+         )
+    ))
+  ))
+
+(defun my-display-buffer-find-major-mode-window (mode &optional mode-two)
+  "Find window. MODE to look up. MODE-TWO optional."
+  (let (cur-win ret-win (l (window-list)))
+    (while (and l (not ret-win))
+           (setq cur-win (car l)
+                 l       (cdr l))
+           (with-current-buffer (window-buffer cur-win)
+             (cond ((equal major-mode mode)     (setq ret-win cur-win))
+                   ((equal major-mode mode-two) (setq ret-win cur-win))
+                   ))
+           )
+    ret-win))
+
+(defun my-window-display-buffer-create-split (window)
+  "Create split relative to WINDOW."
+  (let
+    (new-win)
+    (setq new-win (window--try-to-split-window window))
+    (unless new-win
+      (setq new-win (window--try-to-split-window (get-lru-window t t))))
+    (unless new-win
+      (setq new-win window))
+    (unless new-win
+      (setq new-win (selected-window)))
+    new-win))
+
+(defun my-window-display-buffer (buffer window)
+  "Display. BUFFER to display. WINDOW to show into."
+  (if (or (window-minibuffer-p) (window-dedicated-p))
+      (window--display-buffer
+        buffer
+        (my-window-display-buffer-create-split window)
+        'reuse '((inhibit-switch-frame . t)))
+      (window--display-buffer
+        buffer
+        window
+        'reuse '((inhibit-switch-frame . t)))
+      ))
+
+(defun my-window-display-buffer-split (buffer)
+  "Split. BUFFER to display relative to WIN or `selected-window`."
+  (my-window-display-buffer buffer
+                            (my-window-display-buffer-create-split (selected-window))
+                            ))
+
+(defun my-display-help-buffer-same-window (buffer alist)
+  "Display BUFFER in the selected window with ALIST."
+  (let
+    ((sel-buf (window-buffer (selected-window))) sel-mode new-mode)
+    (with-current-buffer sel-buf
+      (setq sel-mode major-mode))
+    (with-current-buffer buffer
+      (setq new-mode major-mode))
+    (cond
+      ((or (equal new-mode 'apropos-mode) (equal new-mode 'help-mode))
+       (let ((win (my-display-buffer-find-major-mode-window 'apropos-mode 'help-mode)))
+         (if win
+             (my-window-display-buffer buffer win)
+             (my-window-display-buffer-split buffer)
+             ))
+       )
+      ((equal new-mode 'dired-sidebar-mode)
+       nil
+       )
+      ((equal sel-mode 'dired-sidebar-mode)
+       (my-window-display-buffer buffer (get-mru-window nil nil t))
+       )
+      (t
+       (if (cdr (assq 'inhibit-same-window alist))
+           (my-window-display-buffer-split buffer)
+           (my-window-display-buffer buffer (selected-window))
+           )
+       )
+      )
+    ))
+
 ;;; Open help windows in current window, not other
-(add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
-(add-to-list 'display-buffer-alist '("*Apropos*" display-buffer-same-window))
+;; (dolist (name '("*Help*" "*Apropos*"))
+(add-to-list 'display-buffer-alist '(".*" (my-display-help-buffer-same-window)))
+  ;; )
 
 (defun my-setup-file-defaults ()
   "Check the size of files when loading, and don't let me break them."
@@ -178,7 +326,6 @@
 ;; (set-frame-font "Inconsolata-dz for Powerline-11")
 (set-frame-font "DejaVu Sans Mono-11")
 ;; (set-frame-font "Hack-10")
-
 
 (setq
   backup-directory-alist         '(("." . "~/.cache/emacs/backup/"))
@@ -271,6 +418,19 @@
     ((equal major-mode 'c-mode)          (clang-format-buffer))
     ((equal major-mode 'protobuf-mode)   (clang-format-buffer))
     (t nil))
+  )
+
+;;; Just need to reset the maps as early as possible, here feels like
+;;; a fine place to do that.
+;;; Real dired configuration is in `dired-config`.
+(use-package dired
+  :ensure nil
+  :init
+  (defvar dired-mode-map (let ((map (make-keymap))) (set-keymap-parent map special-mode-map) map))
+  )
+(use-package flyspell
+  :init
+  (defvar flyspell-mode-map (let ((map (make-sparse-keymap))) map))
   )
 
 (provide 'base-config)
