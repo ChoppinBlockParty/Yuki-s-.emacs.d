@@ -5,13 +5,10 @@
   :config
   (setq
     flyspell-mode-line-string ""
+    ;;; Disable string spell check
+    flyspell-prog-text-faces (delq 'font-lock-string-face flyspell-prog-text-faces)
     )
-  )
-
-(use-package flyspell-lazy
-  :config
-  (flyspell-lazy-mode 1)
-  )
+ )
 
 ;; better performance
 (setq flyspell-issue-message-flag nil)
@@ -104,7 +101,7 @@
   (add-hook hook 'flyspell-mode))
 
 
-(define-key evil-normal-state-map (kbd "z c") 'flyspell-auto-correct-word)
+(define-key evil-normal-state-map (kbd "z C-=") 'flyspell-auto-correct-word)
 
 (provide 'flyspell-config)
 ;;; flyspell-config.el ends here

@@ -67,7 +67,7 @@
 (require 'file-modes-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver
-;;; It is very fun, however consumes 100% cpu all the time, sad...
+;;; It is very fun, however consumes 10% cpu all the time, sad...
 ;; (re 'zone)
 ;; (zone-when-idle 120)
 

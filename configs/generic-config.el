@@ -81,19 +81,6 @@
   (modify-syntax-entry ?_ "w" grep-mode-syntax-table)
   )
 
-;;; Just need to reset `dired-mode-map` as early as possible,
-;;; here feels like a fine place to do that.
-;;; Real dired configuration is in `dired-config`.
-(use-package dired
-  :ensure nil
-  :init
-  (defvar dired-mode-map
-    (let ((map (make-keymap)))
-      (set-keymap-parent map special-mode-map)
-      map)
-    "Local keymap for Dired mode buffers.")
-  )
-
 (use-package with-editor
   :config
   (evil-define-key 'normal with-editor-mode-map
