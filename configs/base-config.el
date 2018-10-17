@@ -257,6 +257,19 @@
                             (my-window-display-buffer-create-split (selected-window))
                             ))
 
+(defun my-window-display-buffer-match-any (str &rest matchers)
+  "Match STR to any of MATCHERS."
+  (let (match-p m res)
+    (while (and (not match-p) matchers)
+      (setq m (car matchers)
+            matchers (cdr matchers)
+            res (string-match-p m str)
+            )
+      (when (and res (= res 0)) (setq match-p t))
+      )
+    match-p)
+  )
+
 (defun my-display-help-buffer-same-window (buffer alist)
   "Display BUFFER in the selected window with ALIST."
   (let
@@ -265,6 +278,11 @@
       (setq sel-mode major-mode))
     (with-current-buffer buffer
       (setq new-mode major-mode))
+    ;; (print sel-mode)
+    ;; (print (buffer-name sel-buf))
+    ;; (print new-mode)
+    ;; (print (buffer-name buffer))
+    ;; (print alist)
     (cond
       ((or (equal new-mode 'apropos-mode) (equal new-mode 'help-mode))
        (let ((win (my-display-buffer-find-major-mode-window 'apropos-mode 'help-mode)))
@@ -273,8 +291,25 @@
              (my-window-display-buffer-split buffer)
              ))
        )
-      ((equal new-mode 'dired-sidebar-mode)
+      ((and
+         (equal new-mode 'fundamental-mode)
+         (my-window-display-buffer-match-any (buffer-name buffer) "\\`\\*magit.*-popup.*\\*\\'")
+         )
+       (my-window-display-buffer
+         buffer
+         (with-selected-window (selected-window) (split-window-below)))
+       )
+      ((or
+         (member new-mode '(dired-sidebar-mode magit-popup-mode))
+         )
        nil
+       )
+      ((or
+         (and (equal sel-mode 'text-mode)
+              (my-window-display-buffer-match-any (buffer-name sel-buf) "\\`COMMIT_EDITMSG"))
+         (equal sel-mode 'magit-log-mode)
+         )
+       (my-window-display-buffer-split buffer)
        )
       ((equal sel-mode 'dired-sidebar-mode)
        (my-window-display-buffer buffer (get-mru-window nil nil t))
