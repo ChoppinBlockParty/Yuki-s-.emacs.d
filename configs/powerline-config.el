@@ -84,7 +84,7 @@
                       'help-echo (format "Major-mode: `%s'" major-mode)
                       'display '(raise 0)
                       'face `(:height 1.0
-                              :family ,(all-the-icons-icon-family-for-mode major-mode)
+                              :family ,(all-the-icons-icon-family-for-buffer)
                               :inherit)
                       )
           )

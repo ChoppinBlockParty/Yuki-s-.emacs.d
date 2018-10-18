@@ -25,6 +25,8 @@
     ;;; Whether \"C-i\" jumps forward like in Vim.
     evil-want-C-i-jump nil
     evil-want-C-u-scroll t
+    ;;; Will bind `evil-delete-backward-word` instead of `evil-window-map`
+    evil-want-C-w-delete t
     evil-want-C-w-in-emacs-state t
     ;;; Whether \"cw\" behaves like \"ce\".
     evil-want-change-word-to-end nil

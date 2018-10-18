@@ -270,7 +270,7 @@
     match-p)
   )
 
-(defun my-display-help-buffer-same-window (buffer alist)
+(defun my-display-buffer-action (buffer alist)
   "Display BUFFER in the selected window with ALIST."
   (let
     ((sel-buf (window-buffer (selected-window))) sel-mode new-mode)
@@ -326,8 +326,7 @@
        )
       )
     ))
-
-(add-to-list 'display-buffer-alist '(".*" (my-display-help-buffer-same-window)))
+(add-to-list 'display-buffer-alist '(".*" (my-display-buffer-action)))
 
 (defun my-setup-file-defaults ()
   "Check the size of files when loading, and don't let me break them."

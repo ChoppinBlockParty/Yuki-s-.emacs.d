@@ -80,7 +80,7 @@
     ;;; Load, do not 'ask
     ycmd-extra-conf-handler 'load
     ycmd-global-config "~/.ycm_extra_conf.py"
-    ycmd-settings-json-filepath (concat user-emacs-directory "ycmd_default_setting.json")
+    ycmd-settings-json-filepath (concat user-emacs-directory "ycmd_default_settings.json")
     )
 
   (modify-syntax-entry ?_ "w" ycmd-view-mode-syntax-table)
