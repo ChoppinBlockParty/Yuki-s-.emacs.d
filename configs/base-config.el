@@ -300,7 +300,7 @@
          (with-selected-window (selected-window) (split-window-below)))
        )
       ((or
-         (member new-mode '(dired-sidebar-mode magit-popup-mode))
+         (member new-mode '(dired-sidebar-mode magit-popup-mode rg-mode ivy-occur-grep-mode))
          )
        nil
        )
@@ -323,10 +323,7 @@
       )
     ))
 
-;;; Open help windows in current window, not other
-;; (dolist (name '("*Help*" "*Apropos*"))
 (add-to-list 'display-buffer-alist '(".*" (my-display-help-buffer-same-window)))
-  ;; )
 
 (defun my-setup-file-defaults ()
   "Check the size of files when loading, and don't let me break them."
