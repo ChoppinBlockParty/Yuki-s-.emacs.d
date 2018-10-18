@@ -69,6 +69,8 @@
     ;;; works only on the first match.
     evil-ex-substitute-global t
     evil-ex-hl-skip-major-mode-list (list 'image-mode 'pdf-view-mode 'doc-view-mode)
+    evil-split-window-below t
+    evil-vsplit-window-right t
     )
   ;;; So far color does not work, the color preserved from the last cursor look.
   (evil-set-cursor-color "#ff6c6b")
