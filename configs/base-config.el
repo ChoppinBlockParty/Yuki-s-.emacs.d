@@ -300,7 +300,11 @@
          (with-selected-window (selected-window) (split-window-below)))
        )
       ((or
-         (member new-mode '(dired-sidebar-mode magit-popup-mode rg-mode ivy-occur-grep-mode))
+         (member new-mode '(dired-sidebar-mode
+                            magit-popup-mode
+                            rg-mode
+                            ivy-occur-grep-mode
+                            completion-list-mode))
          )
        nil
        )
