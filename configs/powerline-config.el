@@ -54,6 +54,7 @@
 
   (defun my-mode-line-modified ()
     "An `all-the-icons' segment depicting the current buffers state"
+    ;; buffer-state
     (let* ((buffer-state (format-mode-line "%*"))
            (icon (cond
                   ((string= buffer-state "-") "link")
@@ -62,9 +63,11 @@
                   )
                  )
            )
+
       (propertize (all-the-icons-faicon icon :v-adjust 0.0)
                   'face `(:family ,(all-the-icons-faicon-family)
-                          :inherit)
+                          :inherit
+                          )
                   'local-map (make-mode-line-mouse-map 'mouse-1 'read-only-mode)
                   )
       )
@@ -78,16 +81,18 @@
 
   (defun my-mode-line-mode-icon ()
     "An `all-the-icons' segment indicating the current buffer's mode with an icon"
-    (let ((icon (all-the-icons-icon-for-mode major-mode)))
+    ;; (format "%s" major-mode)
+    ;;; Unfortunately produces rendering glitches, ...
+    (let ((icon (all-the-icons-icon-for-mode major-mode
+                  )))
         (unless (symbolp icon)
           (propertize icon
                       'help-echo (format "Major-mode: `%s'" major-mode)
-                      'display '(raise 0)
+                      'display '(raise 0.0)
                       'face `(:height 1.0
-                              :family ,(all-the-icons-icon-family-for-buffer)
+                              :family ,(all-the-icons-icon-family-for-mode major-mode)
                               :inherit)
-                      )
-          )
+                      ))
         )
     )
 

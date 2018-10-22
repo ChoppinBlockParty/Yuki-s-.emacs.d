@@ -24,9 +24,11 @@
   (load-theme 'zerodark t)
   (custom-theme-set-faces
    'zerodark
+  ;;; To make all-the-icons work we need to disable some basic inheritance, because zerodark theme changes the height, that results in graphical glitchies with mode line
    '(powerline-active0            ((t (:foreground "#61259e" :background "#d0d0f0" :inherit mode-line))))
-   '(powerline-inactive0          ((t (:background "black" :inherit mode-line))))
-   '(powerline-active2            ((t (:foreground "#68f3ca" :background "black" :inherit mode-line))))
+   '(powerline-inactive0          ((t (:background "black")))) ; :inherit mode-line))))
+   '(powerline-active2            ((t (:foreground "#68f3ca" :background "black")))) ; :inherit mode-line))))
+   '(powerline-inactive2          ((t (:background "grey20")))) ; :inherit mode-line-inactive))))
    '(font-lock-type-face          ((t (:foreground "#5fafaf"))))
    '(font-lock-variable-name-face ((t (:foreground "#d7875f"))))
    '(show-paren-match             ((t (:background "#7f1de1" :foreground "#1f1623" :weight extra-bold))))
