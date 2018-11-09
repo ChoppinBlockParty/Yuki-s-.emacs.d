@@ -1,9 +1,9 @@
 [submodule "evil"]
 	path = local/evil
-	url = git@github.com:ChoppinBlockParty/evil.git
+	url = https://github.com/ChoppinBlockParty/evil
 [submodule "local/avy"]
 	path = local/avy
-	url = git@github.com:ChoppinBlockParty/avy.git
+	url = https://github.com/ChoppinBlockParty/avy
 [submodule "local/emacs-ycmd"]
 	path = local/emacs-ycmd
-	url = git@github.com:ChoppinBlockParty/emacs-ycmd.git
+	url = https://github.com/ChoppinBlockParty/emacs-ycmd

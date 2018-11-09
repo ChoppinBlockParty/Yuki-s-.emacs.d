@@ -85,6 +85,7 @@
       "u"  'dired-unmark
       "U"  'dired-unmark-all-marks
       (kbd "C-m") 'dired-find-file
+      "gg" 'evil-goto-first-line ;; FIXME: Do not why I should specify it here, otherwise it is undefined
       "gr" 'revert-buffer
       "zww" 'dired-toggle-read-only
       "go" 'browse-url-of-dired-file

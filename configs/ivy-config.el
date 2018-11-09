@@ -2,8 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 (use-package counsel
-  :ensure nil
-  :load-path "local/swiper"
   :config
   (setq
     ivy-use-virtual-buffers t
