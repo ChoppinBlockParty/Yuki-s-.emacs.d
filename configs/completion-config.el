@@ -76,11 +76,12 @@
     ycmd-mode-line-prefix ""
     ;;; ffs, everything is so complicated,..., this '-u' flag
     ;;; https://github.com/abingham/emacs-ycmd/issues/429
-    ycmd-server-command `("python3" "-u" ,(file-truename "~/Data/Sources/ycmd/ycmd"))
+    ycmd-server-command `("python3" "-u" ,(file-truename "~/yuki/ycmd/ycmd"))
     ;;; Load, do not 'ask
     ycmd-extra-conf-handler 'load
-    ycmd-global-config "~/.ycm_extra_conf.py"
+    ycmd-global-config (file-truename "~/.ycm_extra_conf.py")
     ycmd-settings-json-filepath (concat user-emacs-directory "ycmd_default_settings.json")
+    request-message-level -1
     )
 
   (modify-syntax-entry ?_ "w" ycmd-view-mode-syntax-table)

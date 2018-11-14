@@ -13,13 +13,13 @@ if [[ $# -ne 1 ]];then echo "build-emacs.sh <install prefix>"; exit 1; fi
 
 PREFIX="$1"
 
-export CC=clang-7
-export CXX=clang++-7
-export AR=llvm-ar-7
-export RANLIB=llvm-ranlib-7
-export CFLAGS='-O3 -fomit-frame-pointer -fstrict-aliasing -flto -pthread'
-export CXXFLAGS='-O3 -fomit-frame-pointer -fstrict-aliasing -flto -pthread'
-export LDFLAGS='-flto -pthread'
+export CC=clang
+export CXX=clang++
+export AR=llvm-ar
+export RANLIB=llvm-ranlib
+export CFLAGS='-O3 -fomit-frame-pointer -fstrict-aliasing -pthread'
+export CXXFLAGS='-O3 -fomit-frame-pointer -fstrict-aliasing -pthread'
+export LDFLAGS='-pthread'
 
 make clean || true
 git pull origin

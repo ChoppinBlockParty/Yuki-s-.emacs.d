@@ -22,6 +22,8 @@
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
+(setq url-proxy-services '(("no_proxy" . "^\\(localhost\\|127\\..*\\|192\\.168\\..*\\)")))
+
 (require 'package)
 (require 'gnutls)
 (package-initialize)

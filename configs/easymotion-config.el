@@ -2,8 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 (use-package avy
-  :ensure nil
-  :load-path "local/avy"
   :config
   (setq
     ;;; When non-nil, a gray background will be added during the selection.

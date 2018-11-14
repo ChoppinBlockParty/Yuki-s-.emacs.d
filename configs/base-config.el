@@ -305,6 +305,7 @@
                             rg-mode
                             ivy-occur-grep-mode
                             completion-list-mode))
+         (my-window-display-buffer-match-any (buffer-name buffer) "\\`\\*Completions\\*\\'")
          )
        nil
        )
@@ -359,7 +360,7 @@
 (add-hook 'help-mode-hook 'my-setup-help-mode)
 
 ;; (set-frame-font "Inconsolata-dz for Powerline-11")
-(set-frame-font "DejaVu Sans Mono-11")
+;; (set-frame-font "DejaVu Sans Mono-11")
 ;; (set-frame-font "Hack-10")
 
 (setq
