@@ -9,14 +9,17 @@ set -e
 # sudo rm /usr/bin/ld; sudo ln -s /usr/bin/x86_64-linux-gnu-ld.bfd  /usr/bin/ld
 
 
-if [[ $# -ne 1 ]];then echo "build-emacs.sh <install prefix>"; exit 1; fi
+if [[ $# -ne 1 ]]; then echo "build-emacs.sh <install prefix>"; exit 1; fi
 
 PREFIX="$1"
 
-export CC=clang
-export CXX=clang++
-export AR=llvm-ar
-export RANLIB=llvm-ranlib
+if [ -x "$(command -v clang 2>/dev/null)" ]; then
+  export CC=clang
+  export CXX=clang++
+  export AR=llvm-ar
+  export RANLIB=llvm-ranlib
+fi
+
 export CFLAGS='-O3 -fomit-frame-pointer -fstrict-aliasing -pthread'
 export CXXFLAGS='-O3 -fomit-frame-pointer -fstrict-aliasing -pthread'
 export LDFLAGS='-pthread'
