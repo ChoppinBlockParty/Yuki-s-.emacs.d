@@ -65,7 +65,8 @@
            )
 
       (propertize (all-the-icons-faicon icon :v-adjust 0.0)
-                  'face `(:family ,(all-the-icons-faicon-family)
+                  'face `(:height 1.0
+                          :family ,(all-the-icons-faicon-family)
                           :inherit
                           )
                   'local-map (make-mode-line-mouse-map 'mouse-1 'read-only-mode)
@@ -116,7 +117,7 @@
           )
     )
 
-  (defun custom-modeline-flycheck-status (face)
+  (defun my-modeline-flycheck-status ()
     (let* ((text (pcase flycheck-last-status-change
                   (`finished (if flycheck-current-errors
                                  (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
@@ -131,7 +132,7 @@
                   (`suspicious  "☠"))))
        (propertize text
                    'help-echo "Show Flycheck Errors"
-                   'face face
+                   'face '(:height 1.2 :inherit)
                    'mouse-face '(:box 1)
                    'local-map (make-mode-line-mouse-map
                                'mouse-1 (lambda () (interactive) (flycheck-list-errors))))
@@ -173,7 +174,7 @@
                       (funcall separator-right face1 face2)
                       (powerline-raw (my-mode-line-mode-icon) face2)
                       (funcall separator-left face2 face1)
-                      (custom-modeline-flycheck-status face1)
+                      (powerline-raw (my-modeline-flycheck-status) face1)
                       (funcall separator-right face1 face2)
                       (powerline-minor-modes face2)
                       (funcall separator-left face2 face1)
