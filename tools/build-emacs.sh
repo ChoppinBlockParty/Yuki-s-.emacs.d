@@ -52,3 +52,9 @@ make clean || true
 
 make V=1
 sudo make install
+mkdir -p ~/bin
+ln -s "$PREFIX/bin/ctags" ~/bin
+ln -s "$PREFIX/bin/ebrowse" ~/bin
+ln -s "$PREFIX/bin/emacs-26.1.90" ~/bin/emacs
+ln -s "$PREFIX/bin/emacsclient" ~/bin
+ln -s "$PREFIX/bin/etags" ~/bin
