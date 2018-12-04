@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
 packages=(
-  ### clang compiler
-  llvm-7
+  ### Makeinfo
+  texinfo
 
   ### Required for pdf-tools
   zlib1g-dev
@@ -66,7 +66,7 @@ packages=(
   libfreetype6-dev
   libfontconfig-dev
   libz-dev
-  libgnutls-dev
+  libgnutls28-dev
   liblzma-dev
   libjbig-dev
   libepoxy-dev
