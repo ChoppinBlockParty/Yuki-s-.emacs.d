@@ -67,6 +67,7 @@
 (require 'pdf-config)
 (require 'org-config)
 (require 'file-modes-config)
+(require 'tramp-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver
 ;;; It is very fun, however consumes 10% cpu all the time, sad...
