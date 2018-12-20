@@ -38,7 +38,7 @@
               (write-region "" nil expanded t)
               (when new
                 (dired-add-file new)
-                (dired-revert)
+                (my-dired-revert)
                 )
               )
           )
@@ -63,7 +63,7 @@
           (make-directory expanded t)
           (when new
                 (dired-add-file new)
-                (dired-revert)
+                (my-dired-revert)
                 )
       )
     )
@@ -85,16 +85,17 @@
       "u"  'dired-unmark
       "U"  'dired-unmark-all-marks
       (kbd "C-m") 'dired-find-file
-      "gg" 'evil-goto-first-line ;; FIXME: Do not why I should specify it here, otherwise it is undefined
-      "gr" 'revert-buffer
       "zww" 'dired-toggle-read-only
       "go" 'browse-url-of-dired-file
       "ga" 'dired-show-file-type ;; FIXME: This could probably go on a better key.
+      "gg" 'evil-goto-first-line ;; FIXME: Do not why I should specify it here, otherwise it is undefined
       "gf" 'find-file
       "gn" 'my-dired-create-file
       "gN" 'my-dired-create-directory
+      "gr" 'my-dired-revert
       "Y"  'dired-copy-filename-as-kill
-      "o" (lambda () (interactive) (dired-subtree-toggle) (dired-revert))
+      "o" (lambda () (interactive) (dired-subtree-toggle) (my-dired-revert))
+      ;; "o" 'dired-subtree-toggle
       ;; "o" 'dired-subtree-toggle
       (kbd "<return>") 'dired-find-file
       (kbd "S-<return>") 'dired-display-file ;; preview
@@ -272,6 +273,16 @@
 (defun all-the-icons-dired--reset (&optional _arg _noconfirm)
   "Functions used as advice when redisplaying buffer."
   (setq-local all-the-icons-dired-displayed nil))
+
+(defun my-dired-revert (&rest _)
+  "Wrapper around `dired-revert' but saves window position."
+  (dired-sidebar-when-let* ((win (get-buffer-window (current-buffer))))
+    (with-selected-window win
+      (let ((old-window-start (window-start)))
+        (when (dired-sidebar-using-tui-p)
+          (dired-sidebar-tui-reset-in-sidebar))
+        (dired-revert)
+        (set-window-start win old-window-start)))))
 
 (defun my-dired-mode-hook()
   "Hook to setup all-the-icons."

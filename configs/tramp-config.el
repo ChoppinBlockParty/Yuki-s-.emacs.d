@@ -40,8 +40,8 @@
     ;; -----------------------------------------------------------------------
     tramp-verbose 10
     )
-     ;; (setq-default tramp-shell-prompt-pattern
-     ;;   "[^]#$%>\n]*#?[]]?[#$%>] *\\(\e\\[[0-9;]*[a-zA-Z] *\\)*")
+    ;; (setq-default tramp-shell-prompt-pattern
+    ;;   "\\\\[\033[01;32m\]\H\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]\n\[\033[01;32m\]▶\[\033[00m\]")
 
   :config
   (add-to-list 'tramp-methods

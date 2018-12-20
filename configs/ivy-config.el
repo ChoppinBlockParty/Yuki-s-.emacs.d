@@ -10,6 +10,9 @@
     ivy-display-style 'fancy
     ivy-count-format "(%d/%d) "
     ivy-re-builders-alist '(
+      (counsel-ag . ivy--regex-plus)
+      (counsel-grep . ivy--regex-plus)
+      (counsel-rg . ivy--regex-plus)
       (swiper . ivy--regex-plus)
       (t . ivy--regex-fuzzy)
       )
