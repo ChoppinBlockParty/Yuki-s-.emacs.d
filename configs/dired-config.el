@@ -92,7 +92,7 @@
       "gf" 'find-file
       "gn" 'my-dired-create-file
       "gN" 'my-dired-create-directory
-      "gr" 'my-dired-revert
+      "gr" (lambda() (interactive) (my-dired-revert))
       "Y"  'dired-copy-filename-as-kill
       "o" (lambda () (interactive) (dired-subtree-toggle) (my-dired-revert))
       ;; "o" 'dired-subtree-toggle
