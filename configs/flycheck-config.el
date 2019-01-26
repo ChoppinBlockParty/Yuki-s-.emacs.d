@@ -6,6 +6,11 @@
   (setq
     flycheck-mode-line nil
     )
+  (setq-default
+    flycheck-disabled-checkers
+      (append flycheck-disabled-checkers
+              '(javascript-jshint json-jsonlist))
+    )
   (global-flycheck-mode)
   )
 

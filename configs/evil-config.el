@@ -78,7 +78,12 @@
   (evil-set-cursor-color "#ff6c6b")
   (evil-set-cursor '("#ff6c6b" bar))
   (setq-default
-    evil-shift-width 2
+    my-tab-width 4
+    tab-width my-tab-width
+    evil-shift-width my-tab-width
+    c-basic-offset my-tab-width
+    ;;; Making electric-indent behave sanely
+    electric-indent-inhibit t
     ;;; If nil then * and # search for words otherwise for symbols.
     evil-symbol-word-search t
     )

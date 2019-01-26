@@ -93,6 +93,9 @@
   (add-hook 'c-mode-hook 'ycmd-mode)
   (add-hook 'c++-mode-hook 'ycmd-mode)
   (add-hook 'go-mode-hook 'ycmd-mode)
+  ;; (add-hook 'rjsx-mode-hook 'ycmd-mode)
+  ;; (add-hook 'js2-mode-hook 'ycmd-mode)
+  ;; (add-to-list 'ycmd-file-type-map '(rjsx-mode . ("javascript")))
   )
 
 (evil-add-command-properties #'ycmd-goto :jump t)

@@ -26,9 +26,6 @@
 ;;; With this setting the TAB key will first try to re-indent the current line. If the line is already indented properly it will call completion-at-point instead.
 (setq-default tab-always-indent 'complete)
 
-;;; tabs width
-(setq-default tab-width 2)
-
 ;;; number columns in the status bar
 (column-number-mode)
 
@@ -417,6 +414,7 @@
     'lua-mode-hook
     'crontab-mode-hook
     'js2-mode-hook
+    'web-mode-hook
     'scheme-mode-hook
     'clojure-mode-hook
     'ruby-mode-hook
