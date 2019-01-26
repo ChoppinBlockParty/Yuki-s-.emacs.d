@@ -58,7 +58,7 @@
   :group 'magit
   :type  'boolean)
 
-  (defcustom evil-magit-use-z-for-folds nil
+  (defcustom evil-magit-use-z-for-folds t
   "When non nil, use \"z\" as a prefix for common vim fold commands, such as
   - z1 Reset visibility to level 1 for all sections
   - z2 Reset visibility to level 2 for all sections
@@ -618,15 +618,12 @@
 
   )
 
-(add-hook 'magit-diff-mode-hook
-          (lambda()
-            (evil-magit-define-key 'normal 'magit-mode-map "l" 'evil-forward-char)
-            (evil-magit-define-key 'normal 'magit-mode-map "h" 'evil-backward-char)
-            (evil-magit-define-key 'normal 'magit-mode-map "w" 'evil-forward-word-begin)
-            (evil-magit-define-key 'normal 'magit-mode-map "W" 'evil-forward-WORD-begin)
-            (evil-magit-define-key 'normal 'magit-mode-map "b" 'evil-backward-word-begin)
-            (evil-magit-define-key 'normal 'magit-mode-map "B" 'evil-backward-WORD-begin)
-            ))
+(evil-magit-define-key 'normal 'magit-diff-mode-map "l" 'evil-forward-char)
+(evil-magit-define-key 'normal 'magit-diff-mode-map "h" 'evil-backward-char)
+(evil-magit-define-key 'normal 'magit-diff-mode-map "w" 'evil-forward-word-begin)
+(evil-magit-define-key 'normal 'magit-diff-mode-map "W" 'evil-forward-WORD-begin)
+(evil-magit-define-key 'normal 'magit-diff-mode-map "b" 'evil-backward-word-begin)
+(evil-magit-define-key 'normal 'magit-diff-mode-map "B" 'evil-backward-WORD-begin)
 
 (provide 'magit-config)
 ;;; magit-config.el ends here
