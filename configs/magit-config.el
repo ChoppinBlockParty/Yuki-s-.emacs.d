@@ -110,14 +110,15 @@
   you have the latest version of magit." map-sym)))
 
   (defvar evil-magit-emacs-to-default-state-modes
-  '(git-commit-mode)
+  '(git-commit-mode
+    magit-diff-mode
+    )
   "Modes that should be in the default evil state")
 
   (defvar evil-magit-emacs-to-evil-magit-state-modes
   '(git-rebase-mode
       magit-mode
       magit-cherry-mode
-      magit-diff-mode
       magit-log-mode
       magit-log-select-mode
       magit-process-mode
@@ -260,10 +261,10 @@
                   `(,evil-magit-state))))
       (append
       `((,states magit-mode-map "g")
-        (,states magit-mode-map "C-j"   magit-section-forward          "n")
+        (,states magit-mode-map "{"     magit-section-forward          "n")
         (,states magit-mode-map "gj"    magit-section-forward-sibling  "M-n")
         (,states magit-mode-map "]"     magit-section-forward-sibling  "M-n")
-        (,states magit-mode-map "C-k"   magit-section-backward         "p")
+        (,states magit-mode-map "}"     magit-section-backward         "p")
         (,states magit-mode-map "gk"    magit-section-backward-sibling "M-p")
         (,states magit-mode-map "["     magit-section-backward-sibling "M-p")
         (,states magit-mode-map "gr"    magit-refresh                  "g")
@@ -616,6 +617,16 @@
           (user-error "evil-magit-toggle-text-mode unexpected state"))))
 
   )
+
+(add-hook 'magit-diff-mode-hook
+          (lambda()
+            (evil-magit-define-key 'normal 'magit-mode-map "l" 'evil-forward-char)
+            (evil-magit-define-key 'normal 'magit-mode-map "h" 'evil-backward-char)
+            (evil-magit-define-key 'normal 'magit-mode-map "w" 'evil-forward-word-begin)
+            (evil-magit-define-key 'normal 'magit-mode-map "W" 'evil-forward-WORD-begin)
+            (evil-magit-define-key 'normal 'magit-mode-map "b" 'evil-backward-word-begin)
+            (evil-magit-define-key 'normal 'magit-mode-map "B" 'evil-backward-WORD-begin)
+            ))
 
 (provide 'magit-config)
 ;;; magit-config.el ends here
