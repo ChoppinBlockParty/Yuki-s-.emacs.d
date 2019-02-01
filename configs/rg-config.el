@@ -24,6 +24,7 @@
     rg-keymap-prefix nil
     rg-ignore-case 'smart
     )
+  (add-to-list 'rg-custom-type-aliases '("cpp" . "*.h"))
   (evil-set-initial-state 'rg-mode 'normal)
 
   (modify-syntax-entry ?_ "w" rg-mode-syntax-table)
