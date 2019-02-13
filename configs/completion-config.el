@@ -66,6 +66,8 @@
 (define-key company-active-map (kbd "C-w") 'company-abort)
 (define-key company-active-map [return] nil)
 (define-key company-active-map (kbd "RET") nil)
+(define-key company-active-map (kbd "[") nil)
+(define-key company-active-map (kbd "]") nil)
 (evil-define-key 'insert 'global (kbd "C-SPC") 'company-complete-common)
 
 (use-package ycmd
