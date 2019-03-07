@@ -264,6 +264,7 @@
   (define-key evil-motion-state-map (kbd "4") 'evil-scroll-up)
   (define-key evil-motion-state-map (kbd "5") 'evil-first-non-blank)
   (define-key evil-motion-state-map (kbd "8") 'evil-end-of-line)
+  (define-key evil-motion-state-map (kbd "9") 'evil-jump-item)
   ;;; The original bindings felt unnatural, swapped them
   (define-key evil-motion-state-map "{" 'evil-forward-paragraph)
   (define-key evil-motion-state-map "}" 'evil-backward-paragraph)
@@ -275,6 +276,8 @@
   (define-key evil-motion-state-map "l"         'evil-forward-char)
   (define-key evil-motion-state-map (kbd "M-u") 'evil-scroll-down)
   (define-key evil-motion-state-map (kbd "M-i") 'evil-scroll-up)
+  (define-key evil-motion-state-map (kbd "M-j") 'evil-scroll-line-down)
+  (define-key evil-motion-state-map (kbd "M-k") 'evil-scroll-line-up)
   (define-key evil-motion-state-map "gd"        'dired-jump)
   (define-key evil-motion-state-map "[d"        'evil-prev-flyspell-error)
   (define-key evil-motion-state-map "[s"        'evil-next-flyspell-error)
@@ -547,14 +550,15 @@
 
 ;;; Match everything
 ;;; https://github.com/redguardtoo/evil-matchit
-(use-package evil-matchit
-  :config
-  (defun evilmi-customize-keybinding()
-    (evil-define-key 'normal evil-matchit-mode-map "9" 'evilmi-jump-items)
-    (evil-define-key 'visual evil-matchit-mode-map "9" 'evilmi-jump-items)
-    )
-  (global-evil-matchit-mode 1)
-  )
+;;; Do not use anymore - has a lot of bugs
+;; (use-package evil-matchit
+;;   :config
+;;   (defun evilmi-customize-keybinding()
+;;     (evil-define-key 'normal evil-matchit-mode-map "9" 'evilmi-jump-items)
+;;     (evil-define-key 'visual evil-matchit-mode-map "9" 'evilmi-jump-items)
+;;     )
+;;   (global-evil-matchit-mode 1)
+;;   )
 
 (provide 'evil-config)
 ;;; evil-config.el ends here
