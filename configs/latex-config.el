@@ -76,7 +76,7 @@
      (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
      ; (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
      ; (add-hook 'LaTeX-mode-hook 'orgtbl-mode)
-     (add-hook 'TeX-mode-hook (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
+     ; (add-hook 'TeX-mode-hook (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
 
      ;; source:
      ;; http://tex.stackexchange.com/questions/185688/how-to-force-emacs-with-auctex-to-show-compilation-in-new-buffer

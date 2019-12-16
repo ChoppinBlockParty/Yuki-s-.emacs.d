@@ -67,6 +67,7 @@
 (require 'pdf-config)
 (require 'org-config)
 (require 'file-modes-config)
+(require 'latex-config)
 (require 'tramp-config)
 (require 'ediff-config)
 
@@ -98,8 +99,8 @@
 (modify-syntax-entry ?- "w" Info-mode-syntax-table)
 (modify-syntax-entry ?_ "w" occur-mode-syntax-table)
 (modify-syntax-entry ?- "w" occur-mode-syntax-table)
-(modify-syntax-entry ?_ "w" comint-mode-syntax-table)
-(modify-syntax-entry ?- "w" comint-mode-syntax-table)
+;; (modify-syntax-entry ?_ "w" comint-mode-syntax-table)
+;; (modify-syntax-entry ?- "w" comint-mode-syntax-table)
 (modify-syntax-entry ?_ "w" special-mode-syntax-table)
 (modify-syntax-entry ?- "w" special-mode-syntax-table)
 (modify-syntax-entry ?_ "w" epa-key-mode-syntax-table)

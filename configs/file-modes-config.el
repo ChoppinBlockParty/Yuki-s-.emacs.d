@@ -88,6 +88,9 @@
   (modify-syntax-entry ?_ "w" lua-mode-syntax-table)
   )
 
+;; For javascript-eslint function
+(use-package js2-mode)
+
 (use-package web-mode
   :config
   (modify-syntax-entry ?_ "w" web-mode-syntax-table)
@@ -99,7 +102,7 @@
     web-mode-enable-auto-quoting nil
    )
 
-  ;; (use-package prettier-js)
+  (use-package prettier-js)
 
   (use-package add-node-modules-path)
   (add-hook 'flycheck-mode-hook 'add-node-modules-path)
@@ -117,11 +120,12 @@
           web-mode-attr-indent-offset 2
           web-mode-enable-css-colorization t)
     (add-node-modules-path)
-    ;; (prettier-js-mode)
+    (prettier-js-mode)
     )
 
   (add-hook 'web-mode-hook 'web-mode-init-hook)
   )
+
 
 (use-package tide
   :config
@@ -138,7 +142,7 @@
   (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
 
   ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
+  ; (add-hook 'before-save-hook 'tide-format-before-save)
 
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
   (add-hook 'web-mode-hook #'setup-tide-mode)

@@ -9,6 +9,12 @@
 (use-package gitignore-mode)
 (use-package magit
   :config
+  (setq
+    magit-diff-refine-hunk 'all
+    magit-diff-refine-ignore-whitespace 't
+    )
+
+
   (modify-syntax-entry ?_ "w" magit-mode-syntax-table)
   (modify-syntax-entry ?- "w" magit-mode-syntax-table)
   (modify-syntax-entry ?_ "w" magit-log-mode-syntax-table)
@@ -23,8 +29,6 @@
   (modify-syntax-entry ?- "w" magit-merge-preview-mode-syntax-table)
   (modify-syntax-entry ?_ "w" magit-stash-mode-syntax-table)
   (modify-syntax-entry ?- "w" magit-stash-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" magit-popup-mode-syntax-table)
-  (modify-syntax-entry ?- "w" magit-popup-mode-syntax-table)
   (modify-syntax-entry ?_ "w" magit-cherry-mode-syntax-table)
   (modify-syntax-entry ?- "w" magit-cherry-mode-syntax-table)
   (modify-syntax-entry ?_ "w" magit-reflog-mode-syntax-table)
@@ -272,13 +276,13 @@
         (,states magit-mode-map "x"     magit-delete-thing             "k")
         (,states magit-mode-map "X"     magit-file-untrack             "K")
         (,states magit-mode-map "C--"   magit-revert-no-commit         "v")
-        (,states magit-mode-map "_"     magit-revert-popup             "V")
-        (,states magit-mode-map "p"     magit-push-popup               "P")
+        (,states magit-mode-map "_"     magit-revert             "V")
+        (,states magit-mode-map "p"     magit-push               "P")
         (,states magit-mode-map "o"     magit-reset                    "x")
-        (,states magit-mode-map "O"     magit-reset-popup              "X")
+        (,states magit-mode-map "O"     magit-reset              "X")
         (,states magit-mode-map "|"     magit-git-command              ":")
-        (,states magit-mode-map "'"     magit-submodule-popup          "o")
-        (,states magit-mode-map "\""    magit-subtree-popup            "O")
+        (,states magit-mode-map "'"     magit-submodule          "o")
+        (,states magit-mode-map "\""    magit-subtree            "O")
         (,states magit-mode-map "="     magit-diff-less-context        "-")
         (,states magit-mode-map "j"     evil-next-visual-line)
         (,states magit-mode-map "k"     evil-previous-visual-line)
@@ -316,12 +320,14 @@
         (,states magit-status-mode-map "gpp" magit-jump-to-unpushed-to-pushremote   "jpp")
         (,states magit-diff-mode-map "gj" magit-section-forward)
         (,states magit-diff-mode-map "gd" magit-jump-to-diffstat-or-diff "j")
-        ((emacs) magit-popup-mode-map "<escape>" "q"))
+        ;; NOTE This is now transient-map and the binding is C-g.
+        ;; ((emacs) magit-popup-mode-map "<escape>" "q")        )
+        )
 
       (when evil-magit-want-horizontal-movement
-      `((,states magit-mode-map "H"    magit-dispatch-popup    "h")
-          (,states magit-mode-map "L"    magit-log-popup         "l")
-          (,states magit-mode-map "C-l"  magit-log-refresh-popup "L")
+      `((,states magit-mode-map "H"    magit-dispatch    "h")
+          (,states magit-mode-map "L"    magit-log         "l")
+          (,states magit-mode-map "C-l"  magit-log-refresh "L")
           (,states magit-mode-map "h"    evil-backward-char)
           (,states magit-mode-map "l"    evil-forward-char)))
 
@@ -334,7 +340,7 @@
           (,states magit-mode-map "C-w"  evil-window-map)
           (,states magit-mode-map "y")
           (,states magit-mode-map "yy"   evil-yank-line)
-          (,states magit-mode-map "yr"   magit-show-refs-popup      "y")
+          (,states magit-mode-map "yr"   magit-show-refs      "y")
           (,states magit-mode-map "ys"   magit-copy-section-value   "C-w")
           (,states magit-mode-map "yb"   magit-copy-buffer-revision "M-w")
           ((visual) magit-mode-map "y"   evil-yank))
@@ -507,54 +513,56 @@
 
   ;; Popups
 
-  (defvar evil-magit-dispatch-popup-backup (copy-sequence magit-dispatch-popup))
+  (defvar evil-magit-dispatch-popup-backup
+    (copy-tree (get 'magit-dispatch 'transient--layout) t))
   (defvar evil-magit-popup-keys-changed nil)
 
   (defvar evil-magit-popup-changes
-  (append
-  (when evil-magit-use-z-for-folds
-      '((magit-dispatch-popup :actions "z" "Z" magit-stash-popup)))
-  (when evil-magit-want-horizontal-movement
-      '((magit-dispatch-popup :actions "L" "\C-l" magit-log-refresh-popup)
-      (magit-dispatch-popup :actions "l" "L" magit-log-popup)))
-  '((magit-branch-popup :actions "x" "X" magit-branch-reset)
-      (magit-branch-popup :actions "k" "x" magit-branch-delete)
-      (magit-dispatch-popup :actions "o" "'" magit-submodule-popup)
-      (magit-dispatch-popup :actions "O" "\"" magit-subtree-popup)
-      (magit-dispatch-popup :actions "V" "_" magit-revert-popup)
-      (magit-dispatch-popup :actions "X" "O" magit-reset-popup)
-      (magit-dispatch-popup :actions "v" "C--" magit-reverse)
-      (magit-dispatch-popup :actions "k" "x" magit-discard)
-      (magit-remote-popup :actions "k" "x" magit-remote-remove)
-      (magit-revert-popup :actions "v" "o" magit-revert-no-commit)
-      (magit-revert-popup :actions "V" "O" magit-revert)
-      (magit-revert-popup :sequence-actions "V" "O" magit-sequencer-continue)
-      (magit-tag-popup    :actions "k" "x" magit-tag-delete)))
-  "Changes to popup keys")
+    (append
+      (when evil-magit-use-z-for-folds
+          '((magit-dispatch "z" "Z" magit-stash)))
+      (when evil-magit-want-horizontal-movement
+          '((magit-dispatch "L" "\C-l" magit-log-refresh)
+          (magit-dispatch "l" "L" magit-log)))
+      '((magit-branch "x" "X" magit-branch-reset)
+          (magit-branch "k" "x" magit-branch-delete)
+          (magit-dispatch "o" "'" magit-submodule)
+          (magit-dispatch "O" "\"" magit-subtree)
+          (magit-dispatch "V" "_" magit-revert)
+          (magit-dispatch "X" "O" magit-reset)
+          (magit-dispatch "v" "C--" magit-reverse)
+          (magit-dispatch "k" "x" magit-discard)
+          (magit-remote "k" "x" magit-remote-remove)
+          (magit-revert "v" "o" magit-revert-no-commit)
+          (magit-revert "V" "O" magit-revert)
+          (magit-revert "V" "O" magit-sequencer-continue)
+          (magit-tag "k" "x" magit-tag-delete)))
+    "Changes to popup keys")
 
-  (defun evil-magit-change-popup-key (popup type from to _)
-  "Wrap `magit-change-popup-key'."
-  (magit-change-popup-key popup type (string-to-char from) (string-to-char to))
-  ;; Support C-a -- C-z
-  (when (and (>= (string-to-char to) 1)
-              (<= (string-to-char to) 26))
-      (define-key magit-popup-mode-map to #'magit-invoke-popup-action)))
+  (defun evil-magit-change-popup-key (popup from to &rest _args)
+    "Wrap `magit-change-popup-key'."
+    (transient-suffix-put popup from :key to))
 
   (defun evil-magit-adjust-popups ()
-  "Adjust popup keys to match evil-magit."
-  (unless evil-magit-popup-keys-changed
+    "Adjust popup keys to match evil-magit."
+    (unless evil-magit-popup-keys-changed
       (dolist (change evil-magit-popup-changes)
-      (apply #'evil-magit-change-popup-key change))
+        (apply #'evil-magit-change-popup-key change))
+      (with-eval-after-load 'forge
+        (transient-remove-suffix 'magit-dispatch 'forge-dispatch)
+        (transient-append-suffix 'magit-dispatch "!"
+          '("@" "Forge" forge-dispatch)))
       (setq evil-magit-popup-keys-changed t)))
 
   (defun evil-magit-revert-popups ()
-  "Revert popup keys changed by evil-magit."
-  (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
-  (when evil-magit-popup-keys-changed
+    "Revert popup keys changed by evil-magit."
+    (put 'magit-dispatch 'transient--layout evil-magit-dispatch-popup-backup)
+    (when evil-magit-popup-keys-changed
       (dolist (change evil-magit-popup-changes)
-      (magit-change-popup-key
-      (nth 0 change) (nth 1 change)
-      (string-to-char (nth 3 change)) (string-to-char (nth 2 change))))
+        (evil-magit-change-popup-key
+         (nth 0 change) (nth 2 change) (nth 1 change)))
+      (with-eval-after-load 'forge
+        (transient-suffix-put 'magit-dispatch "@" :key "'"))
       (setq evil-magit-popup-keys-changed nil)))
 
   ;;;###autoload

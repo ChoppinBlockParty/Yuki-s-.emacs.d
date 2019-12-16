@@ -18,11 +18,11 @@
 (require 'comint)
 ;;; For better shell directory tracking, used below
 (require 'dirtrack)
-;;; Amazing xterm-256color package
-(use-package xterm-color)
+;;; Amazing xterm-256color package (see a comment below)
+;; (use-package xterm-color)
 
-(modify-syntax-entry ?_ "w" shell-mode-syntax-table)
-(modify-syntax-entry ?- "w" shell-mode-syntax-table)
+;; (modify-syntax-entry ?_ "w" shell-mode-syntax-table)
+;; (modify-syntax-entry ?- "w" shell-mode-syntax-table)
 
 ;; (require 'ansi-color)
 
@@ -39,6 +39,7 @@
   comint-input-ring-size 100000
   comint-input-ignoredups t
   )
+
 ;;; For ANSI colors
 ;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
@@ -52,11 +53,14 @@
 
 (defun my-shell-mode-hook ()
   "A hook to setup shell-mode."
-  (setq comint-output-filter-functions
-    (remove'ansi-color-process-output comint-output-filter-functions))
-  (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)
+
+  ;;; idk seems does not well work with comint, some sequences are wrongly interpreted
+  ;; (setq comint-output-filter-functions
+  ;;   (remove'ansi-color-process-output comint-output-filter-functions))
+  ;; (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)
+
   ;;; For ANSI colors
-  ;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+  ;; (ansi-color-for-comint-mode-on)
   ;;; Removes face inherited from minibuffer. FIXME: Do I need it?
   ;; (face-remap-set-base 'comint-highlight-prompt)
   ;;; You can highlight some text based on regexp (useful to see "OK" or warnings):
@@ -82,6 +86,10 @@
   (dirtrack-mode 1)
   (add-hook 'comint-preoutput-filter-functions 'dirtrack nil t)
 
+  ;;; popular pagers do not work in shell-mode
+  (process-send-string (get-buffer-process (current-buffer))
+                       "export PAGER=cat NODE_NO_READLINE=1\n")
+
   ;;; {{{ This is for fine tuning of the dirtrack regexp for the prompt
   ;; (add-hook 'comint-preoutput-filter-functions
   ;;           'dirtrack-filter-out-pwd-prompt nil t)
@@ -93,9 +101,6 @@
   ;;; }}}
   )
 (add-hook 'shell-mode-hook 'my-shell-mode-hook)
-
-;;; popular pagers do not work in shell-mode
-(setenv "PAGER" "cat")
 
 ;; Replaces RET behavior
 (defun my-comint-send-input-maybe ()
