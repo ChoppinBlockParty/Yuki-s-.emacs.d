@@ -534,7 +534,7 @@
           (magit-dispatch "k" "x" magit-discard)
           (magit-remote "k" "x" magit-remote-remove)
           (magit-revert "v" "o" magit-revert-no-commit)
-          (magit-revert "V" "O" magit-revert)
+          (magit-revert "V" "O" magit-revert-and-commit)
           (magit-revert "V" "O" magit-sequencer-continue)
           (magit-tag "k" "x" magit-tag-delete)))
     "Changes to popup keys")

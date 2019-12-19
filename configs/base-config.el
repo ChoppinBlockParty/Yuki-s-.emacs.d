@@ -288,9 +288,10 @@
              (my-window-display-buffer-split buffer)
              ))
        )
+      ;;; For magit pop-ups that are called transient with a space in front
       ((and
          (equal new-mode 'fundamental-mode)
-         (my-window-display-buffer-match-any (buffer-name buffer) "\\`\\*magit.*-popup.*\\*\\'")
+         (my-window-display-buffer-match-any (buffer-name buffer) "\\`\s-*\\*transient\\*\\'")
          )
        (my-window-display-buffer
          buffer
