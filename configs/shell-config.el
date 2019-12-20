@@ -81,7 +81,8 @@
 
   ;;; Stop the usual shell directory tracking
   (shell-dirtrack-mode 0)
-  (set-variable 'dirtrack-list '("[[:blank:][:cntrl:]]+[[:cntrl:]]\\[38;5;81m\\([^[:cntrl:]]+\\)[[:cntrl:]]\\[39m$" 1 nil))
+  ;; (set-variable 'dirtrack-list '("[[:blank:][:cntrl:]]+[[:cntrl:]]\\[38;5;81m\\([^[:cntrl:]]+\\)[[:cntrl:]]\\[39m$" 1 nil))
+  (set-variable 'dirtrack-list '("[[:blank:][:cntrl:]]+[[:cntrl:]]\\([^[:cntrl:]]+\\)[[:cntrl:]]\\[39m$" 1 nil))
   ;;; Enable alternative tracking strategy
   (dirtrack-mode 1)
   (add-hook 'comint-preoutput-filter-functions 'dirtrack nil t)
