@@ -38,7 +38,7 @@
 
 (blink-cursor-mode 0)
 (setq-default cursor-type 'bar)
-;; ;;; So far did not find a way how to make the color work
+;;; Emacs cursor, there are also evil cursor configurations
 (set-cursor-color "#ff6c6b")
 
 
