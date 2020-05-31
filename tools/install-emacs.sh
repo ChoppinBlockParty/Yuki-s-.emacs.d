@@ -58,3 +58,6 @@ ln -fs "$PREFIX/bin/ebrowse" ~/bin
 ln -fs "$PREFIX/bin/emacs" ~/bin/emacs
 ln -fs "$PREFIX/bin/emacsclient" ~/bin
 ln -fs "$PREFIX/bin/etags" ~/bin
+
+cp emacs.desktop ~/.local/share/applications
+update-desktop-database ~/.local/share/applications

@@ -88,4 +88,4 @@ packages=(
   libgpg-error-dev
   libgraphite2-dev
   )
-apt-get -y install --no-install-recommends "${packages[@]}"
+sudo apt-get -y install --no-install-recommends "${packages[@]}"

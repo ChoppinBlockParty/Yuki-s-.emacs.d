@@ -58,3 +58,8 @@ Packages
  - [lua-mode](https://github.com/immerrr/lua-mode)
  - [go-mode.el](https://github.com/dominikh/go-mode.el)
 
+### Post installation steps
+
+```
+M-x all-the-icons-install-fonts
+```

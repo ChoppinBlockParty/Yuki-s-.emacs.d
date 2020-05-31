@@ -22,6 +22,7 @@
 
 !/tools
 !/tools/*.sh
+!/tools/*.desktop
 
 !.gitignore
 !init.el
