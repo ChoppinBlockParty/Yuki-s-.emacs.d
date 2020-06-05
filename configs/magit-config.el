@@ -14,6 +14,7 @@
     magit-diff-refine-ignore-whitespace 't
     )
 
+  (define-key transient-map (kbd "<escape>") 'transient-quit-one)
 
   (modify-syntax-entry ?_ "w" magit-mode-syntax-table)
   (modify-syntax-entry ?- "w" magit-mode-syntax-table)

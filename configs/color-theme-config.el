@@ -69,21 +69,21 @@
 
   ;;; Finally, apply moe-theme now.
   ;;; Choose what you like, (moe-light) or (moe-dark)
-  (moe-light)
-  ;; (moe-dark)
+  ;; (moe-light)
+  (moe-dark)
   (custom-set-faces
    '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
    '(ivy-minibuffer-match-face-2 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
    '(ivy-minibuffer-match-face-3 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
    '(ivy-minibuffer-match-face-4 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))
-   )
+  )
   (defface powerline-active1 '((t (:foreground "#d0d0f0" :background "purple" :inherit mode-line)))
     "Powerline face 1."
     :group 'powerline)
   (defface powerline-active2 '((t (:foreground "#63b132" :background "black" :inherit mode-line)))
     "Powerline face 2."
     :group 'powerline)
-  )
+)
 
 
 (provide 'color-theme-config)
