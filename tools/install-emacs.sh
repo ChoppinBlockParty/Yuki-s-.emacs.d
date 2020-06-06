@@ -4,6 +4,8 @@ set -e
 
 if [[ $# -ne 1 ]]; then echo "build-emacs.sh <install prefix>"; exit 1; fi
 
+SCRIPT_DIR="$(realpath -s "$(dirname "$0")")"
+
 PREFIX="$1"
 
 export CFLAGS='-O3 -fomit-frame-pointer -fstrict-aliasing -pthread'
@@ -59,5 +61,5 @@ ln -fs "$PREFIX/bin/emacs" ~/bin/emacs
 ln -fs "$PREFIX/bin/emacsclient" ~/bin
 ln -fs "$PREFIX/bin/etags" ~/bin
 
-cp emacs.desktop ~/.local/share/applications
+cp "$SCRIPT_DIR/emacs.desktop" ~/.local/share/applications
 update-desktop-database ~/.local/share/applications
