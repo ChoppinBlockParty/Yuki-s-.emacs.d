@@ -41,6 +41,11 @@
 ;;; Emacs cursor, there are also evil cursor configurations
 (set-cursor-color "#ff6c6b")
 
+(use-package smooth-scrolling
+  :config
+  (smooth-scrolling-mode 1)
+)
+
 
 ;;; On graphical displays, each Emacs window normally has narrow fringes (gutters/margins) on the left and right edges. The fringes are used to display symbols that provide information about the text in the window. You can type M-x fringe-mode to disable the fringes, or modify their width. This command affects fringes in all frames; to modify fringes on the selected frame only, use M-x set-fringe-style. You can make your changes to the fringes permanent by customizing the variable fringe-mode.
 ;; Out-of-the-box the most common use of the fringes is to indicate a continuation line. When one line of text is split into multiple screen lines, the left fringe shows a curving arrow for each screen line except the first, indicating that “this is not the real beginning”. The right fringe shows a curving arrow for each screen line except the last, indicating that “this is not the real end”. If the line’s direction is right-to-left, the meanings of the curving arrows in the fringes are swapped.

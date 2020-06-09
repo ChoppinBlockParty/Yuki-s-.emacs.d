@@ -30,6 +30,7 @@ Packages
  - [use-package](https://github.com/jwiegley/use-package)
  - [flx](https://github.com/lewang/flx)
  - [smex](https://github.com/nonsequitur/smex)
+ - [smooth-scrolling](https://github.com/aspiers/smooth-scrolling)
  - [dired-hacks](https://github.com/Fuco1/dired-hacks)
  - [dired-sidebar](https://github.com/jojojames/dired-sidebar)
  - [all-the-icons](https://github.com/domtronn/all-the-icons.el)
