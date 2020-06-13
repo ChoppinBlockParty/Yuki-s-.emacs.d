@@ -41,10 +41,26 @@
 ;;; Emacs cursor, there are also evil cursor configurations
 (set-cursor-color "#ff6c6b")
 
-(use-package smooth-scrolling
-  :config
-  (smooth-scrolling-mode 1)
-)
+;;; Seems to be nice but has nasty bugs
+;; (use-package smooth-scrolling
+;;   :config
+;;   (smooth-scrolling-mode 1)
+;; )
+
+;;; The variable redisplay-dont-pause, when set to t, will cause Emacs to
+;;; fully redraw the display before it processes queued input events.
+;;; This may have slight performance implications if you’re aggressively
+;;; mouse scrolling a document or rely on your keyboard’s auto repeat
+;;; feature. For most of us, myself included, it’s probably a no-brainer
+;;; to switch it on.
+(setq redisplay-dont-pause t
+  scroll-margin 1
+  scroll-step 1
+  scroll-conservatively 10000
+  scroll-preserve-screen-position 1)
+
+(setq auto-save-timeout 2)
+(auto-save-visited-mode)
 
 
 ;;; On graphical displays, each Emacs window normally has narrow fringes (gutters/margins) on the left and right edges. The fringes are used to display symbols that provide information about the text in the window. You can type M-x fringe-mode to disable the fringes, or modify their width. This command affects fringes in all frames; to modify fringes on the selected frame only, use M-x set-fringe-style. You can make your changes to the fringes permanent by customizing the variable fringe-mode.
