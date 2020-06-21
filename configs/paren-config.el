@@ -17,6 +17,14 @@
   (show-paren-mode t)
 )
 
+
+;; (use-package smartparens
+;;   :config
+;;   (require 'smartparens-config)
+;;   (dolist (hook (append my-prog-modes-hook-list my-markup-modes-hook-list))
+;;     (add-hook hook #'smartparens-mode))
+;;   )
+
 ;;; "rainbow parentheses"-like mode which highlights delimiters such as parentheses,
 ;;; brackets or braces according to their depth.
 ;;; https://github.com/Fanael/rainbow-delimiters

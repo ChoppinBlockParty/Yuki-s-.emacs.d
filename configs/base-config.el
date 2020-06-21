@@ -53,14 +53,27 @@
 ;;; mouse scrolling a document or rely on your keyboard’s auto repeat
 ;;; feature. For most of us, myself included, it’s probably a no-brainer
 ;;; to switch it on.
-(setq redisplay-dont-pause t
-  scroll-margin 1
+(setq
+  redisplay-dont-pause t
+  ;; Always redraw immediately when scrolling,
+  ;; more responsive and doesn't hang!
+  fast-but-imprecise-scrolling nil
+  jit-lock-defer-time 0
+  scroll-margin 2
   scroll-step 1
-  scroll-conservatively 10000
-  scroll-preserve-screen-position 1)
+  scroll-preserve-screen-position t)
+(setq scroll-conservatively 1) ;; move minimum when cursor exits view, instead of recentering
+(setq mouse-wheel-scroll-amount '(1)) ;; mouse scroll moves 1 line at a time, instead of 5 lines
+(setq mouse-wheel-progressive-speed nil) ;; on a long mouse scroll keep scrolling by 1 line
 
-(setq auto-save-timeout 2)
-(auto-save-visited-mode)
+
+;;; Enable the mouse in terminal mode.
+(xterm-mouse-mode 1)
+
+;;; Change screen position for some file types (e.g. javascript)
+;;; probably due to formatter on save
+; (setq auto-save-timeout 2)
+; (auto-save-visited-mode)
 
 
 ;;; On graphical displays, each Emacs window normally has narrow fringes (gutters/margins) on the left and right edges. The fringes are used to display symbols that provide information about the text in the window. You can type M-x fringe-mode to disable the fringes, or modify their width. This command affects fringes in all frames; to modify fringes on the selected frame only, use M-x set-fringe-style. You can make your changes to the fringes permanent by customizing the variable fringe-mode.
@@ -111,17 +124,9 @@
 ;;; Ediff with horizontal splits.
 (setq ediff-split-window-function 'split-window-horizontally)
 
-;;; Only scroll one line when near the bottom of the screen, instead
-;;; of jumping the screen around.
-(setq scroll-conservatively 9999
-      scroll-preserve-screen-position t)
-
 ;;; Let me write `y` or `n` even for important stuff that would normally require
 ;;; me to fully type `yes` or `no`.
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Enable the mouse in terminal mode.
-(xterm-mouse-mode 1)
 
 ;;; UTF-8 everything!
 (set-terminal-coding-system 'utf-8)
