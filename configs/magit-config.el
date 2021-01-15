@@ -144,7 +144,6 @@
   '(git-popup-mode
       magit-blame-mode
       magit-blame-read-only-mode
-      magit-file-mode
       magit-popup-mode
       magit-popup-sequence-mode)
   "Modes whose evil states are unchanged")
@@ -414,7 +413,6 @@
                   magit-log-select-mode-map
                   magit-reflog-mode-map
                   magit-status-mode-map
-                  magit-file-mode-map
                   magit-log-read-revs-map
                   magit-process-mode-map
                   magit-refs-mode-map))

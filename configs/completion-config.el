@@ -10,9 +10,11 @@
 ;;; https://github.com/company-mode/company-mode/pull/706
 ;;; Described in [Switch from AC](https://github.com/company-mode/company-mode/wiki/Switching-from-AC)
 (use-package company
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
   :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  ;;; Goint to configure all myselft
+  ;; (add-hook 'after-init-hook 'company-tng-mode)
+
   (defun company-preview-if-not-tng-frontend (command)
       "`company-preview-frontend', but not when tng is active."
       (unless (and (eq command 'post-command)
@@ -22,24 +24,30 @@
 
 
   (setq
-    company-lighter-base ""
-    company-idle-delay 0.0
+    ;; company-lighter-base ""
+    company-idle-delay 0.3
     company-minimum-prefix-length 1
-    company-auto-complete nil
-    company-require-match nil ; cancel selections by typing non-matching character
+    company-selection-default nil
+    company-require-match nil      ; cancel selections by typing non-matching character
     ;; company-tooltip-limit 20                       ; bigger popup window
-    company-echo-delay 0                           ; remove annoying blinking
+    ;; company-echo-delay 0                           ; remove annoying blinking
     ;; company-begin-commands '(self-insert-command)  ; start autocompletion only after typing
     ;; company-dabbrev-ignore-case nil
     ;; company-dabbrev-downcase nil
-    company-frontends '(company-tng-frontend
-                        company-echo-metadata-frontend
+    company-frontends '(company-tng-frontend ; kaolin-bubblegum
                         company-pseudo-tooltip-frontend
+                        company-echo-metadata-frontend
                         ;; company-pseudo-tooltip-unless-just-one-frontend
                         ;;; Fancy frontend, but lagging
                         ;; company-preview-if-not-tng-frontend
                         )
     )
+
+    (setq company-clang-insert-arguments nil
+          company-semantic-insert-arguments nil
+          company-rtags-insert-arguments nil
+          lsp-enable-snippet nil)
+    (advice-add #'eglot--snippet-expansion-fn :override #'ignore)
   )
 
 (define-key company-active-map (kbd "C-h") 'company-show-doc-buffer)
