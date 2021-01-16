@@ -43,7 +43,6 @@
 
   (setq powerline-default-separator 'contour
         powerline-default-separator-dir '(left . right)
-        ;; powerline-height 10
         powerline-display-buffer-size nil
         powerline-display-hud nil
         powerline-display-mule-info nil
@@ -65,9 +64,7 @@
            )
 
       (propertize (all-the-icons-faicon icon :v-adjust 0.0)
-                  'face `(:height 1.0
-                          :family ,(all-the-icons-faicon-family)
-                          :inherit
+                  'face `(:family ,(all-the-icons-faicon-family)
                           )
                   'local-map (make-mode-line-mouse-map 'mouse-1 'read-only-mode)
                   )
@@ -90,8 +87,7 @@
           (propertize icon
                       'help-echo (format "Major-mode: `%s'" major-mode)
                       'display '(raise 0.0)
-                      'face `(:height 1.0
-                              :family ,(all-the-icons-icon-family-for-mode major-mode)
+                      'face `(:family ,(all-the-icons-icon-family-for-mode major-mode)
                               :inherit)
                       ))
         )
@@ -102,18 +98,18 @@
     (let* ((window-number (window-numbering-get-number))
            (str (cond
               ((not window-number)  "")
-              ((= window-number 1)  "➊")
-              ((= window-number 2)  "➋")
-              ((= window-number 3)  "➌")
-              ((= window-number 4)  "➍")
-              ((= window-number 5)  "➎")
-              ((= window-number 6)  "❻")
-              ((= window-number 7)  "➐")
-              ((= window-number 8)  "➑")
-              ((= window-number 9)  "➒")
-              ((= window-number 0)  "➓")
+              ((= window-number 1)  "1")
+              ((= window-number 2)  "2")
+              ((= window-number 3)  "3")
+              ((= window-number 4)  "4")
+              ((= window-number 5)  "5")
+              ((= window-number 6)  "6")
+              ((= window-number 7)  "7")
+              ((= window-number 8)  "8")
+              ((= window-number 9)  "8")
+              ((= window-number 0)  "0")
               )))
-          (propertize str 'face '(:height 1.2 :inherit))
+          (propertize str 'face '(:inherit))
           )
     )
 
@@ -132,7 +128,7 @@
                   (`suspicious  "☠"))))
        (propertize text
                    'help-echo "Show Flycheck Errors"
-                   'face '(:height 1.2 :inherit)
+                   'face '(:inherit)
                    'mouse-face '(:box 1)
                    'local-map (make-mode-line-mouse-map
                                'mouse-1 (lambda () (interactive) (flycheck-list-errors))))

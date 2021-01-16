@@ -367,6 +367,9 @@
       ))
 (add-hook 'find-file-hook 'my-setup-file-defaults)
 
+(defun display-startup-echo-area-message ()
+  (message nil))
+
 (defun my-do-not-kill-scratch-buffers ()
   "Don't let the scratch buffer die."
   (if (member (buffer-name (current-buffer)) '("*scratch*" "*Messages*"))

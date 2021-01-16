@@ -30,7 +30,7 @@
     company-selection-default nil
     company-require-match nil      ; cancel selections by typing non-matching character
     ;; company-tooltip-limit 20                       ; bigger popup window
-    ;; company-echo-delay 0                           ; remove annoying blinking
+    company-echo-delay 0                           ; remove annoying blinking
     ;; company-begin-commands '(self-insert-command)  ; start autocompletion only after typing
     ;; company-dabbrev-ignore-case nil
     ;; company-dabbrev-downcase nil
