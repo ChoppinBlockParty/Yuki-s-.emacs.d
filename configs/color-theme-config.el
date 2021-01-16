@@ -69,7 +69,7 @@
 
   ;;; Finally, apply moe-theme now.
   ;;; Choose what you like, (moe-light) or (moe-dark)
-  ;; (moe-light)
+  ; (moe-light)
   (moe-dark)
   (custom-set-faces
    '(ivy-minibuffer-match-face-1 ((t (:background "dark orchid" :foreground "#eeeeee" :weight bold))))

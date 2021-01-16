@@ -493,7 +493,8 @@
                 :keymap counsel-projectile-map
                 :caller 'counsel-projectile)))
 
-  (my-evil-all-modes-define-key "M-w" 'my-counsel-projectile)
+  ;(my-evil-all-modes-define-key "M-w" 'my-counsel-projectile)
+  (my-evil-all-modes-define-key "M-w" 'counsel-switch-buffer)
   ;;; find-file sucks - only searchs in cwd
   ;;; find-jump sucks - bad performance
   (my-evil-all-modes-define-key "M-e" 'counsel-fzf)
