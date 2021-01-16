@@ -65,7 +65,7 @@
 
   ;;; Choose a color for mode-line.(Default: blue)
   ;;; (Available colors: blue, orange, green ,magenta, yellow, purple, red, cyan, w/b.)
-  ;(moe-theme-set-color 'purple)
+  ;; (moe-theme-set-color 'purple)
 
   ;;; Finally, apply moe-theme now.
   ;;; Choose what you like, (moe-light) or (moe-dark)

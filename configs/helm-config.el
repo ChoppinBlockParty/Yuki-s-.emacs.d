@@ -62,19 +62,6 @@
   (setq helm-command-prefix-key "C-c h")
   (setq helm-quick-update t)
 
-  (use-package helm-swoop
-    :ensure t
-    :config
-    (progn
-      ;; Don't start searching for the thing at point by default.
-      ;; Let me type it.
-      (setq helm-swoop-pre-input-function (lambda () ()))
-      (define-key evil-normal-state-map (kbd "C-f")   'helm-swoop)
-      (define-key evil-visual-state-map (kbd "C-f")   'helm-swoop)
-      )
-   )
-
-
   (after 'flycheck
     (use-package helm-flycheck
       :ensure t

@@ -155,8 +155,17 @@
 
   (my-evil-all-modes-define-key "<f12>" 'evil-command-window-ex)
 
-  ;;; Do not do this
-  ;;; (define-key evil-normal-state-map (kbd ":") 'helm-M-x)
+  (defun my-evil-ex-search-command-window ()
+    "Start command window with search history and current minibuffer content."
+    (interactive)
+    (let (config (current-window-configuration))
+      (evil-command-window evil-ex-search-history
+                           (evil-search-prompt (eq evil-ex-search-direction 'forward))
+                           (apply-partially 'evil-ex-command-window-execute config))))
+
+  ;; (define-key evil-normal-state-map (kbd ":") 'evil-command-window-ex)
+  ;; (my-evil-2-modes-define-key (kbd "/") 'my-evil-ex-search-command-window)
+
   (define-key evil-normal-state-map (kbd "SPC a") 'ff-find-other-file)
   (define-key evil-normal-state-map (kbd "SPC s") 'my-buffer-formatting)
   (define-key evil-normal-state-map (kbd "SPC w") 'kill-this-buffer)
@@ -380,9 +389,15 @@
   (define-key evil-ex-completion-map [return] 'exit-minibuffer)
   (define-key evil-ex-completion-map (kbd "RET") 'exit-minibuffer)
 
+  ;; (defun make-digit-function (digit)
+  ;;   `(lambda (arg)
+  ;;      (interactive "P")
+  ;;      (setq last-command-event (+ ,digit ?0))
+  ;;      (digit-argument arg)))
+
   (define-key evil-ex-search-keymap "\M-k" [up])
   (define-key evil-ex-search-keymap "\M-j" [down])
-  (define-key evil-ex-search-keymap "\C-k" [up])
+  (define-key evil-ex-search-keymap "\C-k" 'previous-complete-history-element)
   (define-key evil-ex-search-keymap "\C-j" [down])
   (define-key evil-ex-search-keymap "\M-h" [left])
   (define-key evil-ex-search-keymap "\M-l" [right])
