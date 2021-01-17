@@ -69,80 +69,80 @@
     )
 
   (evil-define-key 'normal dired-mode-map
-      "q" 'quit-window
-      "j" 'dired-next-line
-      "k" 'dired-previous-line
-      "C" 'dired-do-copy
-      "D" 'dired-do-delete
-      "R" 'dired-do-rename
-      "zc" 'dired-diff
-      "zd" 'dired-hide-details-mode
-      "zM" 'dired-do-chmod
-      "zO" 'dired-do-chown
-      "zt" 'dired-toggle-marks
-      "z." 'dired-mark-extension
-      "s"  'dired-mark
-      "u"  'dired-unmark
-      "U"  'dired-unmark-all-marks
-      (kbd "C-m") 'dired-find-file
-      "zww" 'dired-toggle-read-only
-      "go" 'browse-url-of-dired-file
-      "ga" 'dired-show-file-type ;; FIXME: This could probably go on a better key.
-      "gg" 'evil-goto-first-line ;; FIXME: Do not why I should specify it here, otherwise it is undefined
-      "gf" 'find-file
-      "gn" 'my-dired-create-file
-      "gN" 'my-dired-create-directory
-      "gr" (lambda() (interactive) (my-dired-revert))
-      "Y"  'dired-copy-filename-as-kill
-      "o" (lambda () (interactive) (dired-subtree-toggle) (my-dired-revert))
-      ;; "o" 'dired-subtree-toggle
-      ;; "o" 'dired-subtree-toggle
-      (kbd "<return>") 'dired-find-file
-      (kbd "S-<return>") 'dired-display-file ;; preview
-      (kbd "M-<return>") 'dired-find-file-other-window
-      "[" 'dired-prev-dirline
-      "]" 'dired-next-dirline
-      "<" 'my-dired-up-directory
-      ">" 'dired-view-file
-      [?\S-\ ] 'dired-previous-line
-      [remap next-line] 'dired-next-line
-      [remap previous-line] 'dired-previous-line
-      ;; hiding
-      "g$" 'dired-hide-subdir ;; FIXME: This can probably live on a better binding.
-      (kbd "M-$") 'dired-hide-all
-      "(" 'dired-hide-details-mode
-      ;; isearch
-      (kbd "M-s a C-s")   'dired-do-isearch
-      (kbd "M-s a M-C-s") 'dired-do-isearch-regexp
-      (kbd "M-s f C-s")   'dired-isearch-filenames
-      (kbd "M-s f M-C-s") 'dired-isearch-filenames-regexp
-      ;; misc
-      [remap read-only-mode] 'dired-toggle-read-only
-      "g?" 'dired-summary
-      (kbd "<delete>") 'dired-unmark-backward
-      [remap undo] 'dired-undo
-      [remap advertised-undo] 'dired-undo
-      ;; thumbnail manipulation (image-dired)
-      (kbd "C-t d") 'image-dired-display-thumbs
-      (kbd "C-t t") 'image-dired-tag-files
-      (kbd "C-t r") 'image-dired-delete-tag
-      (kbd "C-t j") 'image-dired-jump-thumbnail-buffer
-      (kbd "C-t i") 'image-dired-dired-display-image
-      (kbd "C-t x") 'image-dired-dired-display-external
-      (kbd "C-t a") 'image-dired-display-thumbs-append
-      (kbd "C-t .") 'image-dired-display-thumb
-      (kbd "C-t c") 'image-dired-dired-comment-files
-      (kbd "C-t f") 'image-dired-mark-tagged-files
-      (kbd "C-t C-t") 'image-dired-dired-toggle-marked-thumbs
-      (kbd "C-t e") 'image-dired-dired-edit-comment-and-tags
-      ;; encryption and decryption (epa-dired)
-      ;; ";d" 'epa-dired-do-decrypt
-      ;; ";v" 'epa-dired-do-verify
-      ;; ";s" 'epa-dired-do-sign
-      ;; ";e" 'epa-dired-do-encrypt
-      [mouse-2] 'dired-mouse-find-file-other-window
-      [follow-link] 'mouse-face
-      )
+    "q" 'quit-window
+    "j" 'dired-next-line
+    "k" 'dired-previous-line
+    "C" 'dired-do-copy
+    "D" 'dired-do-delete
+    "R" 'dired-do-rename
+    "zc" 'dired-diff
+    "zd" 'dired-hide-details-mode
+    "zM" 'dired-do-chmod
+    "zO" 'dired-do-chown
+    "zt" 'dired-toggle-marks
+    "z." 'dired-mark-extension
+    "s"  'dired-mark
+    "u"  'dired-unmark
+    "U"  'dired-unmark-all-marks
+    (kbd "C-m") 'dired-find-file
+    "zww" 'dired-toggle-read-only
+    "go" 'browse-url-of-dired-file
+    "ga" 'dired-show-file-type ;; FIXME: This could probably go on a better key.
+    "gg" 'evil-goto-first-line ;; FIXME: Do not why I should specify it here, otherwise it is undefined
+    "gf" 'find-file
+    "gn" 'my-dired-create-file
+    "gN" 'my-dired-create-directory
+    "gr" (lambda() (interactive) (my-dired-revert))
+    "Y"  'dired-copy-filename-as-kill
+    "o" (lambda () (interactive) (dired-subtree-toggle) (my-dired-revert))
+    ;; "o" 'dired-subtree-toggle
+    ;; "o" 'dired-subtree-toggle
+    (kbd "<return>") 'dired-find-file
+    (kbd "S-<return>") 'dired-display-file ;; preview
+    (kbd "M-<return>") 'dired-find-file-other-window
+    "[" 'dired-prev-dirline
+    "]" 'dired-next-dirline
+    "<" 'my-dired-up-directory
+    ">" 'dired-view-file
+    [?\S-\ ] 'dired-previous-line
+    [remap next-line] 'dired-next-line
+    [remap previous-line] 'dired-previous-line
+    ;; hiding
+    "g$" 'dired-hide-subdir ;; FIXME: This can probably live on a better binding.
+    (kbd "M-$") 'dired-hide-all
+    "(" 'dired-hide-details-mode
+    ;; isearch
+    (kbd "M-s a C-s")   'dired-do-isearch
+    (kbd "M-s a M-C-s") 'dired-do-isearch-regexp
+    (kbd "M-s f C-s")   'dired-isearch-filenames
+    (kbd "M-s f M-C-s") 'dired-isearch-filenames-regexp
+    ;; misc
+    [remap read-only-mode] 'dired-toggle-read-only
+    "g?" 'dired-summary
+    (kbd "<delete>") 'dired-unmark-backward
+    [remap undo] 'dired-undo
+    [remap advertised-undo] 'dired-undo
+    ;; thumbnail manipulation (image-dired)
+    (kbd "C-t d") 'image-dired-display-thumbs
+    (kbd "C-t t") 'image-dired-tag-files
+    (kbd "C-t r") 'image-dired-delete-tag
+    (kbd "C-t j") 'image-dired-jump-thumbnail-buffer
+    (kbd "C-t i") 'image-dired-dired-display-image
+    (kbd "C-t x") 'image-dired-dired-display-external
+    (kbd "C-t a") 'image-dired-display-thumbs-append
+    (kbd "C-t .") 'image-dired-display-thumb
+    (kbd "C-t c") 'image-dired-dired-comment-files
+    (kbd "C-t f") 'image-dired-mark-tagged-files
+    (kbd "C-t C-t") 'image-dired-dired-toggle-marked-thumbs
+    (kbd "C-t e") 'image-dired-dired-edit-comment-and-tags
+    ;; encryption and decryption (epa-dired)
+    ;; ";d" 'epa-dired-do-decrypt
+    ;; ";v" 'epa-dired-do-verify
+    ;; ";s" 'epa-dired-do-sign
+    ;; ";e" 'epa-dired-do-encrypt
+    [mouse-2] 'dired-mouse-find-file-other-window
+    [follow-link] 'mouse-face
+    )
   )
 
 (use-package wdired

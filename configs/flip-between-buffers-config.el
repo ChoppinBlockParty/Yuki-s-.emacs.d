@@ -3,10 +3,14 @@
 ;;; Code:
 
 (use-package iflipb
-  :after (evil)
+  :after (evil dired)
   :config
   (define-key evil-motion-state-map (kbd "3") 'iflipb-next-buffer)
   (define-key evil-motion-state-map (kbd "4") 'iflipb-previous-buffer)
+  (evil-define-key 'normal dired-mode-map
+    (kbd "3") 'iflipb-next-buffer
+    (kbd "4") 'iflipb-previous-buffer
+    )
   )
 
 (provide 'flip-between-buffers-config)
