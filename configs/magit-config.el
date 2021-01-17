@@ -12,6 +12,8 @@
   (setq
     magit-diff-refine-hunk 'all
     magit-diff-refine-ignore-whitespace 't
+
+    evil-magit-want-horizontal-movement 't
     )
 
   (define-key transient-map (kbd "<escape>") 'transient-quit-one)

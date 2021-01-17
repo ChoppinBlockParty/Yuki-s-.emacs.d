@@ -7,6 +7,7 @@
     ivy-use-virtual-buffers t
     enable-recursive-minibuffers t
     ivy-do-completion-in-region nil
+    ivy-extra-directories nil
     ivy-display-style 'fancy
     ivy-count-format "(%d/%d) "
     ivy-re-builders-alist '(
