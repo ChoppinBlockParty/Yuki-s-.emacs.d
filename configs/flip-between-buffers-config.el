@@ -7,7 +7,7 @@
   :config
 
   (setq
-    iflipb-ignore-buffers '("^[*]" "^magit: ")
+    iflipb-ignore-buffers '("^[*]" "^magit: " "^magit-process: ")
     iflipb-wrap-around 't
     )
 
