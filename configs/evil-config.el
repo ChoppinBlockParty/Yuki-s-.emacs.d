@@ -511,7 +511,7 @@
   ;;; find-file sucks - only searchs in cwd
   ;;; find-jump sucks - bad performance
   (my-evil-all-modes-define-key "M-e" 'counsel-fzf)
-  (my-evil-all-modes-define-key "M-f" (lambda () (interactive) (counsel-fzf "" "~/prj")))
+  (my-evil-all-modes-define-key "M-f" 'counsel-find-file)
   (my-evil-all-modes-define-key "M-a" 'counsel-projectile-rg)
   (my-evil-all-modes-define-key "M-s" 'counsel-projectile-git-grep)
   (my-evil-all-modes-define-key "M-d" (lambda ()

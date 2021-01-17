@@ -22,6 +22,8 @@
     ;; '(avy-lead-face-2 ((t (:background nil :foreground ,black-4))))
     )
   )
+
+;;; evil-easymotion depends on avy
 (use-package evil-easymotion
   :config
   )
