@@ -276,8 +276,6 @@
 
   (define-key evil-motion-state-map (kbd "0") 'evil-beginning-of-line)
   (define-key evil-normal-state-map "2" 'evil-record-macro)
-  (define-key evil-motion-state-map (kbd "3") 'evil-scroll-down)
-  (define-key evil-motion-state-map (kbd "4") 'evil-scroll-up)
   (define-key evil-motion-state-map (kbd "5") 'evil-first-non-blank)
   (define-key evil-motion-state-map (kbd "8") 'evil-end-of-line)
   (define-key evil-motion-state-map (kbd "9") 'evil-jump-item)

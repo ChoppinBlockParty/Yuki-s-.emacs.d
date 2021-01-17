@@ -41,6 +41,7 @@
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
 (require 'evil-config)
+(require 'flip-between-buffers-config)
 (require 'generic-config)
 (require 'global-key-binding-config)
 (require 'all-the-icons-config)

@@ -58,6 +58,7 @@ Packages
  - [clang-format](https://github.com/emacsorphanage/clang-format)
  - [lua-mode](https://github.com/immerrr/lua-mode)
  - [go-mode.el](https://github.com/dominikh/go-mode.el)
+ - [iflipb](https://github.com/jrosdahl/iflipb)
 
 ### Post installation steps
 
