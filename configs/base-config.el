@@ -155,6 +155,32 @@
 ;;; Show me the new saved file if the contents change on disk when editing.
 (global-auto-revert-mode 1)
 
+;;; Set random seed
+;;; With argument t, set the random number seed from the system’s entropy pool if available,
+;;; otherwise from less-random volatile data such as the time
+(random t)
+
+;; (set-frame-font "Inconsolata-dz for Powerline-11")
+(set-frame-font "DejaVu Sans Mono-11")
+;; (set-frame-font "Hack-10")
+
+(setq
+  backup-directory-alist         '(("." . "~/.cache/emacs/backup/"))
+  auto-save-file-name-transforms '((".*" "~/.cache/emacs/autosave/" t))
+  ;;; When Emacs exits normally, it deletes this file; if Emacs crashes, you can look in
+  ;;; the file to find all the auto-save files that might contain work that was otherwise
+  ;;; lost.
+  auto-save-list-file-prefix     "~/.cache/emacs/autosave/.saves-"
+  )
+
+;;; Change emacs' title
+(setq-default frame-title-format '("%f [%m]"))
+
+
+;;;
+;;; Chnage how windows are spawned
+;;;
+
 (defvar my-last-preferred-splits '())
 
 (defun my-reuse-last-preferred-split-save (win new-win)
@@ -353,6 +379,8 @@
     ))
 (add-to-list 'display-buffer-alist '(".*" (my-display-buffer-action)))
 
+
+;;;
 (defun my-setup-file-defaults ()
   "Check the size of files when loading, and don't let me break them."
   (if (> (buffer-size) (* 10 1024 1024))
@@ -367,8 +395,6 @@
       ))
 (add-hook 'find-file-hook 'my-setup-file-defaults)
 
-(defun display-startup-echo-area-message ()
-  (message nil))
 
 (defun my-do-not-kill-scratch-buffers ()
   "Don't let the scratch buffer die."
@@ -379,26 +405,22 @@
     t))
 (add-hook 'kill-buffer-query-functions 'my-do-not-kill-scratch-buffers)
 
-(random t) ;; seed
 
-(defun my-setup-help-mode ()
-  "Setup help mode the way I like it."
-  (set-fill-column 80))
-(add-hook 'help-mode-hook 'my-setup-help-mode)
+;;; Turn off startup message in minibuffer
+(defun display-startup-echo-area-message ()
+  "Display nothing."
+  (message nil))
 
-;; (set-frame-font "Inconsolata-dz for Powerline-11")
-(set-frame-font "DejaVu Sans Mono-11")
-;; (set-frame-font "Hack-10")
 
-(setq
-  backup-directory-alist         '(("." . "~/.cache/emacs/backup/"))
-  auto-save-file-name-transforms '((".*" "~/.cache/emacs/autosave/" t))
-  ;;; When Emacs exits normally, it deletes this file; if Emacs crashes, you can look in
-  ;;; the file to find all the auto-save files that might contain work that was otherwise
-  ;;; lost.
-  auto-save-list-file-prefix     "~/.cache/emacs/autosave/.saves-"
-  )
+;;; Close minibuffer when focus is lost due to mouse changing focus
+(defun stop-using-minibuffer ()
+  "Kill the minibuffer."
+  (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
+    (abort-recursive-edit)))
+(add-hook 'mouse-leave-buffer-hook 'stop-using-minibuffer)
 
+
+;;; Disable messages flooding minibuffer
 (defun my-command-error-function (data context caller)
   "Ignore the buffer-read-only, beginning-of-buffer,
 end-of-buffer signals; pass the rest to the default handler."
@@ -408,6 +430,14 @@ end-of-buffer signals; pass the rest to the default handler."
     (command-error-default-function data context caller)))
 
 (setq command-error-function #'my-command-error-function)
+
+
+;;; Configure help mode.
+(defun my-setup-help-mode ()
+  "Setup help mode the way I like it."
+  (set-fill-column 80))
+(add-hook 'help-mode-hook 'my-setup-help-mode)
+
 
 ;;; Remember my latest place when opening a new file.
 (use-package saveplace
