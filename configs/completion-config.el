@@ -102,7 +102,8 @@
   (add-hook 'python-mode-hook 'ycmd-mode)
   (add-hook 'c-mode-hook 'ycmd-mode)
   (add-hook 'c++-mode-hook 'ycmd-mode)
-  (add-hook 'go-mode-hook 'ycmd-mode)
+  ;;; Not working as of 2021-01-18, switch to gocode (see below)
+  ;; (add-hook 'go-mode-hook 'ycmd-mode)
   ;; (add-hook 'rjsx-mode-hook 'ycmd-mode)
   ;; (add-hook 'js2-mode-hook 'ycmd-mode)
   ;; (add-to-list 'ycmd-file-type-map '(rjsx-mode . ("javascript")))
@@ -138,6 +139,17 @@
   ;;; Add the ycmd checker to the list of available checkers
   (add-to-list 'flycheck-checkers 'ycmd)
   )
+
+
+(use-package company-go
+  :ensure nil
+  :load-path "local/company-go"
+  :config
+    (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends) '(company-go))
+                            (company-mode)))
+  )
+
 
 (provide 'completion-config)
 ;;; completion-config.el ends here

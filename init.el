@@ -37,6 +37,7 @@
 (require 'base-config)
 ;;; Important enhancements to standard library `font-lock.el'
 ;;; Fixes issues with all-the-icons
+;;; Seems like do not needed as of emacs 26.3.50
 ; (use-package font-lock+ :load-path "local/font-lock+")
 (use-package flx) ;;; Gives Emacs a great fuzzy library. https://github.com/lewang/flx
 (use-package smex) ;;; Enhances commands usage. https://github.com/nonsequitur/smex
