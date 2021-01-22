@@ -107,6 +107,10 @@
   ;; (add-hook 'rjsx-mode-hook 'ycmd-mode)
   ;; (add-hook 'js2-mode-hook 'ycmd-mode)
   ;; (add-to-list 'ycmd-file-type-map '(rjsx-mode . ("javascript")))
+
+  (evil-define-key 'normal ycmd-mode-map
+     (kbd "SPC c") 'ycmd-goto-definition
+     (kbd "SPC d") 'ycmd-goto-declaration)
   )
 
 (evil-add-command-properties #'ycmd-goto :jump t)
@@ -145,9 +149,15 @@
   :ensure nil
   :load-path "local/company-go"
   :config
-    (add-hook 'go-mode-hook (lambda ()
-                            (set (make-local-variable 'company-backends) '(company-go))
-                            (company-mode)))
+
+  (setq
+    company-go-show-annotation t
+    company-go-insert-arguments nil
+    )
+
+  (add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)))
   )
 
 

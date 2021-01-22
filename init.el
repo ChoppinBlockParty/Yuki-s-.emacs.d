@@ -72,6 +72,7 @@
 (require 'tramp-config)
 (require 'ediff-config)
 (require 'flip-between-buffers-config)
+(require 'other-stuff-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver
 ;;; It is very fun, however consumes 10% cpu all the time, sad...

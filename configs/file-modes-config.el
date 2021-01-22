@@ -54,6 +54,11 @@
 
   (modify-syntax-entry ?_ "w" godoc-mode-syntax-table)
   (modify-syntax-entry ?- "w" godoc-mode-syntax-table)
+
+  (evil-define-key 'normal go-mode-map
+    (kbd "SPC d") 'godef-jump
+    (kbd "SPC c") 'pop-tag-mark)
+  (evil-add-command-properties #'godef-jump :jump t)
   )
 
 (use-package markdown-mode

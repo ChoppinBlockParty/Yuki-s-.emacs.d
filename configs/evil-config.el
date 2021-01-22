@@ -1,6 +1,10 @@
 ;;; evil-config --- evil it is
 ;;; Commentary:
 ;;; Code:
+;;;
+;;; Nice guide
+;;; https://github.com/noctuid/evil-guide
+;;;
 
 (use-package evil
   :ensure nil
@@ -148,8 +152,8 @@
   (defun run-emacs ()
     "Usefull for testing Emacs configuration."
     (interactive)
-    ;; (start-process-shell-command "emacs" nil "emacs --debug-init ~/Downloads/removemeplz/")
-    (start-process-shell-command "emacs" nil "emacs")
+    (start-process-shell-command "emacs" nil "emacs --debug-init ~/yuki/dwm/source/dwm.c")
+    ;; (start-process-shell-command "emacs" nil "emacs")
     )
   (my-evil-all-modes-define-key "C-1" 'run-emacs)
 
@@ -254,8 +258,23 @@
   (my-evil-2-modes-define-key "SPC k" 'evil-window-up)
   (my-evil-2-modes-define-key "SPC l" 'evil-window-right)
 
-  (evil-define-key 'normal 'global "q" 'evil-window-delete)
-  (evil-define-key 'visual 'global "q" 'evil-window-delete)
+  (defun my-delete-window (&optional WINDOW)
+    (interactive)
+    (let ((p (window-parent)))
+      (let ((sibling (or (window-prev-sibling WINDOW)
+                         (window-next-sibling WINDOW))))
+        (delete-window WINDOW)
+        (when sibling
+          (select-window sibling))
+        )
+      (condition-case nil
+          (balance-windows p)
+        (error))
+    )
+    )
+
+  (evil-define-key 'normal 'global "q" 'my-delete-window)
+  (evil-define-key 'visual 'global "q" 'my-delete-window)
 
   (defun make-digit-function (digit)
     `(lambda (arg)
@@ -402,7 +421,9 @@
   (define-key evil-ex-search-keymap "\C-h" [left])
   (define-key evil-ex-search-keymap "\C-l" [right])
   (define-key evil-ex-search-keymap (kbd "C-w") 'backward-kill-word)
+
   )
+
 
 (with-eval-after-load 'evil-easymotion
   (define-key evil-normal-state-map "J" nil)
@@ -453,6 +474,7 @@
   (evilem-define "K" #'my-evilem-forward-word-begin)
   (evilem-define "L" #'my-evilem-forward-word-end)
   )
+
 
 (with-eval-after-load 'counsel-projectile
   (defun my-counsel-projectile--project-buffers-and-files (&rest _)

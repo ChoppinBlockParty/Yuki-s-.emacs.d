@@ -72,8 +72,6 @@
 (my-evil-2-modes-define-key "SPC u r d"   'rg-dwim)
 (my-evil-2-modes-define-key "SPC u r l"   'rg-literal)
 
-(my-evil-2-modes-define-key "SPC c"       'ycmd-goto-definition)
-(my-evil-2-modes-define-key "SPC d"       'ycmd-goto-declaration)
 (my-evil-2-modes-define-key "SPC u y ."   'ycmd-goto)
 (my-evil-2-modes-define-key "SPC u y ?"   'ycmd-show-documentation)
 (my-evil-2-modes-define-key "SPC u y c"   'ycmd-close)

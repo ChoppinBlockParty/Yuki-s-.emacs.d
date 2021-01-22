@@ -377,10 +377,10 @@
        )
       )
     ))
+
 (add-to-list 'display-buffer-alist '(".*" (my-display-buffer-action)))
 
-
-;;;
+;;; Defaults for big files
 (defun my-setup-file-defaults ()
   "Check the size of files when loading, and don't let me break them."
   (if (> (buffer-size) (* 10 1024 1024))
@@ -458,8 +458,8 @@ end-of-buffer signals; pass the rest to the default handler."
   :config
   (setq
     recentf-save-file "~/.cache/emacs/recentf"
-    recentf-max-saved-items 1000
-    recentf-max-menu-items 500
+    recentf-max-saved-items 10000
+    recentf-max-menu-items 5000
     )
   (recentf-mode 1)
   )
