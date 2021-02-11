@@ -174,211 +174,8 @@
   )
 
 ;;; Change emacs' title
-(setq-default frame-title-format '("%f [%m]"))
+(setq-default frame-title-format '("Emacs %f [%m]"))
 
-
-;;;
-;;; Chnage how windows are spawned
-;;;
-
-(defvar my-last-preferred-splits '())
-
-(defun my-reuse-last-preferred-split-save (win new-win)
-  "Save WIN NEW-WIN for reuse."
-  (when new-win
-    (add-to-list 'my-last-preferred-splits `(,win . ,new-win))
-    )
-  new-win)
-
-(defun my-reuse-last-preferred-split (window)
-  "Reuse split for WINDOW."
-  (let ((new-list '()))
-    (dolist (val my-last-preferred-splits)
-      (when (and (window-live-p (car val)) (window-live-p (cdr val)))
-        (add-to-list 'new-list val)
-        )
-      )
-    (setq my-last-preferred-splits new-list)
-  )
-  (let ((old-win (cdr (assq window my-last-preferred-splits))))
-    old-win)
-  )
-
-(setq split-window-preferred-function (lambda (&optional window)
-  "Split WINDOW."
-  (let
-    ((window (or window (selected-window))))
-    (or
-      (my-reuse-last-preferred-split window)
-      (and (window-splittable-p window)
-           (my-reuse-last-preferred-split-save
-             window
-             (with-selected-window window (split-window-below))
-             )
-           )
-      (and (window-splittable-p window t)
-           (my-reuse-last-preferred-split-save
-             window
-             (with-selected-window window (split-window-right))
-             )
-           )
-      (and
-        ;; If WINDOW is the only usable window on its frame (it is
-        ;; the only one or, not being the only one, all the other
-        ;; ones are dedicated) and is not the minibuffer window, try
-        ;; to split it vertically disregarding the value of
-        ;; `split-height-threshold'.
-        (let ((frame (window-frame window)))
-          (or
-           (eq window (frame-root-window frame))
-           (catch 'done
-             (walk-window-tree (lambda (w)
-                                 (unless (or (eq w window)
-                                             (window-dedicated-p w))
-                                   (throw 'done nil)))
-                               frame)
-             t)))
-         (not (window-minibuffer-p window))
-         (let ((split-height-threshold 0))
-              (when (window-splittable-p window)
-                    (my-reuse-last-preferred-split-save
-                      window
-                      (with-selected-window window (split-window-below))
-                      )
-                    )
-              )
-         )
-      (and
-         (let ((split-height-threshold 0))
-              (when (window-splittable-p window)
-                    (my-reuse-last-preferred-split-save
-                      window
-                      (with-selected-window window (split-window-below))
-                      )
-                    )
-              )
-         )
-    ))
-  ))
-
-(defun my-display-buffer-find-major-mode-window (mode &optional mode-two)
-  "Find window. MODE to look up. MODE-TWO optional."
-  (let (cur-win ret-win (l (window-list)))
-    (while (and l (not ret-win))
-           (setq cur-win (car l)
-                 l       (cdr l))
-           (with-current-buffer (window-buffer cur-win)
-             (cond ((equal major-mode mode)     (setq ret-win cur-win))
-                   ((equal major-mode mode-two) (setq ret-win cur-win))
-                   ))
-           )
-    ret-win))
-
-(defun my-window-display-buffer-create-split (window)
-  "Create split relative to WINDOW."
-  (let
-    (new-win)
-    (setq new-win (window--try-to-split-window window))
-    (unless new-win
-      (setq new-win (window--try-to-split-window (get-lru-window t t))))
-    (unless new-win
-      (setq new-win window))
-    (unless new-win
-      (setq new-win (selected-window)))
-    new-win))
-
-(defun my-window-display-buffer (buffer window)
-  "Display. BUFFER to display. WINDOW to show into."
-  (if (or (window-minibuffer-p) (window-dedicated-p))
-      (window--display-buffer
-        buffer
-        (my-window-display-buffer-create-split window)
-        'reuse '((inhibit-switch-frame . t)))
-      (window--display-buffer
-        buffer
-        window
-        'reuse '((inhibit-switch-frame . t)))
-      ))
-
-(defun my-window-display-buffer-split (buffer)
-  "Split. BUFFER to display relative to WIN or `selected-window`."
-  (my-window-display-buffer buffer
-                            (my-window-display-buffer-create-split (selected-window))
-                            ))
-
-(defun my-window-display-buffer-match-any (str &rest matchers)
-  "Match STR to any of MATCHERS."
-  (let (match-p m res)
-    (while (and (not match-p) matchers)
-      (setq m (car matchers)
-            matchers (cdr matchers)
-            res (string-match-p m str)
-            )
-      (when (and res (= res 0)) (setq match-p t))
-      )
-    match-p)
-  )
-
-(defun my-display-buffer-action (buffer alist)
-  "Display BUFFER in the selected window with ALIST."
-  (let
-    ((sel-buf (window-buffer (selected-window))) sel-mode new-mode)
-    (with-current-buffer sel-buf
-      (setq sel-mode major-mode))
-    (with-current-buffer buffer
-      (setq new-mode major-mode))
-    ;; (print sel-mode)
-    ;; (print (buffer-name sel-buf))
-    ;; (print new-mode)
-    ;; (print (buffer-name buffer))
-    ;; (print alist)
-    (cond
-      ((or (equal new-mode 'apropos-mode) (equal new-mode 'help-mode))
-       (let ((win (my-display-buffer-find-major-mode-window 'apropos-mode 'help-mode)))
-         (if win
-             (my-window-display-buffer buffer win)
-             (my-window-display-buffer-split buffer)
-             ))
-       )
-      ;;; For magit pop-ups that are called transient with a space in front
-      ((and
-         (equal new-mode 'fundamental-mode)
-         (my-window-display-buffer-match-any (buffer-name buffer) "\\`\s-*\\*transient\\*\\'")
-         )
-       (my-window-display-buffer
-         buffer
-         (with-selected-window (selected-window) (split-window-below)))
-       )
-      ((or
-         (member new-mode '(dired-sidebar-mode
-                            magit-popup-mode
-                            rg-mode
-                            ivy-occur-grep-mode
-                            completion-list-mode))
-         (my-window-display-buffer-match-any (buffer-name buffer) "\\`\\*Completions\\*\\'")
-         )
-       nil
-       )
-      ((or
-         (and (equal sel-mode 'text-mode)
-              (my-window-display-buffer-match-any (buffer-name sel-buf) "\\`COMMIT_EDITMSG"))
-         (equal sel-mode 'magit-log-mode)
-         )
-       (my-window-display-buffer-split buffer)
-       )
-      ((equal sel-mode 'dired-sidebar-mode)
-       (my-window-display-buffer buffer (get-mru-window nil nil t))
-       )
-      (t
-       (if (cdr (assq 'inhibit-same-window alist))
-           (my-window-display-buffer-split buffer)
-           (my-window-display-buffer buffer (selected-window))
-           )
-       )
-      )
-    ))
-
-(add-to-list 'display-buffer-alist '(".*" (my-display-buffer-action)))
 
 ;;; Defaults for big files
 (defun my-setup-file-defaults ()
@@ -462,6 +259,12 @@ end-of-buffer signals; pass the rest to the default handler."
     recentf-max-menu-items 5000
     )
   (recentf-mode 1)
+
+  ;;; By default, Recentf saves the list of recent files on exiting
+  ;;; Emacs (specifically, `recentf-save-list` is called on
+  ;;; `kill-emacs-hook`). If Emacs exits abruptly for some reason the
+  ;;; recent file list will be lost.
+  (run-at-time nil (* 5 60) 'recentf-save-list)
   )
 
 (defconst my-prog-modes-hook-list
@@ -527,12 +330,16 @@ end-of-buffer signals; pass the rest to the default handler."
 
 ;;; Just need to reset the maps as early as possible, here feels like
 ;;; a fine place to do that.
+;;; Don't remember why I reset I map, causes troubles for `dired-jump`
+;;; in fundamental-mode buffers
 ;;; Real dired configuration is in `dired-config`.
 (use-package dired
   :ensure nil
   :init
-  (defvar dired-mode-map (let ((map (make-keymap))) (set-keymap-parent map special-mode-map) map))
+  ;; Need to be removed
+  ;; (defvar dired-mode-map (let ((map (make-keymap))) (set-keymap-parent map special-mode-map) map))
   )
+
 (use-package flyspell
   :init
   (defvar flyspell-mode-map (let ((map (make-sparse-keymap))) map))

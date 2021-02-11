@@ -10,7 +10,6 @@
   (dolist (mode (list 'c++-mode 'c-mode))
     (font-lock-add-keywords mode '(("\\<\\(\\sw+\\) ?(" 1 'font-lock-function-name-face))))
   (modify-syntax-entry ?_ "w" c++-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" c++-template-syntax-table)
   (modify-syntax-entry ?_ "w" c-mode-syntax-table)
   (modify-syntax-entry ?_ "w" c-identifier-syntax-table)
   (modify-syntax-entry ?_ "w" c-no-parens-syntax-table)
@@ -87,8 +86,8 @@
   )
 
 (use-package lua-mode
-  :ensure nil
-  :load-path "local/lua-mode"
+  :ensure t
+  ;; :load-path "local/lua-mode"
   :config
   (modify-syntax-entry ?_ "w" lua-mode-syntax-table)
   )
@@ -129,28 +128,27 @@
     )
 
   (add-hook 'web-mode-hook 'web-mode-init-hook)
-  )
 
+  (use-package tide
+    :config
+    (defun setup-tide-mode()
+      ;; (interactive)
+      (tide-setup)
+      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+      (tide-hl-identifier-mode 1)
+      )
 
-(use-package tide
-  :config
-  (defun setup-tide-mode()
-    (interactive)
-    (tide-setup)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (tide-hl-identifier-mode 1)
+    ;; aligns annotation to the right hand side
+    (setq company-tooltip-align-annotations t)
+
+    (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+
+    ;; formats the buffer before saving
+    ; (add-hook 'before-save-hook 'tide-format-before-save)
+
+    (add-hook 'typescript-mode-hook #'setup-tide-mode)
+    (add-hook 'web-mode-hook #'setup-tide-mode)
     )
-
-  ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
-
-  (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
-
-  ;; formats the buffer before saving
-  ; (add-hook 'before-save-hook 'tide-format-before-save)
-
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
-  (add-hook 'web-mode-hook #'setup-tide-mode)
   )
 
 

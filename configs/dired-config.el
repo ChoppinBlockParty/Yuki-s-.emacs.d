@@ -68,6 +68,10 @@
       )
     )
 
+  ;; (setcdr dired-mode-map (cdr (make-keymap)))
+  ;; (setq dired-mode-map (make-keymap))
+  ;; (set-keymap-parent dired-mode-map special-mode-map)
+
   (evil-define-key 'normal dired-mode-map
     "q" 'quit-window
     "j" 'dired-next-line
