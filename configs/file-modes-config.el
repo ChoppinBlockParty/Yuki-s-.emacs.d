@@ -79,6 +79,7 @@
   (modify-syntax-entry ?_ "w" dockerfile-mode-syntax-table)
   (modify-syntax-entry ?- "w" dockerfile-mode-syntax-table)
   )
+
 (use-package docker-compose-mode
   :config
   (modify-syntax-entry ?_ "w" docker-compose-mode-syntax-table)
@@ -90,6 +91,12 @@
   ;; :load-path "local/lua-mode"
   :config
   (modify-syntax-entry ?_ "w" lua-mode-syntax-table)
+  )
+
+(use-package lispy
+  :config
+  (add-hook 'emacs-lisp-mode-hook (lambda ()
+                                    (lispy-mode 1)))
   )
 
 ;; For javascript-eslint function
