@@ -12,7 +12,7 @@
 (use-package company
   :config
   (add-hook 'after-init-hook 'global-company-mode)
-  ;;; Goint to configure all myselft
+  ;;; Goint to configure all myself
   ;; (add-hook 'after-init-hook 'company-tng-mode)
 
   (defun company-preview-if-not-tng-frontend (command)
@@ -34,7 +34,7 @@
     ;; company-begin-commands '(self-insert-command)  ; start autocompletion only after typing
     ;; company-dabbrev-ignore-case nil
     ;; company-dabbrev-downcase nil
-    company-frontends '(company-tng-frontend ; kaolin-bubblegum
+    company-frontends '(company-tng-frontend ;;; (TNG) Tab and Go
                         company-pseudo-tooltip-frontend
                         company-echo-metadata-frontend
                         ;; company-pseudo-tooltip-unless-just-one-frontend
@@ -43,11 +43,15 @@
                         )
     )
 
-    (setq company-clang-insert-arguments nil
-          company-semantic-insert-arguments nil
-          company-rtags-insert-arguments nil
-          lsp-enable-snippet nil)
-    (advice-add #'eglot--snippet-expansion-fn :override #'ignore)
+  ;;; Argument auto-insertion does not work smoothly with completion auto-selection like with TNG frontend.
+  (setq company-clang-insert-arguments nil
+        company-semantic-insert-arguments nil
+        company-rtags-insert-arguments nil
+        lsp-enable-snippet nil
+        company-ycmd-insert-arguments nil
+        )
+
+  (advice-add #'eglot--snippet-expansion-fn :override #'ignore)
   )
 
 (define-key company-active-map (kbd "C-h") 'company-show-doc-buffer)
@@ -123,10 +127,12 @@
 (evil-add-command-properties #'ycmd-goto-type :jump t)
 
 (use-package company-ycmd
+  :ensure nil
+  :load-path "local/emacs-ycmd"
   :init
-  (company-ycmd-setup)
+    (company-ycmd-setup)
   :config
-      ;; (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
+    ;; (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
   )
 
 (use-package flycheck-ycmd

@@ -93,11 +93,12 @@
   (modify-syntax-entry ?_ "w" lua-mode-syntax-table)
   )
 
-(use-package lispy
-  :config
-  (add-hook 'emacs-lisp-mode-hook (lambda ()
-                                    (lispy-mode 1)))
-  )
+
+;;; Fancy but not really helpful.
+;;; Get really buggy on some trivial cases - prevent typing code directly, e.g. cannot close a parentheses
+;; (use-package lispy
+;;      :config
+;;      (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 
 ;; For javascript-eslint function
 (use-package js2-mode)
