@@ -187,25 +187,27 @@
   )
 (use-package dired-collapse)
 
-(use-package dired-sidebar
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
-  :config
-  (setq
-    dired-sidebar-disable-dired-collapse nil
-    dired-sidebar-theme 'none
-    dired-sidebar-refresh-on-projectile-switch nil
-    ;; dired-sidebar-use-term-integration t
-    ;; dired-sidebar-use-custom-font t
-    )
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+;;; Treemacs plugin is superior.
+;;;
+;; (use-package dired-sidebar
+;;   :init
+;;   (add-hook 'dired-sidebar-mode-hook
+;;             (lambda ()
+;;               (unless (file-remote-p default-directory)
+;;                 (auto-revert-mode))))
+;;   :config
+;;   (setq
+;;     dired-sidebar-disable-dired-collapse nil
+;;     dired-sidebar-theme 'none
+;;     dired-sidebar-refresh-on-projectile-switch nil
+;;     ;; dired-sidebar-use-term-integration t
+;;     ;; dired-sidebar-use-custom-font t
+;;     )
+;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+;;   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
 
-  (define-key evil-normal-state-map "`" 'dired-sidebar-toggle-sidebar)
-  )
+;;   ;; (define-key evil-normal-state-map "`" 'dired-sidebar-toggle-sidebar)
+;;   )
 
 (defface all-the-icons-dired-dir-face
   '((((background dark)) :foreground "white")
