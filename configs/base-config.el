@@ -264,7 +264,9 @@ end-of-buffer signals; pass the rest to the default handler."
   ;;; Emacs (specifically, `recentf-save-list` is called on
   ;;; `kill-emacs-hook`). If Emacs exits abruptly for some reason the
   ;;; recent file list will be lost.
-  (run-at-time nil (* 5 60) 'recentf-save-list)
+  ;;; Does not work after system suspension:
+  ;;; Warning (emacs): recentf mode: Doing chmod: No such file or directory, /home/yuki/.cache/emacs/recentf
+  ; (run-at-time nil (* 5 60) 'recentf-save-list)
   )
 
 (defconst my-prog-modes-hook-list
