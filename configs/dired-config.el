@@ -94,11 +94,11 @@
     "ga" 'dired-show-file-type ;; FIXME: This could probably go on a better key.
     "gg" 'evil-goto-first-line ;; FIXME: Do not why I should specify it here, otherwise it is undefined
     "gf" 'find-file
-    "gn" 'my-dired-create-file
-    "gN" 'my-dired-create-directory
-    "gr" (lambda() (interactive) (my-dired-revert))
+    "cf" 'my-dired-create-file
+    "cd" 'my-dired-create-directory
+    "gr" (lambda() (interactive) (dired-revert))
     "Y"  'dired-copy-filename-as-kill
-    "o" (lambda () (interactive) (dired-subtree-toggle) (my-dired-revert))
+    "o" (lambda () (interactive) (dired-subtree-toggle) (dired-revert))
     ;; "o" 'dired-subtree-toggle
     ;; "o" 'dired-subtree-toggle
     (kbd "<return>") 'dired-find-file
@@ -169,23 +169,23 @@
     "ZZ" 'wdired-finish-edit
     (kbd "<escape>") 'wdired-exit))
 
-(use-package dired-subtree
-  :config
-  (defun my-dired-subtree-prefix(depth)
-    (let ((str ""))
-         (while (< 0 depth)
-                (setq
-                  str   (concat str "●-")
-                  depth (1- depth)
-                  )
-                )
-         str)
-    )
-  (setq
-    dired-subtree-line-prefix 'my-dired-subtree-prefix
-    )
-  )
-(use-package dired-collapse)
+;; (use-package dired-subtree
+;;   :config
+;;   (defun my-dired-subtree-prefix(depth)
+;;     (let ((str ""))
+;;          (while (< 0 depth)
+;;                 (setq
+;;                   str   (concat str "●-")
+;;                   depth (1- depth)
+;;                   )
+;;                 )
+;;          str)
+;;     )
+;;   (setq
+;;     dired-subtree-line-prefix 'my-dired-subtree-prefix
+;;     )
+;;   )
+;; (use-package dired-collapse)
 
 ;;; Treemacs plugin is superior.
 ;;;
@@ -209,94 +209,95 @@
 ;;   ;; (define-key evil-normal-state-map "`" 'dired-sidebar-toggle-sidebar)
 ;;   )
 
-(defface all-the-icons-dired-dir-face
-  '((((background dark)) :foreground "white")
-    (((background light)) :foreground "black"))
-  "Face for the directory icon"
-  :group 'all-the-icons-faces)
+;; (defface all-the-icons-dired-dir-face
+;;   '((((background dark)) :foreground "white")
+;;     (((background light)) :foreground "black"))
+;;   "Face for the directory icon"
+;;   :group 'all-the-icons-faces)
 
-(defcustom all-the-icons-dired-v-adjust 0.01
-  "The default vertical adjustment of the icon in the dired buffer."
-  :group 'all-the-icons
-  :type 'number)
+;; (defcustom all-the-icons-dired-v-adjust 0.01
+;;   "The default vertical adjustment of the icon in the dired buffer."
+;;   :group 'all-the-icons
+;;   :type 'number)
 
-(defvar-local all-the-icons-dired-displayed nil
-  "Flags whether icons have been added.")
+;; (defvar-local all-the-icons-dired-displayed nil
+;;   "Flags whether icons have been added.")
 
-(defun all-the-icons-dired--display ()
-  "Display the icons of files in a dired buffer."
-  (when (and (not all-the-icons-dired-displayed) dired-subdir-alist)
-    (setq-local all-the-icons-dired-displayed t)
-    (let ((inhibit-read-only t)
-          (remote-p (and (fboundp 'tramp-tramp-file-p) (tramp-tramp-file-p default-directory)))
-          (max (1- (dired-subdir-max)))
-          last
-          )
-          (save-excursion
-            (goto-char (point-min))
-            (setq last (point))
-            (dired-goto-next-file)
-            (while (and (not (= (point) last))
-                        (< (point) max))
-              (setq last (point))
-              (let ((filename (dired-get-filename 'verbatim t)))
-                (unless (member filename '("." ".."))
-                  (let ((filepath (dired-get-filename nil t)))
-                    (cond ((file-directory-p filepath)
-                           (let* ((matcher (all-the-icons-match-to-alist filename all-the-icons-dir-icon-alist))
-                                  (icon (cond
-                                    (remote-p
-                                    (all-the-icons-octicon "file-directory" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
-                                    ((file-symlink-p filepath)
-                                    (all-the-icons-octicon "file-symlink-directory" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
-                                    ((all-the-icons-dir-is-submodule filepath)
-                                    (all-the-icons-octicon "file-submodule" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
-                                    ((file-exists-p (format "%s/.git" filepath))
-                                    (all-the-icons-octicon "repo" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
-                                    (t (apply (car matcher) (list (cadr matcher) :face 'all-the-icons-dired-dir-face :v-adjust all-the-icons-dired-v-adjust))))))
-                                  (insert (concat icon " "))
-                             )
-                           )
-                          ((file-exists-p filepath)
-                           (insert (concat (all-the-icons-icon-for-file filename) " "))
-                           )
-                          (t nil)
-                          )
-                    )
-                  )
-                )
-              (forward-line 1)
-              ;;; Buffer has changed since we inserted an icon, update `max`
-              (setq max (1- (dired-subdir-max)))
-              (while (and (not (dired-move-to-filename)) (< (point) max))
-                (forward-line 1))
-              )
-            )
-          )
-    )
-  )
+;; (defun all-the-icons-dired--display ()
+;;   "Display the icons of files in a dired buffer."
+;;   (when (and (not all-the-icons-dired-displayed) dired-subdir-alist)
+;;     (setq-local all-the-icons-dired-displayed t)
+;;     (let ((inhibit-read-only t)
+;;           (remote-p (and (fboundp 'tramp-tramp-file-p) (tramp-tramp-file-p default-directory)))
+;;           (max (1- (dired-subdir-max)))
+;;           last
+;;           )
+;;           (save-excursion
+;;             (goto-char (point-min))
+;;             (setq last (point))
+;;             (dired-goto-next-file)
+;;             (while (and (not (= (point) last))
+;;                         (< (point) max))
+;;               (setq last (point))
+;;               (let ((filename (dired-get-filename 'verbatim t)))
+;;                 (unless (member filename '("." ".."))
+;;                   (let ((filepath (dired-get-filename nil t)))
+;;                     (cond ((file-directory-p filepath)
+;;                            (let* ((matcher (all-the-icons-match-to-alist filename all-the-icons-dir-icon-alist))
+;;                                   (icon (cond
+;;                                     (remote-p
+;;                                     (all-the-icons-octicon "file-directory" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+;;                                     ((file-symlink-p filepath)
+;;                                     (all-the-icons-octicon "file-symlink-directory" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+;;                                     ((all-the-icons-dir-is-submodule filepath)
+;;                                     (all-the-icons-octicon "file-submodule" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+;;                                     ((file-exists-p (format "%s/.git" filepath))
+;;                                     (all-the-icons-octicon "repo" :v-adjust all-the-icons-dired-v-adjust :face 'all-the-icons-dired-dir-face))
+;;                                     (t (apply (car matcher) (list (cadr matcher) :face 'all-the-icons-dired-dir-face :v-adjust all-the-icons-dired-v-adjust))))))
+;;                                   (insert (concat icon " "))
+;;                              )
+;;                            )
+;;                           ((file-exists-p filepath)
+;;                            (insert (concat (all-the-icons-icon-for-file filename) " "))
+;;                            )
+;;                           (t nil)
+;;                           )
+;;                     )
+;;                   )
+;;                 )
+;;               (forward-line 1)
+;;               ;;; Buffer has changed since we inserted an icon, update `max`
+;;               (setq max (1- (dired-subdir-max)))
+;;               (while (and (not (dired-move-to-filename)) (< (point) max))
+;;                 (forward-line 1))
+;;               )
+;;             )
+;;           )
+;;     )
+;;   )
 
-(defun all-the-icons-dired--reset (&optional _arg _noconfirm)
-  "Functions used as advice when redisplaying buffer."
-  (setq-local all-the-icons-dired-displayed nil))
+;; (defun all-the-icons-dired--reset (&optional _arg _noconfirm)
+;;   "Functions used as advice when redisplaying buffer."
+;;   (setq-local all-the-icons-dired-displayed nil))
 
-(defun my-dired-revert (&rest _)
-  "Wrapper around `dired-revert' but saves window position."
-  (dired-sidebar-when-let* ((win (get-buffer-window (current-buffer))))
-    (with-selected-window win
-      (let ((old-window-start (window-start)))
-        (when (dired-sidebar-using-tui-p)
-          (dired-sidebar-tui-reset-in-sidebar))
-        (dired-revert)
-        (set-window-start win old-window-start)))))
+;; (defun my-dired-revert (&rest _)
+;;   "Wrapper around `dired-revert' but saves window position."
+;;   (dired-sidebar-when-let* ((win (get-buffer-window (current-buffer))))
+;;     (with-selected-window win
+;;       (let ((old-window-start (window-start)))
+;;         ;;; Sidebar is disabled in favor to treemacs
+;;         ;; (when (dired-sidebar-using-tui-p)
+;;         ;;   (dired-sidebar-tui-reset-in-sidebar))
+;;         (dired-revert)
+;;         (set-window-start win old-window-start)))))
 
 (defun my-dired-mode-hook()
   "Hook to setup all-the-icons."
   (dired-hide-details-mode 1)
   ;; (dired-collapse-mode 1)
-  (add-hook 'dired-after-readin-hook 'all-the-icons-dired--display t t)
+  ;; (add-hook 'dired-after-readin-hook 'all-the-icons-dired--display t t)
   )
-(advice-add 'dired-revert :before #'all-the-icons-dired--reset)
+;; (advice-add 'dired-revert :before #'all-the-icons-dired--reset)
 (add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
 

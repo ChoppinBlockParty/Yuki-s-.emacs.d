@@ -1,10 +1,8 @@
 (use-package treemacs
-  :defer t
-  :init
+  :config
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
+
     (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
           treemacs-deferred-git-apply-delay      0.5
           treemacs-directory-name-transformer    #'identity
@@ -59,21 +57,19 @@
       (`(t . t)
        (treemacs-git-mode 'deferred))
       (`(t . _)
-       (treemacs-git-mode 'simple))))
+       (treemacs-git-mode 'simple)))
 
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+  (define-key (current-global-map) (kbd "M-0") 'treemacs-select-window)
+  )
 
 (use-package treemacs-evil
-  :after (treemacs evil)
+  :after (treemacs evil-config)
   :config
-  (define-key evil-treemacs-state-map (kbd "SPC l")   #'evil-window-right)
+
+  (my-evil-2-modes-define-key "SPC u t" 'treemacs)
+  (my-evil-2-modes-define-key "SPC u p t" 'treemacs-projectile)
+
+  (define-key evil-treemacs-state-map (kbd "SPC l") #'evil-window-right)
   )
 
 (use-package treemacs-projectile
