@@ -351,5 +351,8 @@ end-of-buffer signals; pass the rest to the default handler."
   (defvar flyspell-mode-map (let ((map (make-sparse-keymap))) map))
   )
 
+;;; Required by ycmd.el
+(use-package f)
+
 (provide 'base-config)
 ;;; base-config.el ends here
