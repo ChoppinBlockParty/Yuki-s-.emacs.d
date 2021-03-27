@@ -87,10 +87,14 @@
   )
 
 (use-package lua-mode
-  :ensure t
   ;; :load-path "local/lua-mode"
   :config
   (modify-syntax-entry ?_ "w" lua-mode-syntax-table)
+  )
+
+(use-package typescript-mode
+  :config
+  (modify-syntax-entry ?_ "w" typescript-mode-syntax-table)
   )
 
 
@@ -100,6 +104,7 @@
 ;;      :config
 ;;      (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 
+
 ;; For javascript-eslint function
 (use-package js2-mode)
 
@@ -108,6 +113,7 @@
   (modify-syntax-entry ?_ "w" web-mode-syntax-table)
   ;;; auto-enable for .js/.jsx files
   (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.tsx?$" . web-mode))
   (setq
     ;;; Enable JSX syntax highlighting in .js/.jsx files
     web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
@@ -140,10 +146,15 @@
   (use-package tide
     :config
     (defun setup-tide-mode()
-      ;; (interactive)
       (tide-setup)
       (setq flycheck-check-syntax-automatically '(save mode-enabled))
       (tide-hl-identifier-mode 1)
+      )
+
+    (defun setup-ts-tide-mode()
+      (setup-tide-mode)
+      (add-node-modules-path)
+      (prettier-js-mode)
       )
 
     ;; aligns annotation to the right hand side
@@ -153,9 +164,11 @@
 
     ;; formats the buffer before saving
     ; (add-hook 'before-save-hook 'tide-format-before-save)
-
-    (add-hook 'typescript-mode-hook #'setup-tide-mode)
+    (add-hook 'typescript-mode-hook #'setup-ts-tide-mode)
     (add-hook 'web-mode-hook #'setup-tide-mode)
+
+    ;; enable typescript-tslint checker
+    (flycheck-add-mode 'typescript-tslint 'typescript-mode)
     )
   )
 

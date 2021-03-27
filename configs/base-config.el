@@ -30,7 +30,7 @@
 (column-number-mode)
 
 ;;; show line numbers
-;; (global-linum-mode t)
+; (global-linum-mode t)
 
 ;;; require a trailing newline
 ;;; otherwise people get angry on you
@@ -290,6 +290,7 @@ end-of-buffer signals; pass the rest to the default handler."
     'lua-mode-hook
     'crontab-mode-hook
     'js2-mode-hook
+    'typescript-mode-hook
     'web-mode-hook
     'scheme-mode-hook
     'clojure-mode-hook
@@ -305,6 +306,9 @@ end-of-buffer signals; pass the rest to the default handler."
     'tcl-mode-hook
     )
   )
+
+;; (dolist (hook my-prog-modes-hook-list)
+;;   (add-hook hook 'linum-mode))
 
 (defconst my-markup-modes-hook-list
   (list
@@ -339,7 +343,7 @@ end-of-buffer signals; pass the rest to the default handler."
   :ensure nil
   :init
   ;; Need to be removed
-  ;; (defvar dired-mode-map (let ((map (make-keymap))) (set-keymap-parent map special-mode-map) map))
+  (defvar dired-mode-map (let ((map (make-keymap))) (set-keymap-parent map special-mode-map) map))
   )
 
 (use-package flyspell

@@ -93,6 +93,7 @@
     "go" 'browse-url-of-dired-file
     "ga" 'dired-show-file-type ;; FIXME: This could probably go on a better key.
     "gg" 'evil-goto-first-line ;; FIXME: Do not why I should specify it here, otherwise it is undefined
+    "G"  'evil-goto-line
     "gf" 'find-file
     "cf" 'my-dired-create-file
     "cd" 'my-dired-create-directory
