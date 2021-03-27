@@ -129,9 +129,8 @@
 (use-package company-ycmd
   :ensure nil
   :load-path "local/emacs-ycmd"
-  :init
-    (company-ycmd-setup)
   :config
+    (company-ycmd-setup)
     ;; (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
   )
 
