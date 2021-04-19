@@ -160,10 +160,6 @@
 ;;; otherwise from less-random volatile data such as the time
 (random t)
 
-;; (set-frame-font "Inconsolata-dz for Powerline-11")
-(set-frame-font "DejaVu Sans Mono-11")
-;; (set-frame-font "Hack-10")
-
 (setq
   backup-directory-alist         '(("." . "~/.cache/emacs/backup/"))
   auto-save-file-name-transforms '((".*" "~/.cache/emacs/autosave/" t))
@@ -188,7 +184,10 @@
         t
         )
       (setq show-trailing-whitespace t)
-      (electric-indent-mode 1)
+      ; (electric-indent-mode 1)
+      (electric-indent-mode -1)
+      ;;; to override the electric-indent-mode state set by any major mode
+      (add-hook 'after-change-major-mode-hook (lambda() (electric-indent-mode -1)))
       ))
 (add-hook 'find-file-hook 'my-setup-file-defaults)
 
@@ -255,7 +254,7 @@ end-of-buffer signals; pass the rest to the default handler."
   :config
   (setq
     recentf-save-file "~/.cache/emacs/recentf"
-    recentf-max-saved-items 10000
+    recentf-max-saved-items 100000
     recentf-max-menu-items 5000
     )
   (recentf-mode 1)
@@ -307,9 +306,6 @@ end-of-buffer signals; pass the rest to the default handler."
     )
   )
 
-;; (dolist (hook my-prog-modes-hook-list)
-;;   (add-hook hook 'linum-mode))
-
 (defconst my-markup-modes-hook-list
   (list
     'fundamental-mode-hook
@@ -353,6 +349,14 @@ end-of-buffer signals; pass the rest to the default handler."
 
 ;;; Required by ycmd.el
 (use-package f)
+
+;; (set-frame-font "Inconsolata-dz for Powerline-11")
+(set-frame-font "DejaVu Sans Mono-11")
+;; (set-frame-font "Hack-10")
+
+(dolist (hook my-prog-modes-hook-list)
+  ;; (add-hook hook 'linum-mode)
+  )
 
 (provide 'base-config)
 ;;; base-config.el ends here

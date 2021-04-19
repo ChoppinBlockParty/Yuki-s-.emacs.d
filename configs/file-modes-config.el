@@ -113,7 +113,7 @@
   (modify-syntax-entry ?_ "w" web-mode-syntax-table)
   ;;; auto-enable for .js/.jsx files
   (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
-  ;; (add-to-list 'auto-mode-alist '("\\.tsx?$" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx?$" . web-mode))
   (setq
     ;;; Enable JSX syntax highlighting in .js/.jsx files
     web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
