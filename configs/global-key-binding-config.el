@@ -3,36 +3,36 @@
 ;;; Code:
 
 (use-package popwin)
-(use-package guide-key
-  :ensure nil
-  :load-path "local/guide-key"
-  :config
-  (setq
-    guide-key/guide-key-sequence '(
-      "SPC u i"
-      "SPC u f"
-      "SPC u m"
-      "SPC u p"
-      "SPC u r"
-      "SPC u y"
-      "C-x"
-      "C-c"
-      "C-h"
-      ))
-  ;; (setq guide-key/guide-key-sequence t)
-  (setq
-    guide-key/popup-window-position 'bottom
-    guide-key/text-scale-amount -1.1
-    guide-key/recursive-key-sequence-flag t
-    )
-  (guide-key-mode 1)
-  (setcdr (assq 'guide-key-mode minor-mode-alist) (list ""))
+;; (use-package guide-key
+;;   :ensure nil
+;;   :load-path "local/guide-key"
+;;   :config
+;;   (setq
+;;     guide-key/guide-key-sequence '(
+;;       "SPC u i"
+;;       "SPC u f"
+;;       "SPC u m"
+;;       "SPC u p"
+;;       "SPC u r"
+;;       "SPC u y"
+;;       "C-x"
+;;       "C-c"
+;;       "C-h"
+;;       ))
+;;   ;; (setq guide-key/guide-key-sequence t)
+;;   (setq
+;;     guide-key/popup-window-position 'bottom
+;;     guide-key/text-scale-amount -1.1
+;;     guide-key/recursive-key-sequence-flag t
+;;     )
+;;   (guide-key-mode 1)
+;;   (setcdr (assq 'guide-key-mode minor-mode-alist) (list ""))
 
-  (defun guide-key/my-dired-hook ()
-    (guide-key/add-local-guide-key-sequence "C-t")
-    (guide-key/add-local-highlight-command-regexp "\\(dired\\|image\\|epa\\)-"))
-  (add-hook 'dired-mode-hook 'guide-key/my-dired-hook)
-  )
+;;   (defun guide-key/my-dired-hook ()
+;;     (guide-key/add-local-guide-key-sequence "C-t")
+;;     (guide-key/add-local-highlight-command-regexp "\\(dired\\|image\\|epa\\)-"))
+;;   (add-hook 'dired-mode-hook 'guide-key/my-dired-hook)
+;;   )
 
 
 (my-evil-2-modes-define-key "SPC u ?"     'counsel-apropos)
