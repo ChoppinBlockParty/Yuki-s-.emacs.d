@@ -4,9 +4,7 @@
 ;;; evil-magit.el --- evil-based key bindings for magit
 ;;; https://github.com/emacs-evil/evil-magit
 ;;; Code:
-(use-package gitattributes-mode)
-(use-package gitconfig-mode)
-(use-package gitignore-mode)
+(use-package git-modes)
 (use-package magit
   :config
   (setq
