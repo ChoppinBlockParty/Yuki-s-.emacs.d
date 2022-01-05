@@ -1,8 +1,12 @@
 ;;; shell-config --- Configures eshell and shell modes
 ;;; Commentary:
 ;;; Code:
+
 (with-eval-after-load 'counsel
 (with-eval-after-load 'helm
+(with-eval-after-load 'shell
+(with-eval-after-load 'evil-config
+
 (defun my-shell ()
   "Similar to `shell`, but allows to spawn new shells on successive invocations."
   (interactive)
@@ -100,6 +104,15 @@
   ;;     (print (format "@@@|%s|@@@" (match-string 1 string))))
   ;;   string)
   ;;; }}}
+
+
+  (define-key shell-mode-map [remap comint-send-input] 'my-comint-send-input-maybe)
+  ;;; shell history.
+  ;; (define-key (current-global-map) (kbd "C-r") 'helm-comint-input-ring)
+  (evil-define-key 'normal 'local (kbd "C-r") #'helm-comint-input-ring)
+  (evil-define-key 'visual 'local (kbd "C-r") #'helm-comint-input-ring)
+  (evil-define-key 'insert 'local (kbd "C-r") #'helm-comint-input-ring)
+  ;; (define-key shell-mode-map (kbd "C-r") 'counsel-shell-history)
   )
 (add-hook 'shell-mode-hook 'my-shell-mode-hook)
 
@@ -124,11 +137,6 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
         )
     )
   )
-(define-key shell-mode-map [remap comint-send-input] 'my-comint-send-input-maybe)
-
-;;; shell history.
-(define-key shell-mode-map (kbd "C-r") 'helm-comint-input-ring)
-;; (define-key shell-mode-map (kbd "C-r") 'counsel-shell-history)
 
 (defun my-comint-run-last-command(arg)
   "Run last command in shell mode. ARG is a number."
@@ -196,7 +204,8 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
   (kbd "<up>") #'comint-previous-input
   (kbd "<down>") #'comint-next-input
   )
-))
+
+))))
 
 (provide 'shell-config)
 ;;; shell-config.el ends here
