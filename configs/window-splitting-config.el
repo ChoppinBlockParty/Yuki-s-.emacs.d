@@ -155,11 +155,11 @@
       (setq sel-mode major-mode))
     (with-current-buffer buffer
       (setq new-mode major-mode))
-    (print sel-mode)
-    (print (buffer-name sel-buf))
-    (print new-mode)
-    (print (buffer-name buffer))
-    (print alist)
+    ;; (print sel-mode)
+    ;; (print (buffer-name sel-buf))
+    ;; (print new-mode)
+    ;; (print (buffer-name buffer))
+    ;; (print alist)
     (cond
       ((or (equal new-mode 'apropos-mode) (equal new-mode 'help-mode))
        (let ((win (my-display-buffer-find-major-mode-window 'apropos-mode 'help-mode)))
@@ -174,7 +174,6 @@
          (equal new-mode 'fundamental-mode)
          (my-window-display-buffer-match-any (buffer-name buffer) "\\`\s-*\\*transient\\*\\'")
          )
-       ;; (print "hello transient")
        ;;; transient windows are evil, let the default display function to handle it,
        ;;; though I don't like the default behavior.
        nil
