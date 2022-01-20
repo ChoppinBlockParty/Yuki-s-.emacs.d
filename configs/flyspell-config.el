@@ -1,17 +1,19 @@
 ;;; flyspell-config --- Configures spell checkers
 ;;; Commentary:
 ;;; Code:
+
+(with-eval-after-load 'ispell
+
 (use-package flyspell
   :config
   (setq
     flyspell-mode-line-string ""
     ;;; Disable string spell check
     flyspell-prog-text-faces (delq 'font-lock-string-face flyspell-prog-text-faces)
-    )
+    ;; better performance
+    flyspell-issue-message-flag nil
+  )
  )
-
-;; better performance
-(setq flyspell-issue-message-flag nil)
 
 ;; if (aspell installed) { use aspell}
 ;; else if (hunspell installed) { use hunspell }
@@ -31,12 +33,11 @@
          (if RUN-TOGETHER
            (setq args (append args '("--run-together" "--run-together-limit=16" "--run-together-min=2")))))
         ((string-match "hunspell$" ispell-program-name)
-         (setq args nil))))
+         (setq args (list "-d" "en_US")))))
     args
     ))
 
-;; Aspell Setup (recommended):
-;; Skipped because it's easy.
+;; Aspell Setup: Makes emacs to freeze
 ;;
 ;; Hunspell Setup:
 ;; 1. Install hunspell from http://hunspell.sourceforge.net/
@@ -54,22 +55,45 @@
 ;; hunspell will search for a dictionary called `en_US' in the path specified by
 ;; `$DICPATH'
 
-(cond
- ((executable-find "hunspell")
-  (setq ispell-program-name "hunspell")
+;; (cond
+;;  ((executable-find "hunspell")
+  (setq ispell-program-name (executable-find "hunspell"))
   ;; just reset dictionary to the safe one "en_US" for hunspell.
   ;; if we need use different dictionary, we specify it in command line arguments
+  ;; (setq ispell-dictionary "en_US")
+  ;; (setq ispell-really-hunspell t)
   (setq ispell-local-dictionary "en_US")
-  (setq ispell-local-dictionary-alist
-        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8))))
- ((executable-find "aspell")
-  (setq ispell-program-name "aspell"))
- (t (setq ispell-program-name nil)))
+  ;; (setq ispell-local-dictionary-alist
+  ;;       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)))
+ ;; )
+ ;; ((executable-find "aspell")
+ ;;  (setq ispell-program-name "aspell"))
+ ;; (t (setq ispell-program-name nil)))
+
+
+;; (add-to-list 'ispell-local-dictionary-alist '("deutsch-hunspell"
+;;                                               "[[:alpha:]]"
+;;                                               "[^[:alpha:]]"
+;;                                               "[']"
+;;                                               t
+;;                                               ("-d" "de_DE"); Dictionary file name
+;;                                               nil
+;;                                               iso-8859-1))
+
+;; (add-to-list 'ispell-local-dictionary-alist '("english-hunspell"
+;;                                               "[[:alpha:]]"
+;;                                               "[^[:alpha:]]"
+;;                                               "[']"
+;;                                               t
+;;                                               ("-d" "en_US")
+;;                                               nil
+;;                                               iso-8859-1))
 
 ;; ispell-cmd-args is useless, it's the list of *extra* command line arguments we will append to the ispell process when ispell-send-string()
 ;; ispell-extra-args is the command arguments which will *always* be used when start ispell process
 (setq ispell-extra-args (flyspell-detect-ispell-args t))
-;; (setq ispell-cmd-args (flyspell-detect-ispell-args))
+(setq ispell-cmd-args (flyspell-detect-ispell-args))
+
 (defadvice ispell-word (around my-ispell-word activate)
   (let ((old-ispell-extra-args ispell-extra-args))
     (ispell-kill-ispell t)
@@ -102,6 +126,8 @@
 
 
 (define-key evil-normal-state-map (kbd "z C-=") 'flyspell-auto-correct-word)
+
+)
 
 (provide 'flyspell-config)
 ;;; flyspell-config.el ends here
