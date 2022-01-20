@@ -372,7 +372,7 @@
   (my-evil-2-modes-define-key "M-l" 'evil-jump-forward)
   (my-evil-2-modes-define-key "M-c" 'evil-visual-block)
 
-  (define-key evil-normal-state-map "U" 'redo)
+  (define-key evil-normal-state-map "U" 'evil-redo)
   (my-evil-2-modes-define-key "Y" 'evil-join)
 
   ;; ex command line

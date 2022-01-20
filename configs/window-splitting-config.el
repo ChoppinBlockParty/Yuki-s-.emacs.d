@@ -6,6 +6,8 @@
 ;;;
 ;;; Chnage how windows are spawned
 ;;;
+;;; See help fro (display-buffer) to understand what is going on.
+
 
 (defvar my-last-preferred-splits '())
 
@@ -153,11 +155,11 @@
       (setq sel-mode major-mode))
     (with-current-buffer buffer
       (setq new-mode major-mode))
-    ;; (print sel-mode)
-    ;; (print (buffer-name sel-buf))
-    ;; (print new-mode)
-    ;; (print (buffer-name buffer))
-    ;; (print alist)
+    (print sel-mode)
+    (print (buffer-name sel-buf))
+    (print new-mode)
+    (print (buffer-name buffer))
+    (print alist)
     (cond
       ((or (equal new-mode 'apropos-mode) (equal new-mode 'help-mode))
        (let ((win (my-display-buffer-find-major-mode-window 'apropos-mode 'help-mode)))
@@ -167,13 +169,18 @@
              ))
        )
       ;;; For magit pop-ups that are called transient with a space in front
+      ;;; For regex syntax see this - https://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Backslash.html.
       ((and
          (equal new-mode 'fundamental-mode)
          (my-window-display-buffer-match-any (buffer-name buffer) "\\`\s-*\\*transient\\*\\'")
          )
-       (my-window-display-buffer
-         buffer
-         (with-selected-window (selected-window) (split-window-below)))
+       ;; (print "hello transient")
+       ;;; transient windows are evil, let the default display function to handle it,
+       ;;; though I don't like the default behavior.
+       nil
+       ;; (let ((new-win (with-selected-window (selected-window) (split-window-below))))
+       ;;   (set-window-dedicated-p new-win 1)
+       ;;   (my-window-display-buffer buffer new-win))
        )
       ((or
          (member new-mode '(dired-sidebar-mode

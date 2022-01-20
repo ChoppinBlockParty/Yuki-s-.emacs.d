@@ -4,10 +4,13 @@
 
 ;;; https://www.emacswiki.org/emacs/UndoTree
 ;;; Otherwise redo does not work
+(with-eval-after-load 'evil
 (use-package undo-tree
   :config
   (global-undo-tree-mode)
+  (evil-set-undo-system 'undo-tree)
   )
+)
 
 ;;; https://emacs.stackexchange.com/questions/9583/how-to-treat-underscore-as-part-of-the-word
 (modify-syntax-entry ?_ "w" (standard-syntax-table))
