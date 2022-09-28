@@ -89,7 +89,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(kaolin-themes zerodark-theme xterm-color window-numbering wgrep vimrc-mode use-package spacemacs-theme smex rg rainbow-mode rainbow-delimiters powerline moe-theme markdown-mode magit ivy-rich iedit highlight-symbol highlight-operators helm-swoop helm-flycheck grandshell-theme go-mode flyspell-lazy flycheck-ycmd flx expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit evil-leader evil-easymotion dockerfile-mode docker-compose-mode counsel-projectile company-ycmd cmake-mode clang-format auctex)))
+   '(kaolin-themes zerodark-theme xterm-color window-numbering wgrep vimrc-mode use-package spacemacs-theme smex rg rainbow-mode rainbow-delimiters powerline moe-theme markdown-mode magit ivy-rich iedit highlight-symbol highlight-operators helm-swoop helm-flycheck grandshell-theme go-mode flyspell-lazy flycheck-ycmd flx expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit evil-leader evil-easymotion dockerfile-mode docker-compose-mode counsel-projectile company-ycmd cmake-mode clang-format auctex))
+ '(warning-suppress-types '((comp) (comp) (comp) (comp) (comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

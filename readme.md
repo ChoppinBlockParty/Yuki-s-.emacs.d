@@ -1,27 +1,28 @@
 Yuki's .emacs.d
 ===============
 
-After 8 years of Vim, I have finally switched to [Emacs](https://www.gnu.org/software/emacs/). The only regret I have is that I had not done this sooner. Emacs has everything that Vim has and much more.
-
-All Vim states (normal, visual, operator, etc.), search (`/`), commands (`:`, including substitution `:s/...`) are already in Emacs, just enable glorious [evil](https://github.com/emacs-evil/evil) package.
-
-Here is a video that gives quite good reasoning why Vim is even better inside Emacs.
-
-[![Why Vim is even better inside Emacs](http://img.youtube.com/vi/JWD1Fpdd4Pc/0.jpg)](http://www.youtube.com/watch?v=JWD1Fpdd4Pc "Why Vim is even better inside Emacs")
-
-![Dired, Shell, Magit, Rg, C++](screenshots/dired-shell-magit-rg-c++-ivy.jpg?raw=true "Dired, Shell, Magit, Rg, C++")
+The latest version I am using is 28.2.
+I want to give heads-up the latest development in Emacs are outstanding, changing the experience significantly.
+I compile Emacs with `--with-json` and `--with-native-compilation`.
+The first gives native JSON support (pumps up JSON performance).
+The second compiles Emacs with mighty Lisp to byte code compilation feature.
 
 Build Emacs from source
 -----------------------
 
-Every new [Emacs release](https://www.gnu.org/software/emacs/history.html) is better than the previous one. Here is how I build Emacs from source on Ubuntu (see the scripts inside [tools](tools)).
+If you fancy see [Emacs release history](https://www.gnu.org/software/emacs/history.html).
+Here is how I build Emacs from source on Ubuntu (see the scripts inside [tools](tools)).
 
 ``` shell
-git https://github.com/emacs-mirror/emacs.git
-git checkout emacs-26
 sudo ./tools/install-prerequisits.sh
-sudo ./tools/build-emacs.sh /opt/emacs
+sudo ./tools/install-emacs.sh /opt/emacs
 ln -s /opt/emacs ~/bin
+```
+
+### Post installation steps
+
+```
+M-x all-the-icons-install-fonts
 ```
 
 Packages
@@ -60,8 +61,17 @@ Packages
  - [go-mode.el](https://github.com/dominikh/go-mode.el)
  - [iflipb](https://github.com/jrosdahl/iflipb)
 
-### Post installation steps
 
-```
-M-x all-the-icons-install-fonts
-```
+## My use case
+
+After 8 years of Vim I had finally switched to [Emacs](https://www.gnu.org/software/emacs/). The only regret I had is that I had not done this sooner. Emacs has everything that Vim has and much more.
+
+All Vim states (normal, visual, operator, etc.), search (`/`), commands (`:`, including substitution `:s/...`) are already in Emacs, just enable glorious [evil](https://github.com/emacs-evil/evil) package.
+
+Here is a video that gives quite good reasoning why Vim is even better inside Emacs.
+
+[![Why Vim is even better inside Emacs](http://img.youtube.com/vi/JWD1Fpdd4Pc/0.jpg)](http://www.youtube.com/watch?v=JWD1Fpdd4Pc "Why Vim is even better inside Emacs")
+
+![Dired, Shell, Magit, Rg, C++](screenshots/dired-shell-magit-rg-c++-ivy.jpg?raw=true "Dired, Shell, Magit, Rg, C++")
+
+No hate, I love Vim enormously and I am very grateful for the project being there and giving me great experience using it.

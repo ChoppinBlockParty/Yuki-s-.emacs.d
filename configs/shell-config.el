@@ -23,7 +23,7 @@
 ;;; For better shell directory tracking, used below
 (require 'dirtrack)
 ;;; Amazing xterm-256color package (see a comment below)
-;; (use-package xterm-color)
+(use-package xterm-color)
 
 ;; (modify-syntax-entry ?_ "w" shell-mode-syntax-table)
 ;; (modify-syntax-entry ?- "w" shell-mode-syntax-table)
@@ -59,9 +59,10 @@
   "A hook to setup shell-mode."
 
   ;;; idk seems does not well work with comint, some sequences are wrongly interpreted
-  ;; (setq comint-output-filter-functions
-  ;;   (remove'ansi-color-process-output comint-output-filter-functions))
-  ;; (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)
+  ;;; In emacs 23 some colors stopped working, having this helped to recover
+  (setq comint-output-filter-functions
+    (remove'ansi-color-process-output comint-output-filter-functions))
+  (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)
 
   ;;; For ANSI colors
   ;; (ansi-color-for-comint-mode-on)
@@ -206,6 +207,21 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
   )
 
 ))))
+
+
+;;; Let's try vterm
+
+(use-package vterm
+    :ensure t
+    :config
+  (evil-define-key 'normal vterm-mode-map
+    "P" 'vterm-yank
+    )
+  (evil-define-key 'insert vterm-mode-map
+    (kbd "C-c") #'vterm-send-C-c
+    (kbd "C-r") 'vterm--self-insert
+    )
+)
 
 (provide 'shell-config)
 ;;; shell-config.el ends here

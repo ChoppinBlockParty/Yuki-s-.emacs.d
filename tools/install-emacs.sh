@@ -25,13 +25,15 @@ function clone_update_git_repo {
   echo "  -- Update \"$1\", branch $branch"
 }
 
-clone_update_git_repo https://github.com/emacs-mirror/emacs emacs-28.0.90
+clone_update_git_repo https://github.com/emacs-mirror/emacs emacs-28.2
 make clean || true
 ./autogen.sh
 ./configure \
   --prefix="$PREFIX" \
   --enable-link-time-optimization \
-  --with-x-toolkit=lucid
+  --with-x-toolkit=lucid \
+  --with-json \
+  --with-native-compilation
 
 make V=1
 sudo make install

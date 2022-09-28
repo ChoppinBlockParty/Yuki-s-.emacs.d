@@ -87,5 +87,12 @@ packages=(
   libdatrie-dev
   libgpg-error-dev
   libgraphite2-dev
+  # for vterm build
+  libtool
+  libtool-bin
+  # for emacs native compilation (version depends on the default compiler version)
+  libgccjit-9-dev
+  # for emact native json support
+  libjansson-dev
   )
 sudo apt-get -y install --no-install-recommends "${packages[@]}"

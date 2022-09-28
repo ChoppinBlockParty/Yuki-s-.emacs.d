@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+;;; Disable warnings
+(setq native-comp-async-report-warnings-errors nil)
 ;;; Disable toolbar (must use -1 to disable)
 (tool-bar-mode -1)
 ;;; Line numbers!

@@ -94,7 +94,7 @@
     evil-shift-width my-tab-width
     c-basic-offset my-tab-width
     ;;; Making electric-indent behave sanely
-    electric-indent-inhibit t
+    ; electric-indent-inhibit t
     ;;; If nil then * and # search for words otherwise for symbols.
     evil-symbol-word-search t
     )
