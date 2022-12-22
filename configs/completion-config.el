@@ -41,6 +41,8 @@
                         ;;; Fancy frontend, but lagging
                         ;; company-preview-if-not-tng-frontend
                         )
+    ;; Disable evil thing that makes all text completion in lower case.
+    company-dabbrev-downcase nil
     )
 
   ;;; Argument auto-insertion does not work smoothly with completion auto-selection like with TNG frontend.

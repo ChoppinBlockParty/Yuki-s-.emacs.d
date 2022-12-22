@@ -9,6 +9,8 @@
   :config
   (global-undo-tree-mode)
   (evil-set-undo-system 'undo-tree)
+  ;; Prevent undo tree files from polluting your git repo
+  (setq undo-tree-history-directory-alist '(("." . "~/.cache/emacs/undo-tree")))
   )
 )
 
