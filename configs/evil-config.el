@@ -170,7 +170,7 @@
   ;; (define-key evil-normal-state-map (kbd ":") 'evil-command-window-ex)
   ;; (my-evil-2-modes-define-key (kbd "/") 'my-evil-ex-search-command-window)
 
-  (define-key evil-normal-state-map (kbd "SPC a") 'ff-find-other-file)
+  (define-key evil-normal-state-map (kbd "SPC a") 'projectile-find-other-file)
   (define-key evil-normal-state-map (kbd "SPC s") 'my-buffer-formatting)
   (define-key evil-normal-state-map (kbd "SPC w") 'kill-this-buffer)
 
