@@ -87,7 +87,6 @@
   )
 
 (use-package lua-mode
-  ;; :load-path "local/lua-mode"
   :config
   (modify-syntax-entry ?_ "w" lua-mode-syntax-table)
   )

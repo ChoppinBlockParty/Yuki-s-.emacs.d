@@ -67,8 +67,8 @@
 (my-evil-2-modes-define-key "SPC u p r"   'projectile-recentf)
 (my-evil-2-modes-define-key "SPC u p s"   'counsel-projectile-switch-project)
 
-(my-evil-2-modes-define-key "SPC u r r"   'rg)
-(my-evil-2-modes-define-key "SPC u r p"   'rg-project)
+(my-evil-2-modes-define-key "SPC u r s"   'rg)
+(my-evil-2-modes-define-key "SPC u r r"   'rg-project)
 (my-evil-2-modes-define-key "SPC u r d"   'rg-dwim)
 (my-evil-2-modes-define-key "SPC u r l"   'rg-literal)
 

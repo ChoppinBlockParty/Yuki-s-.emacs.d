@@ -16,11 +16,10 @@ function clone_update_git_repo {
     git clone "$1"
     echo "  -- Cloned \"$1\" to \"$new_dirpath\""
   fi
-  local branch="${2:-master}"
   cd "$new_dirpath"
-  git checkout "$branch"
-  # FIXME: if `branch` is a tag, pull fails
   git pull origin || true
+  local branch="${2:-master}"
+  git checkout "$branch"
   git submodule update --recursive --init
   echo "  -- Update \"$1\", branch $branch"
 }

@@ -10,6 +10,7 @@
         "gf"   'rg-rerun-change-files
         "gl"   'rg-list-searches
         "gr"   'rg-recompile
+        "gm"   'rg-menu
         "zc"   'rg-rerun-toggle-case
         "zi"   'rg-rerun-toggle-ignore
         "zl"   'rg-rerun-change-literal

@@ -152,20 +152,21 @@
   )
 
 
-(use-package company-go
-  :ensure nil
-  :load-path "local/company-go"
-  :config
+;;; Not sure, probably should rid off it, as it was last updated in 2017
+;; (use-package company-go
+;;   :ensure nil
+;;   :load-path "local/company-go"
+;;   :config
 
-  (setq
-    company-go-show-annotation t
-    company-go-insert-arguments nil
-    )
+;;   (setq
+;;     company-go-show-annotation t
+;;     company-go-insert-arguments nil
+;;     )
 
-  (add-hook 'go-mode-hook (lambda ()
-                          (set (make-local-variable 'company-backends) '(company-go))
-                          (company-mode)))
-  )
+;;   (add-hook 'go-mode-hook (lambda ()
+;;                           (set (make-local-variable 'company-backends) '(company-go))
+;;                           (company-mode)))
+;;   )
 
 
 (provide 'completion-config)
