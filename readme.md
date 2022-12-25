@@ -66,9 +66,9 @@ Packages
 
 After 8 years of Vim I had finally switched to [Emacs](https://www.gnu.org/software/emacs/). The only regret I had is that I had not done this sooner. Emacs has everything that Vim has and much more.
 
-All Vim states (normal, visual, operator, etc.), search (`/`), commands (`:`, including substitution `:s/...`) are already in Emacs, just enable glorious [evil](https://github.com/emacs-evil/evil) package.
+All Vim states (normal, visual, operator, etc.), search (`/`), commands (`:`, substitution `:s/...`) are already in Emacs, just enable glorious [evil](https://github.com/emacs-evil/evil) package.
 
-Here is a video that gives quite good reasoning why Vim is even better inside Emacs.
+Here is a video that gives a quite good reasoning why Vim is even better inside Emacs.
 
 [![Why Vim is even better inside Emacs](http://img.youtube.com/vi/JWD1Fpdd4Pc/0.jpg)](http://www.youtube.com/watch?v=JWD1Fpdd4Pc "Why Vim is even better inside Emacs")
 
