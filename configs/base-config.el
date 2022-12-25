@@ -186,10 +186,12 @@
         t
         )
       (setq show-trailing-whitespace t)
-      ; (electric-indent-mode 1)
-      (electric-indent-mode -1)
-      ;;; to override the electric-indent-mode state set by any major mode
-      (add-hook 'after-change-major-mode-hook (lambda() (electric-indent-mode -1)))
+      ;; Best description of what electric means - https://emacs.stackexchange.com/a/3016/20171.
+      (electric-indent-mode 1)
+      ;; In past for some unknown reason I had disabled electric mode.
+      ;(electric-indent-mode -1)
+      ;; to override the electric-indent-mode state set by any major mode
+      ;(add-hook 'after-change-major-mode-hook (lambda() (electric-indent-mode -1)))
       ))
 (add-hook 'find-file-hook 'my-setup-file-defaults)
 

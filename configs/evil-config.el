@@ -2,8 +2,9 @@
 ;;; Commentary:
 ;;; Code:
 ;;;
-;;; Nice guide
+;;; Nice guides
 ;;; https://github.com/noctuid/evil-guide
+;;; https://github.com/noctuid/evil-guide#keybindings-and-states
 ;;;
 
 (use-package evil
@@ -244,9 +245,8 @@
   (my-evil-2-modes-define-key "\\" 'evil-window-vsplit)
   (my-evil-2-modes-define-key "-" 'evil-window-split)
 
-  ;; (define-key global-map (kbd "RET") 'newline-and-indent)
-
   ;; Otherwise does not break the line, just moves the cursor line down
+  (define-key global-map (kbd "RET") 'newline-and-indent)
   (define-key evil-normal-state-map (kbd "RET") 'newline-and-indent)
 
   (define-key evil-insert-state-map (kbd "<S-return>") 'my-newline-without-break-of-line)
