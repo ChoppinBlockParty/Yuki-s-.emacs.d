@@ -35,18 +35,25 @@
     evil-want-C-w-in-emacs-state t
     ;;; Whether \"cw\" behaves like \"ce\".
     evil-want-change-word-to-end nil
-    evil-emacs-state-cursor    '("#dfaf8f" bar)
-    evil-normal-state-cursor   '("#ffec9c" box)
-    evil-visual-state-cursor   '("orange"  box)
-    evil-insert-state-cursor   '("#ffec9c" bar)
-    evil-replace-state-cursor  '("#cc9393" box)
-    evil-operator-state-cursor '("red"     hollow)
+    ;; evil-emacs-state-cursor    '("#dfaf8f" bar)
+    ;; evil-normal-state-cursor   '("#ffec9c" box)
+    ;; evil-visual-state-cursor   '("orange"  box)
+    ;; evil-insert-state-cursor   '("#ffec9c" bar)
+    ;; evil-replace-state-cursor  '("#cc9393" box)
+    ;; evil-operator-state-cursor '("red"     hollow)
 
-    evil-emacs-state-cursor    '("#dfaf8f" bar)
-    evil-normal-state-cursor   '("#ff6c6b" box)
-    evil-visual-state-cursor   '("orange"  box)
-    evil-insert-state-cursor   '("#ff6c6b" bar)
-    evil-replace-state-cursor  '("#cc9393" box)
+    ;; evil-emacs-state-cursor    '("#dfaf8f" bar)
+    ;; evil-normal-state-cursor   '("#ff6c6b" box)
+    ;; evil-visual-state-cursor   '("orange"  box)
+    ;; evil-insert-state-cursor   '("#ff6c6b" bar)
+    ;; evil-replace-state-cursor  '("#cc9393" box)
+
+    evil-emacs-state-cursor    '("#519259" bar)
+    evil-normal-state-cursor   '("#519259" box)
+    evil-visual-state-cursor   '("#519259" box)
+    evil-insert-state-cursor   '("#519259" bar)
+    evil-replace-state-cursor  '("#519259" box)
+    evil-operator-state-cursor '("red"     hollow)
 
     evil-want-fine-undo nil ; googled it, people say it is buggy
     evil-want-change-word-to-end t
@@ -87,8 +94,8 @@
     evil-vsplit-window-right t
     )
   ;;; So far color does not work, the color preserved from the last cursor look.
-  (evil-set-cursor-color "#ff6c6b")
-  (evil-set-cursor '("#ff6c6b" bar))
+  ;; (evil-set-cursor-color "#ff6c6b")
+  ;; (evil-set-cursor '("#ff6c6b" bar))
   (setq-default
     my-tab-width 4
     tab-width my-tab-width
@@ -153,8 +160,8 @@
   (defun run-emacs ()
     "Usefull for testing Emacs configuration."
     (interactive)
-    ;; (start-process-shell-command "emacs" nil "emacs --debug-init ~/yuki/dwm/source/dwm.c")
-    (start-process-shell-command "emacs" nil "emacs")
+    (start-process-shell-command "emacs" nil "emacs --debug-init ~/yuki/dwm/source/dwm.c")
+    ;; (start-process-shell-command "emacs" nil "emacs")
     )
   (my-evil-all-modes-define-key "C-1" 'run-emacs)
 

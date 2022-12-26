@@ -16,7 +16,7 @@
     avy-single-candidate-jump nil
     )
   (custom-set-faces
-    '(avy-lead-face ((t (:background nil :foreground "#ff2929" :weight bold))))
+    '(avy-lead-face ((t (:background nil :foreground "#2192FF" :weight bold))))
     ;; '(avy-lead-face-0 ((t (:background nil :foreground ,black-4))))
     ;; '(avy-lead-face-1 ((t (:background nil :foreground ,black-4))))
     ;; '(avy-lead-face-2 ((t (:background nil :foreground ,black-4))))

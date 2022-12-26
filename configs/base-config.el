@@ -39,9 +39,9 @@
 (setq require-final-newline t)
 
 (blink-cursor-mode 0)
-(setq-default cursor-type 'bar)
+;; (setq-default cursor-type 'bar)
 ;;; Emacs cursor, there are also evil cursor configurations
-(set-cursor-color "#ff6c6b")
+;; (set-cursor-color "#ff6c6b")
 
 ;;; Seems to be nice but has nasty bugs
 ;; (use-package smooth-scrolling
