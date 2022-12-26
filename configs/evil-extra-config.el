@@ -22,6 +22,7 @@
   ;;; Delete surrounding
   ;;; You can delete a surrounding with ds<textobject>.
   (global-evil-surround-mode t)
+  (setq-default evil-surround-mode t)
   )
 
 ;;; Match everything

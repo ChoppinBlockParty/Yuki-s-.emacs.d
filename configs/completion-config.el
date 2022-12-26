@@ -53,6 +53,8 @@
         company-ycmd-insert-arguments nil
         )
 
+  (setq-default company-mode t)
+
   (advice-add #'eglot--snippet-expansion-fn :override #'ignore)
   )
 

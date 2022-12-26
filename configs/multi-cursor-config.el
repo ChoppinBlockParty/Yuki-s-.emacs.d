@@ -82,6 +82,8 @@
     )
 
   (global-evil-mc-mode 1)
+  (setq-default evil-mc-mode t)
+  (setq-default global-evil-mc-mode t)
   )
 
 (provide 'multi-cursor-config)

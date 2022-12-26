@@ -2,7 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package popwin)
+;; (use-package popwin)
 ;; (use-package guide-key
 ;;   :ensure nil
 ;;   :load-path "local/guide-key"
@@ -34,6 +34,8 @@
 ;;   (add-hook 'dired-mode-hook 'guide-key/my-dired-hook)
 ;;   )
 
+;;; Disable NEWS binding, always accidentally hit it
+(global-unset-key (kbd "C-h n"))
 
 (my-evil-2-modes-define-key "SPC u ?"     'counsel-apropos)
 (my-evil-2-modes-define-key "SPC i r"     'ivy-resume)

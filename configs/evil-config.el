@@ -108,6 +108,9 @@
     )
   ;;; Disable Undo Tree in mode line
   (setq undo-tree-mode-lighter nil)
+  (setq undo-tree-mode-lighter nil)
+  ;; Add to fundamental-mode
+  (setq-default undo-tree-mode t)
 
   (defvar my-intercept-mode-map (make-sparse-keymap)
     "High precedence keymap.")

@@ -5,7 +5,10 @@
 ;;; Default is fundamental-mode, but it act weirdly sometimes: on `new`
 ;;; command it does not enable all minor modes (e.g. does enable
 ;;; undo-tree-mode).
-(setq-default major-mode 'indented-text-mode)
+;; Seems like there is no fundamental-mode-hook.
+;; use (setq-default minor-mode t)
+(setq-default major-mode 'text-mode)
+(setq initial-major-mode 'text-mode)
 
 ;;; Disable warnings
 (setq native-comp-async-report-warnings-errors nil)
@@ -317,7 +320,6 @@ end-of-buffer signals; pass the rest to the default handler."
 
 (defconst my-markup-modes-hook-list
   (list
-    'fundamental-mode-hook
     'git-commit-mode-hook
     'markdown-mode-hook
     'latex-mode-hook
