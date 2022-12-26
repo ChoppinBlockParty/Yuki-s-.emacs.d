@@ -53,7 +53,7 @@
     evil-visual-state-cursor   '("#519259" box)
     evil-insert-state-cursor   '("#519259" bar)
     evil-replace-state-cursor  '("#519259" box)
-    evil-operator-state-cursor '("red"     hollow)
+    evil-operator-state-cursor '("#519259" hollow)
 
     evil-want-fine-undo nil ; googled it, people say it is buggy
     evil-want-change-word-to-end t

@@ -2,6 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
+;;; Default is fundamental-mode, but it act weirdly sometimes: on `new`
+;;; command it does not enable all minor modes (e.g. does enable
+;;; undo-tree-mode).
+(setq-default major-mode 'indented-text-mode)
+
 ;;; Disable warnings
 (setq native-comp-async-report-warnings-errors nil)
 ;;; Disable toolbar (must use -1 to disable)
