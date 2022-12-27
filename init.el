@@ -74,7 +74,7 @@
 (require 'tramp-config)
 (require 'ediff-config)
 (require 'flip-between-buffers-config)
-(require 'treemacs-config)
+;(require 'treemacs-config)
 (require 'other-stuff-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver

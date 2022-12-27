@@ -102,6 +102,7 @@
     "o" (lambda () (interactive) (dired-subtree-toggle) (dired-revert))
     ;; "o" 'dired-subtree-toggle
     ;; "o" 'dired-subtree-toggle
+    (kbd "o") 'dired-find-file
     (kbd "<return>") 'dired-find-file
     (kbd "S-<return>") 'dired-display-file ;; preview
     (kbd "M-<return>") 'dired-find-file-other-window
@@ -301,6 +302,9 @@
 ;; (advice-add 'dired-revert :before #'all-the-icons-dired--reset)
 (add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
+;;; Enabled nice icons for dired
+(use-package treemacs-icons-dired
+  :config (treemacs-icons-dired-mode))
 
 (provide 'dired-config)
 ;;; dired-config.el ends here

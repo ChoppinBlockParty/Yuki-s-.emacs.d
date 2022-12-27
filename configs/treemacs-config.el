@@ -1,3 +1,6 @@
+;;; Looks fancy, unfortunately, does not work very well probably
+;;; because the project is too complicated.
+
 (use-package treemacs
   :config
   (with-eval-after-load 'winum
@@ -66,10 +69,27 @@
   :after (treemacs evil-config)
   :config
 
+  (my-evil-2-modes-define-key "TAB" 'treemacs-display-current-project-exclusively)
+  (my-evil-2-modes-define-key "<tab>" 'treemacs-display-current-project-exclusively)
   (my-evil-2-modes-define-key "SPC u t" 'treemacs)
   (my-evil-2-modes-define-key "SPC u p t" 'treemacs-projectile)
 
   (define-key evil-treemacs-state-map (kbd "SPC l") #'evil-window-right)
+  (define-key evil-treemacs-state-map (kbd "TAB") #'treemacs-quit)
+  (define-key evil-treemacs-state-map (kbd "<tab>") #'treemacs-quit)
+  (define-key evil-treemacs-state-map (kbd "o") #'treemacs-TAB-action)
+
+  (evil-define-key 'treemacs treemacs-mode-map
+    (kbd "SPC 0") 'select-window-0
+    (kbd "SPC 1") 'select-window-1
+    (kbd "SPC 2") 'select-window-2
+    (kbd "SPC 3") 'select-window-3
+    (kbd "SPC 4") 'select-window-4
+    (kbd "SPC 5") 'select-window-5
+    (kbd "SPC 6") 'select-window-6
+    (kbd "SPC 7") 'select-window-7
+    (kbd "SPC 8") 'select-window-8
+    (kbd "SPC 9") 'select-window-9)
   )
 
 (use-package treemacs-projectile
