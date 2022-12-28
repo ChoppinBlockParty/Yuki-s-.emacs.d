@@ -36,6 +36,7 @@
 
 ;;; Disable NEWS binding, always accidentally hit it
 (global-unset-key (kbd "C-h n"))
+(global-unset-key (kbd "C-h C-n"))
 
 (my-evil-2-modes-define-key "SPC u ?"     'counsel-apropos)
 (my-evil-2-modes-define-key "SPC i r"     'ivy-resume)
