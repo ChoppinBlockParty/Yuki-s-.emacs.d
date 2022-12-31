@@ -1,4 +1,4 @@
-;;; evil-collection-vterm.el --- Bindings for `vterm' -*- lexical-binding: t -*-
+;;; my-evil-collection-vterm.el --- Bindings for `vterm' -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2019 James Nguyen
 ;; Copyright (C) 2020 Alex Griffin <a@ajgrf.com>
@@ -28,7 +28,8 @@
 ;;; Bindings for `vterm'.
 
 ;;; Code:
-(require 'evil-collection)
+
+(require 'my-evil-collection-minimal)
 (require 'vterm nil t)
 
 (defconst evil-collection-vterm-maps '(vterm-mode-map))
@@ -249,8 +250,8 @@ Save in REGISTER or in the kill-ring with YANK-HANDLER."
     (kbd "<delete>") 'vterm-send-delete)
 
   (evil-collection-define-key 'normal 'vterm-mode-map
-    "[[" 'vterm-previous-prompt
-    "]]" 'vterm-next-prompt
+    "{" 'vterm-previous-prompt
+    "}" 'vterm-next-prompt
     "p" 'evil-collection-vterm-paste-after
     "P" 'vterm-yank
     "a" 'evil-collection-vterm-append
@@ -273,5 +274,5 @@ Save in REGISTER or in the kill-ring with YANK-HANDLER."
     "d" 'evil-collection-vterm-delete
     "x" 'evil-collection-vterm-delete-backward-char))
 
-(provide 'evil-collection-vterm)
-;;; evil-collection-vterm.el ends here
+(provide 'my-evil-collection-vterm)
+;;; my-evil-collection-vterm.el ends here

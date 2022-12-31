@@ -10,7 +10,9 @@
 (setq-default major-mode 'text-mode)
 (setq initial-major-mode 'text-mode)
 
-;;; Disable warnings
+;;; Disable confirmations to kill processes.
+(setq confirm-kill-processes nil)
+;;; Disable warnings.
 (setq native-comp-async-report-warnings-errors nil)
 ;;; Disable toolbar (must use -1 to disable)
 (tool-bar-mode -1)

@@ -1,5 +1,6 @@
-* cpp format on save
+* better copy-paste
 * js jump binding
+* cpp format on save
 * autosaving
-* Shift-Enter in shell-mode
 * clipboard copy in no-window mode
+* Shift-Enter in shell-mode

@@ -1,4 +1,4 @@
-;;; evil-config --- evil it is
+;;; evil-config --- evil indeed
 ;;; Commentary:
 ;;; Code:
 ;;;
@@ -579,7 +579,6 @@
   (my-evil-2-modes-define-key "C-<backspace>" (my-swiper-with-initial-input #'swiper-all))
 
   (my-evil-2-modes-define-key "SPC u h" 'evil-ex-nohighlight)
-  (my-evil-2-modes-define-key "SPC u s" 'my-shell)
   )
 
 (provide 'evil-config)

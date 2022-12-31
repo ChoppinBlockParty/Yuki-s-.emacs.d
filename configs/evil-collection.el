@@ -501,32 +501,6 @@ means all states for `evil-define-key', return `nil'."
        states)
      evil-collection-state-denylist)))
 
-(defun evil-collection-define-key (state map-sym &rest bindings)
-  "Wrapper for `evil-define-key*' with additional features.
-Unlike `evil-define-key*' MAP-SYM should be a quoted keymap other than the
-unquoted keymap required for `evil-define-key*'. This function adds the ability
-to filter keys on the basis of `evil-collection-key-whitelist' and
-`evil-collection-key-blacklist'. It also records bindings with annalist.el."
-  (declare (indent defun))
-  (let* ((whitelist (mapcar 'kbd evil-collection-key-whitelist))
-         (blacklist (mapcar 'kbd evil-collection-key-blacklist))
-         (states-to-bind (evil-collection--filter-states state))
-         filtered-bindings)
-    (when (or states-to-bind (null state))
-      (while bindings
-        (let ((key (pop bindings))
-              (def (pop bindings)))
-          (when (or (and whitelist (member key whitelist))
-                    (not (member key blacklist)))
-            (annalist-record 'evil-collection 'keybindings
-                             (list map-sym state key def)
-                             :local (or (eq map-sym 'local)
-                                        (local-variable-p map-sym)))
-            (push key filtered-bindings)
-            (push def filtered-bindings))))
-      (setq filtered-bindings (nreverse filtered-bindings))
-      (evil-collection--define-key states-to-bind map-sym filtered-bindings))))
-
 (defun evil-collection-can-bind-key (key)
   "Return whether or not we should bind KEY."
   (let* ((whitelist (mapcar 'kbd evil-collection-key-whitelist))

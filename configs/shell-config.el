@@ -208,20 +208,5 @@ TODO: Fix if current position is not prompt and does not have a previsou prompt"
 
 ))))
 
-
-;;; Let's try vterm
-
-(use-package vterm
-    :ensure t
-    :config
-  (evil-define-key 'normal vterm-mode-map
-    "P" 'vterm-yank
-    )
-  (evil-define-key 'insert vterm-mode-map
-    (kbd "C-c") #'vterm-send-C-c
-    (kbd "C-r") 'vterm--self-insert
-    )
-)
-
 (provide 'shell-config)
 ;;; shell-config.el ends here
