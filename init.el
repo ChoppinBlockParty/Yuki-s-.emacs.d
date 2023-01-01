@@ -45,7 +45,6 @@
 (require 'evil-config)
 (require 'evil-extra-config)
 (require 'generic-config)
-(require 'global-key-binding-config)
 (require 'all-the-icons-config)
 (require 'window-numbering-config)
 (require 'minibuffer-config)
@@ -75,8 +74,8 @@
 (require 'tramp-config)
 (require 'ediff-config)
 (require 'flip-between-buffers-config)
-;(require 'treemacs-config)
 (require 'other-stuff-config)
+(require 'global-key-binding-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver
 ;;; It is very fun, however consumes 10% cpu all the time, sad...

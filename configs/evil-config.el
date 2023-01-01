@@ -151,11 +151,9 @@
     ;;; (get-mru-window &optional ALL-FRAMES DEDICATED NOT-SELECTED)
     (select-window (get-mru-window t nil t))
     )
-  (my-evil-all-modes-define-key "M-1" 'counsel-switch-to-shell-buffer)
   (my-evil-all-modes-define-key "M-2" 'my-switch-to-previous-window)
   (my-evil-all-modes-define-key "M-3" 'my-switch-to-previous-buffer)
   (my-evil-all-modes-define-key "C-s" 'evil-write)
-  (my-evil-all-modes-define-key "C-q" 'kill-emacs)
   (define-key evil-normal-state-map "ZZ" nil)
   (define-key evil-normal-state-map "ZQ" nil)
 
@@ -435,6 +433,7 @@
   (define-key evil-ex-search-keymap "\C-l" [right])
   (define-key evil-ex-search-keymap (kbd "C-w") 'backward-kill-word)
 
+  (require 'my-evil-collection-vterm)
   )
 
 

@@ -2,41 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
-;; (use-package popwin)
-;; (use-package guide-key
-;;   :ensure nil
-;;   :load-path "local/guide-key"
-;;   :config
-;;   (setq
-;;     guide-key/guide-key-sequence '(
-;;       "SPC u i"
-;;       "SPC u f"
-;;       "SPC u m"
-;;       "SPC u p"
-;;       "SPC u r"
-;;       "SPC u y"
-;;       "C-x"
-;;       "C-c"
-;;       "C-h"
-;;       ))
-;;   ;; (setq guide-key/guide-key-sequence t)
-;;   (setq
-;;     guide-key/popup-window-position 'bottom
-;;     guide-key/text-scale-amount -1.1
-;;     guide-key/recursive-key-sequence-flag t
-;;     )
-;;   (guide-key-mode 1)
-;;   (setcdr (assq 'guide-key-mode minor-mode-alist) (list ""))
-
-;;   (defun guide-key/my-dired-hook ()
-;;     (guide-key/add-local-guide-key-sequence "C-t")
-;;     (guide-key/add-local-highlight-command-regexp "\\(dired\\|image\\|epa\\)-"))
-;;   (add-hook 'dired-mode-hook 'guide-key/my-dired-hook)
-;;   )
-
 ;;; Disable NEWS binding, always accidentally hit it
 (global-unset-key (kbd "C-h n"))
 (global-unset-key (kbd "C-h C-n"))
+
+(my-evil-all-modes-define-key (kbd "C-r") 'my-vtem-run-last-command-in-last-shell)
 
 (my-evil-2-modes-define-key "SPC u ?"     'counsel-apropos)
 (my-evil-2-modes-define-key "SPC i r"     'ivy-resume)
@@ -76,7 +46,7 @@
 (my-evil-2-modes-define-key "SPC u r l"   'rg-literal)
 
 ;; (my-evil-2-modes-define-key "SPC u s"     'my-shell)
-(my-evil-2-modes-define-key "SPC u s"     'vterm-other-window)
+(my-evil-2-modes-define-key "SPC u s"     'my-vterm)
 
 (my-evil-2-modes-define-key "SPC u y ."   'ycmd-goto)
 (my-evil-2-modes-define-key "SPC u y ?"   'ycmd-show-documentation)
