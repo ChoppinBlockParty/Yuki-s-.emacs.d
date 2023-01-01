@@ -106,12 +106,11 @@
         "d" 'evil-collection-vterm-delete
         "x" 'evil-collection-vterm-delete-backward-char)
     (evil-collection-define-key '(normal insert) 'vterm-mode-map
-        (kbd "C-p") #'my-vterm-run-last-command)
+        (kbd "C-p") 'my-vterm-run-last-command)
     ;; evil-collection-vterm-setup }
 
-    (evil-define-key 'insert vterm-mode-map
-      (kbd "C-c") 'vterm--self-insert
-      )
+    (evil-collection-define-key '(normal insert) 'vterm-mode-map
+      (kbd "C-c") 'vterm--self-insert)
 
     (defun my-counsel-switch-to-shell-buffer ()
         "Switch to a shell buffer, or create one."
