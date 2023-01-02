@@ -151,7 +151,7 @@ Save in REGISTER or in the kill-ring with YANK-HANDLER."
 
 (evil-define-operator evil-collection-vterm-delete-char (beg end type register)
   "Delete current character."
-  :motion evil-delete-char
+  :motion evil-forward-char
   (interactive "<R><x>")
   (evil-collection-vterm-delete beg end type register))
 

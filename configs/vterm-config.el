@@ -15,11 +15,10 @@
 
     (defun my-vterm ()
       (interactive)
-      (vterm vterm-buffer-name)
-      )
+      (vterm vterm-buffer-name))
 
     (defun my-vterm-run-last-command ()
-      "Run last command in vterm mode."
+      "Run the last command in vterm mode."
       (interactive)
       (let ((proc (get-buffer-process (current-buffer))))
         (unless (and proc
@@ -28,8 +27,8 @@
         (vterm-send-key "<up>")
         (vterm-send-return)))
 
-    (defun my-vtem-run-last-command-in-last-shell ()
-      "Run the last command in the last vterm buffer."
+    (defun my-vterm-run-last-command-in-last-shell ()
+      "Find the last vterm buffer and run the last command in it. Or launch a vterm buffer."
       (interactive)
       (save-buffer)
       (let ((current-window (frame-selected-window))
@@ -54,11 +53,18 @@
           )
       )
 
+    (defun my-vterm-normal-mode-display-shell-history ()
+      "Start a search in shell history from normal mode."
+      (interactive)
+      (progn
+        (evil-collection-vterm-insert)
+        (vterm-send-key (kbd "C-r"))))
+
     ;; evil-collection-vterm-setup {
     (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
     ;; Open to a better binding...
     (evil-collection-define-key '(normal insert) 'vterm-mode-map
-        (kbd "C-c C-z") 'evil-collection-vterm-toggle-send-escape)
+        (kbd "C-z") 'evil-collection-vterm-toggle-send-escape)
     ;; Evil has some "C-" bindings in insert state that shadow regular terminal
     ;; bindings. Don't raw-send "C-c" (prefix key) nor "C-h" (help prefix).
     (evil-collection-define-key 'insert 'vterm-mode-map
@@ -80,7 +86,7 @@
         (kbd "C-v") 'vterm--self-insert     ; Should not be necessary.
         (kbd "C-w") 'vterm--self-insert
         (kbd "C-y") 'vterm--self-insert
-        (kbd "C-z") 'vterm--self-insert
+        ;; (kbd "C-z") 'vterm--self-insert
         (kbd "<delete>") 'vterm-send-delete)
     (evil-collection-define-key 'normal 'vterm-mode-map
         "}" 'vterm-previous-prompt
@@ -97,11 +103,12 @@
         "^" 'evil-collection-vterm-first-non-blank
         "i" 'evil-collection-vterm-insert
         "I" 'evil-collection-vterm-insert-line
-        "u" 'vterm-undo
+        ;; "u" 'vterm-undo
         "c" 'evil-collection-vterm-change
         "C" 'evil-collection-vterm-change-line
         "s" 'evil-collection-vterm-substitute
-        "S" 'evil-collection-vterm-substitute-line)
+        "S" 'evil-collection-vterm-substitute-line
+        (kbd "C-r") 'my-vterm-normal-mode-display-shell-history)
     (evil-collection-define-key 'visual 'vterm-mode-map
         "d" 'evil-collection-vterm-delete
         "x" 'evil-collection-vterm-delete-backward-char)

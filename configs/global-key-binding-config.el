@@ -6,7 +6,9 @@
 (global-unset-key (kbd "C-h n"))
 (global-unset-key (kbd "C-h C-n"))
 
-(my-evil-all-modes-define-key (kbd "C-r") 'my-vtem-run-last-command-in-last-shell)
+(evil-define-key 'normal 'global (kbd "C-r") 'my-vterm-run-last-command-in-last-shell)
+(evil-define-key 'visual 'global (kbd "C-r") 'my-vterm-run-last-command-in-last-shell)
+(evil-define-key 'insert 'global (kbd "C-r") 'my-vterm-run-last-command-in-last-shell)
 
 (my-evil-2-modes-define-key "SPC u ?"     'counsel-apropos)
 (my-evil-2-modes-define-key "SPC i r"     'ivy-resume)
