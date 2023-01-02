@@ -24,7 +24,8 @@
   ;;; normal and visual modes, then those are unavailable in motion mode.
   (fset 'evil-motion-state 'evil-normal-state)
   (setq
-    evil-toggle-key "C-z"
+   ;;; Evil thing, bind C-z by default to switching to emacs mode.
+    evil-toggle-key ""
     evil-echo-state nil
     evil-kbd-macro-suppress-motion-error t
     ;;; Whether \"C-i\" jumps forward like in Vim.

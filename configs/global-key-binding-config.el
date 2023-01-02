@@ -10,6 +10,12 @@
 (evil-define-key 'visual 'global (kbd "C-r") 'my-vterm-run-last-command-in-last-shell)
 (evil-define-key 'insert 'global (kbd "C-r") 'my-vterm-run-last-command-in-last-shell)
 
+(my-evil-all-modes-define-key (kbd "C-z") 'evil-show-registers)
+
+;;; If you want to correctly redefine tab need to use as in example below,
+;;; and not <tab> or anything else, otherwise it won't be overridden by other modes.
+;; (evil-define-key 'normal 'global (kbd "TAB") 'evil-show-registers)
+
 (my-evil-2-modes-define-key "SPC u ?"     'counsel-apropos)
 (my-evil-2-modes-define-key "SPC i r"     'ivy-resume)
 (my-evil-2-modes-define-key "SPC u i c"   'counsel-colors-web)
@@ -68,7 +74,6 @@
 (my-evil-2-modes-define-key "SPC u y T"   'ycmd-get-parent)
 (my-evil-2-modes-define-key "SPC u y x"   'ycmd-completer)
 (my-evil-2-modes-define-key "SPC u y y"   'ycmd-get-type)
-
 
 (provide 'global-key-binding-config)
 ;;; global-key-binding-config.el ends here
