@@ -63,6 +63,7 @@
 (require 'rg-config)
 (require 'flycheck-config)
 (require 'flyspell-config)
+;;; Why it has a path here?
 (require 'helm-config (concat user-emacs-directory "configs/helm-config.el"))
 (require 'ivy-config)
 (require 'rainbow-mode-config)

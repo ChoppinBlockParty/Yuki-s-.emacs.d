@@ -30,36 +30,45 @@
   (modify-syntax-entry ?- "w" url-cookie-mode-syntax-table)
   )
 
-(setq special-mode-map
-  (let ((map (make-sparse-keymap)))
-    (evil-define-key 'normal map
-      "q"  'quit-window
-      "gr" 'revert-buffer
-      "gg" 'beginning-of-buffer
-      "G"  'end-of-buffer
-      )
-    map))
+;;; evil-define-minor-mode-key and `evil-define-key` with quoted symbol as described here -
+;;; https://github.com/noctuid/evil-guide#why-dont-keys-defined-with-evil-define-key-work-immediately
+;;; Nothing helps except as set below.
+;;; Also have the same definition in dired-config.el - works good.
 
-(use-package compile
-  :init
-  (defvar compilation-minor-mode-map
-    (let ((map (make-sparse-keymap)))
-      (set-keymap-parent map special-mode-map)
-      (define-key map [mouse-2] 'compile-goto-error)
-      (define-key map [follow-link] 'mouse-face)
-      (evil-define-key 'normal map
-        (kbd "<return>") 'compile-goto-error
-        (kbd "<S-return>") 'compilation-display-error
-        "\C-c\C-c" 'kill-compilation
-        "<" 'compilation-previous-error
-        ">" 'compilation-next-error
-        "}" 'compilation-previous-file
-        "{" 'compilation-next-file
-        "gr" 'recompile ; revert
-        )
-      map)
+(evil-define-key 'normal special-mode-map
+    "q"  'quit-window
+    "gr" 'revert-buffer
+    "gg" 'beginning-of-buffer
+    "G"  'end-of-buffer
     )
-  )
+
+(evil-define-key 'normal compilation-minor-mode-map
+  (kbd "<return>") 'compile-goto-error
+  (kbd "<S-return>") 'compilation-display-error
+  "\C-c\C-c" 'kill-compilation
+  "<" 'compilation-previous-error
+  ">" 'compilation-next-error
+  "}" 'compilation-previous-file
+  "{" 'compilation-next-file
+  "gr" 'recompile)
+
+(evil-define-key 'normal compilation-mode-map
+  [mouse-2] 'compile-goto-error
+  [follow-link] 'mouse-face
+  "\C-c\C-k" 'compile-goto-error
+  (kbd "<return>") 'compile-goto-error
+  (kbd "<S-return>") 'compilation-display-error
+  "\C-c\C-c" 'kill-compilation
+  ">" 'compilation-next-error
+  "<" 'compilation-previous-error
+  "}" 'compilation-previous-file
+  "{" 'compilation-next-file
+  "n" 'next-error-no-select
+  "p" 'previous-error-no-select
+  "\t" 'compilation-next-error
+  [backtab] 'compilation-previous-error
+  "gr" 'recompile
+  "\C-c\C-f" 'next-error-follow-minor-mode)
 
 (use-package grep
   :init

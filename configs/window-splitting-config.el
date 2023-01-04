@@ -1,12 +1,10 @@
 ;;; window-splitting --- My window splitting logic
 ;;; Commentary:
-;;; Code:
-
-
 ;;;
-;;; Chnage how windows are spawned
+;;; Changes how windows are spawned
 ;;;
 ;;; See help fro (display-buffer) to understand what is going on.
+;;; Code:
 
 
 (defvar my-last-preferred-splits '())
@@ -161,6 +159,7 @@
     ;; (print (buffer-name buffer))
     ;; (print alist)
     (cond
+      ;;; 1. Reuse window, if exists, for help buffers.
       ((or (equal new-mode 'apropos-mode) (equal new-mode 'help-mode))
        (let ((win (my-display-buffer-find-major-mode-window 'apropos-mode 'help-mode)))
          (if win
@@ -168,7 +167,7 @@
              (my-window-display-buffer-split buffer)
              ))
        )
-      ;;; For magit pop-ups that are called transient with a space in front
+      ;;; 2. For magit pop-ups that are called transient with a space in front
       ;;; For regex syntax see this - https://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Backslash.html.
       ((and
          (equal new-mode 'fundamental-mode)
@@ -181,6 +180,7 @@
        ;;   (set-window-dedicated-p new-win 1)
        ;;   (my-window-display-buffer buffer new-win))
        )
+      ;;; 3. Let the following modes to be placed as they request.
       ((or
          (member new-mode '(dired-sidebar-mode
                             magit-popup-mode
@@ -191,6 +191,7 @@
          )
        nil
        )
+      ;;; 4. Always split for commit message and for magit log.
       ((or
          (and (equal sel-mode 'text-mode)
               (my-window-display-buffer-match-any (buffer-name sel-buf) "\\`COMMIT_EDITMSG"))
@@ -198,9 +199,11 @@
          )
        (my-window-display-buffer-split buffer)
        )
-      ((equal sel-mode 'dired-sidebar-mode)
-       (my-window-display-buffer buffer (get-mru-window nil nil t))
-       )
+      ;;; I do not use dired-sidebar anymore.
+      ;; ((equal sel-mode 'dired-sidebar-mode)
+      ;;  (my-window-display-buffer buffer (get-mru-window nil nil t))
+      ;;  )
+      ;;; 5. Everything else split
       (t
        (if (cdr (assq 'inhibit-same-window alist))
            (my-window-display-buffer-split buffer)

@@ -277,13 +277,10 @@
                          (window-next-sibling WINDOW))))
         (delete-window WINDOW)
         (when sibling
-          (select-window sibling))
-        )
+          (select-window sibling)))
       (condition-case nil
           (balance-windows p)
-        (error))
-    )
-    )
+          (error))))
 
   (evil-define-key 'normal 'global "q" 'my-delete-window)
   (evil-define-key 'visual 'global "q" 'my-delete-window)
