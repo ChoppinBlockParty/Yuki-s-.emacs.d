@@ -320,7 +320,6 @@
   (define-key evil-motion-state-map (kbd "M-i") 'evil-scroll-up)
   (define-key evil-motion-state-map (kbd "M-j") 'evil-scroll-line-down)
   (define-key evil-motion-state-map (kbd "M-k") 'evil-scroll-line-up)
-  (define-key evil-motion-state-map "gd"        'dired-jump)
   (define-key evil-motion-state-map "[d"        'evil-prev-flyspell-error)
   (define-key evil-motion-state-map "[s"        'evil-next-flyspell-error)
 

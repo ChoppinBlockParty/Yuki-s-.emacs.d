@@ -12,6 +12,7 @@
   :config
     (setq vterm-max-scrollback 70000)
     (setq vterm-buffer-name "*shell*")
+    (setq vterm-kill-buffer-on-exit t)
 
     (defun my-vterm ()
       (interactive)
@@ -64,7 +65,10 @@
     (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
     ;; Open to a better binding...
     (evil-collection-define-key '(normal insert) 'vterm-mode-map
-        (kbd "C-z") 'evil-collection-vterm-toggle-send-escape)
+        (kbd "C-z") 'vterm-copy-mode)
+    (evil-collection-define-key '(normal insert) 'vterm-copy-mode-map
+        (kbd "C-z") 'vterm-copy-mode)
+        ;; (kbd "C-z") 'evil-collection-vterm-toggle-send-escape)
     ;; Evil has some "C-" bindings in insert state that shadow regular terminal
     ;; bindings. Don't raw-send "C-c" (prefix key) nor "C-h" (help prefix).
     (evil-collection-define-key 'insert 'vterm-mode-map

@@ -1,3 +1,4 @@
+* tabs
 * vterm:
   - undo is not working
 * better copy-paste

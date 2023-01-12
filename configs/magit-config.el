@@ -264,7 +264,8 @@
                       `(,evil-magit-state visual)
                   `(,evil-magit-state))))
       (append
-      `((,states magit-mode-map "g")
+      `(
+        ;(,states magit-mode-map "g")
         (,states magit-mode-map "{"     magit-section-forward          "n")
         (,states magit-mode-map "gj"    magit-section-forward-sibling  "M-n")
         (,states magit-mode-map "]"     magit-section-forward-sibling  "M-n")
@@ -288,6 +289,7 @@
         (,states magit-mode-map "k"     evil-previous-visual-line)
         (,states magit-mode-map "gg"    evil-goto-first-line)
         (,states magit-mode-map "G"     evil-goto-line)
+        (,states magit-mode-map "gd"    dired-jump)
         (,states magit-mode-map "C-d"   evil-scroll-down)
         (,states magit-mode-map "C-f"   evil-scroll-page-down)
         (,states magit-mode-map "C-b"   evil-scroll-page-up)
@@ -430,8 +432,8 @@
 
   (evil-set-initial-state 'magit-repolist-mode 'motion)
   (evil-define-key 'motion magit-repolist-mode-map
-  (kbd "RET") 'magit-repolist-status
-  (kbd "gr")  'magit-list-repositories)
+    (kbd "RET") 'magit-repolist-status
+    (kbd "gr")  'magit-list-repositories)
   (add-hook 'magit-repolist-mode-hook 'evil-normalize-keymaps)
 
   (eval-after-load 'git-rebase

@@ -10,7 +10,12 @@
 (evil-define-key 'visual 'global (kbd "C-r") 'my-vterm-run-last-command-in-last-shell)
 (evil-define-key 'insert 'global (kbd "C-r") 'my-vterm-run-last-command-in-last-shell)
 
-(my-evil-all-modes-define-key (kbd "C-z") 'evil-show-registers)
+;; (my-evil-all-modes-define-key (kbd "C-z") 'evil-show-registers)
+(evil-define-key 'normal 'global (kbd "C-z") 'evil-show-registers)
+(evil-define-key 'visual 'global (kbd "C-z") 'evil-show-registers)
+(evil-define-key 'insert 'global (kbd "C-z") 'evil-show-registers)
+
+(evil-define-key 'motion 'global "gd" 'dired-jump)
 
 ;;; If you want to correctly redefine tab need to use as in example below,
 ;;; and not <tab> or anything else, otherwise it won't be overridden by other modes.
