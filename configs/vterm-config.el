@@ -107,7 +107,7 @@
         "^" 'evil-collection-vterm-first-non-blank
         "i" 'evil-collection-vterm-insert
         "I" 'evil-collection-vterm-insert-line
-        ;; "u" 'vterm-undo
+        "u" 'vterm-undo
         "c" 'evil-collection-vterm-change
         "C" 'evil-collection-vterm-change-line
         "s" 'evil-collection-vterm-substitute
@@ -117,6 +117,8 @@
         "d" 'evil-collection-vterm-delete
         "x" 'evil-collection-vterm-delete-backward-char)
     (evil-collection-define-key '(normal insert) 'vterm-mode-map
+        (kbd "M-j") (lambda()(interactive)(vterm-send-key "<down>"))
+        (kbd "M-k") (lambda()(interactive)(vterm-send-key "<up>"))
         (kbd "C-p") 'my-vterm-run-last-command)
     ;; evil-collection-vterm-setup }
 

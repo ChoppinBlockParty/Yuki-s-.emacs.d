@@ -50,7 +50,7 @@
 (require 'minibuffer-config)
 (require 'dired-config)
 (require 'completion-config)
-;;(require 'shell-config)
+(require 'shell-config)
 (require 'vterm-config)
 (require 'powerline-config)
 (require 'color-theme-config)
