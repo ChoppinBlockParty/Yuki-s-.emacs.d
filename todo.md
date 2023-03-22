@@ -1,3 +1,4 @@
+* <number>1<register> does not work to execute a recorded macro multiple times
 * tabs
 * vterm:
   - undo is not working

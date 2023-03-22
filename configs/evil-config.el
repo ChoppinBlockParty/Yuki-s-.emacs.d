@@ -303,7 +303,8 @@
   (define-key evil-motion-state-map ")" (make-digit-function 0))
 
   (define-key evil-motion-state-map (kbd "0") 'evil-beginning-of-line)
-  (define-key evil-normal-state-map "2" 'evil-record-macro)
+  (define-key evil-normal-state-map (kbd "1") 'evil-execute-macro)
+  (define-key evil-normal-state-map (kbd "2") 'evil-record-macro)
   (define-key evil-motion-state-map (kbd "5") 'evil-first-non-blank)
   (define-key evil-motion-state-map (kbd "8") 'evil-end-of-line)
   (define-key evil-motion-state-map (kbd "9") 'evil-jump-item)
