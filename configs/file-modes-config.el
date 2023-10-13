@@ -116,6 +116,8 @@
     ;;; Enable JSX syntax highlighting in .js/.jsx files
     web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
     web-mode-enable-auto-quoting nil
+    web-mode-enable-auto-closing nil
+    web-mode-enable-auto-pairing t
    )
 
   (use-package prettier-js)

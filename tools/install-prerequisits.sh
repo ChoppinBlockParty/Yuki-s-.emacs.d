@@ -91,7 +91,7 @@ packages=(
   libtool
   libtool-bin
   # for emacs native compilation (version depends on the default compiler version)
-  libgccjit-9-dev
+  libgccjit-12-dev
   # for emact native json support
   libjansson-dev
   )

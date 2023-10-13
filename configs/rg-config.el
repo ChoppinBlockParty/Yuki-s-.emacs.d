@@ -1,4 +1,4 @@
-;;; rg-config --- RG
+;;; rg-config --- ripgrep plugin for emacs.
 ;;; Commentary:
 ;;; Code:
 (use-package rg
@@ -30,6 +30,15 @@
 
   (modify-syntax-entry ?_ "w" rg-mode-syntax-table)
   )
+
+(require 'rg)
+(rg-define-search rg-search-everything-in-project
+  "Search files in the current project's directory"
+  :query ask
+  :format regexp
+  :files "everything"
+  :flags ("-U")
+  :dir project)
 
 (provide 'rg-config)
 ;;; rg-config.el ends here
