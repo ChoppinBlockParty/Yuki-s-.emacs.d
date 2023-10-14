@@ -24,7 +24,7 @@ function clone_update_git_repo {
   echo "  -- Update \"$1\", branch $branch"
 }
 
-clone_update_git_repo https://github.com/emacs-mirror/emacs emacs-28.2
+clone_update_git_repo https://github.com/emacs-mirror/emacs emacs-29.1
 make clean || true
 ./autogen.sh
 ./configure \
