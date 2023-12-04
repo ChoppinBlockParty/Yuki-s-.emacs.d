@@ -169,7 +169,13 @@
 
     ;; enable typescript-tslint checker
     (flycheck-add-mode 'typescript-tslint 'typescript-mode)
+
+    (evil-define-key 'normal tide-mode-map
+        (kbd "SPC d") #'tide-jump-to-definition
+        (kbd "SPC c") #'tide-jump-back)
     )
+
+    (evil-add-command-properties #'tide-jump-to-definition :jump t)
   )
 
 
