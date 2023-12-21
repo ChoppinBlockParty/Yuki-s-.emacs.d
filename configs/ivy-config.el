@@ -36,8 +36,8 @@
   (modify-syntax-entry ?_ "w" ivy-occur-grep-mode-syntax-table)
 
   (let ((map ivy-minibuffer-map))
-    ;;; C-m === RET
-    (define-key map (kbd "C-m") 'ivy-done)
+    (define-key map (kbd "C-m") 'ivy-dispatching-done)
+    (define-key map (kbd "<return>") 'ivy-done)
     (define-key map [down-mouse-1] 'ignore)
     (define-key map [mouse-1] 'ivy-mouse-done)
     (define-key map [mouse-3] 'ivy-mouse-dispatching-done)

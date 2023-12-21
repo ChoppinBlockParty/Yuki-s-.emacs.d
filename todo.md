@@ -1,3 +1,4 @@
+* `C-[` and `C-]` as zoom in and out respectively
 * <number>1<register> does not work to execute a recorded macro multiple times
 * tabs
 * vterm:

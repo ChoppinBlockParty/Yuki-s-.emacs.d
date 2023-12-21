@@ -120,7 +120,7 @@
     web-mode-enable-auto-pairing t
    )
 
-  (use-package prettier-js)
+  (use-package prettier)
 
   (use-package add-node-modules-path)
   (add-hook 'flycheck-mode-hook 'add-node-modules-path)
@@ -130,15 +130,15 @@
 
   (defun web-mode-init-hook ()
     "Hooks for Web mode.  Adjust indent."
-    (setq web-mode-markup-indent-offset 2
-          web-mode-markup-indent-offset 2
-          web-mode-css-indent-offset 2
-          web-mode-code-indent-offset 2
-          web-mode-script-padding 2
+    (setq web-mode-markup-indent-offset 4
+          web-mode-markup-indent-offset 4
+          web-mode-css-indent-offset 4
+          web-mode-code-indent-offset 4
+          web-mode-script-padding 4
           web-mode-attr-indent-offset 2
           web-mode-enable-css-colorization t)
     (add-node-modules-path)
-    (prettier-js-mode)
+    (prettier-mode)
     )
 
   (add-hook 'web-mode-hook 'web-mode-init-hook)
@@ -152,9 +152,8 @@
       )
 
     (defun setup-ts-tide-mode()
-      (setup-tide-mode)
       (add-node-modules-path)
-      (prettier-js-mode)
+      (setup-tide-mode)
       )
 
     ;; aligns annotation to the right hand side

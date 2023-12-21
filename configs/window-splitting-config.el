@@ -186,7 +186,8 @@
                             magit-popup-mode
                             rg-mode
                             ivy-occur-grep-mode
-                            completion-list-mode))
+                            completion-list-mode
+                            compilation-mode))
          (my-window-display-buffer-match-any (buffer-name buffer) "\\`\\*Completions\\*\\'")
          )
        nil
