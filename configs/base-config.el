@@ -94,9 +94,13 @@
       mac-option-modifier 'none)
 
 ;; brew install coreutils:
-(setq insert-directory-program "gls" dired-use-ls-dired t)
-(setq dired-listing-switches "-al --group-directories-first")
+;;(setq insert-directory-program "gls" dired-use-ls-dired t)
+;;(setq dired-listing-switches "-al --group-directories-first")
 (setenv "PATH" (concat (getenv "PATH") ":/bin"))
+(when (string= system-type "darwin")
+  (setq dired-use-ls-dired t
+        insert-directory-program "/usr/local/bin/gls"
+        dired-listing-switches "-aBhl --group-directories-first"))
 
 
 ;;; On graphical displays, each Emacs window normally has narrow fringes (gutters/margins) on the left and right edges. The fringes are used to display symbols that provide information about the text in the window. You can type M-x fringe-mode to disable the fringes, or modify their width. This command affects fringes in all frames; to modify fringes on the selected frame only, use M-x set-fringe-style. You can make your changes to the fringes permanent by customizing the variable fringe-mode.
