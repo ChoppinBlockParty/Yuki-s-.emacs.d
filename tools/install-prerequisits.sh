@@ -95,4 +95,12 @@ packages=(
   # for emact native json support
   libjansson-dev
   )
+
+macPackages=(
+    make
+    texinfo
+    libgccjit
+    jansson
+    )
+
 sudo apt-get -y install --no-install-recommends "${packages[@]}"

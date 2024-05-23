@@ -87,6 +87,17 @@
 ; (setq auto-save-timeout 2)
 ; (auto-save-visited-mode)
 
+;;; I prefer cmd key for meta
+(setq mac-option-key-is-meta nil
+      mac-command-key-is-meta t
+      mac-command-modifier 'meta
+      mac-option-modifier 'none)
+
+;; brew install coreutils:
+(setq insert-directory-program "gls" dired-use-ls-dired t)
+(setq dired-listing-switches "-al --group-directories-first")
+(setenv "PATH" (concat (getenv "PATH") ":/bin"))
+
 
 ;;; On graphical displays, each Emacs window normally has narrow fringes (gutters/margins) on the left and right edges. The fringes are used to display symbols that provide information about the text in the window. You can type M-x fringe-mode to disable the fringes, or modify their width. This command affects fringes in all frames; to modify fringes on the selected frame only, use M-x set-fringe-style. You can make your changes to the fringes permanent by customizing the variable fringe-mode.
 ;; Out-of-the-box the most common use of the fringes is to indicate a continuation line. When one line of text is split into multiple screen lines, the left fringe shows a curving arrow for each screen line except the first, indicating that “this is not the real beginning”. The right fringe shows a curving arrow for each screen line except the last, indicating that “this is not the real end”. If the line’s direction is right-to-left, the meanings of the curving arrows in the fringes are swapped.
@@ -364,7 +375,7 @@ end-of-buffer signals; pass the rest to the default handler."
 (use-package f)
 
 ;; (set-frame-font "Inconsolata-dz for Powerline-11")
-(set-frame-font "DejaVu Sans Mono-11")
+(set-frame-font "DejaVu Sans Mono-13")
 ;; (set-frame-font "Hack-10")
 
 (dolist (hook my-prog-modes-hook-list)

@@ -4,7 +4,7 @@ set -e
 
 if [[ $# -ne 1 ]]; then echo "build-emacs.sh <install prefix>"; exit 1; fi
 
-SCRIPT_DIR="$(realpath -s "$(dirname "$0")")"
+SCRIPT_DIR="$(realpath "$(dirname "$0")")"
 
 PREFIX="$1"
 
@@ -24,13 +24,14 @@ function clone_update_git_repo {
   echo "  -- Update \"$1\", branch $branch"
 }
 
-clone_update_git_repo https://github.com/emacs-mirror/emacs emacs-29.1
+clone_update_git_repo https://github.com/emacs-mirror/emacs emacs-29.2
 make clean || true
 ./autogen.sh
+# On Linux
+#  --with-x-toolkit=lucid \
 ./configure \
   --prefix="$PREFIX" \
   --enable-link-time-optimization \
-  --with-x-toolkit=lucid \
   --with-json \
   --with-native-compilation
 
@@ -44,4 +45,7 @@ ln -fs "$PREFIX/bin/emacsclient" ~/bin
 ln -fs "$PREFIX/bin/etags" ~/bin
 
 cp "$SCRIPT_DIR/emacs.desktop" ~/.local/share/applications
-update-desktop-database ~/.local/share/applications
+
+if [[ `uname` != 'Darwin' ]]; then
+    update-desktop-database ~/.local/share/applications
+fi
