@@ -93,14 +93,18 @@
       mac-command-modifier 'meta
       mac-option-modifier 'none)
 
-;; brew install coreutils:
-;;(setq insert-directory-program "gls" dired-use-ls-dired t)
-;;(setq dired-listing-switches "-al --group-directories-first")
 (setenv "PATH" (concat (getenv "PATH") ":/bin"))
-(when (string= system-type "darwin")
-  (setq dired-use-ls-dired t
-        insert-directory-program "/usr/local/bin/gls"
-        dired-listing-switches "-aBhl --group-directories-first"))
+(if (string= system-type "darwin")
+  (progn
+    (setq dired-use-ls-dired t
+            insert-directory-program "gls"
+            dired-listing-switches "-aBhl --group-directories-first")
+    (setq default-frame-alist '((width . 137) (height . 61)))
+  )
+  (progn
+    (set-frame-font "DejaVu Sans Mono-13")
+  )
+  )
 
 
 ;;; On graphical displays, each Emacs window normally has narrow fringes (gutters/margins) on the left and right edges. The fringes are used to display symbols that provide information about the text in the window. You can type M-x fringe-mode to disable the fringes, or modify their width. This command affects fringes in all frames; to modify fringes on the selected frame only, use M-x set-fringe-style. You can make your changes to the fringes permanent by customizing the variable fringe-mode.
@@ -377,10 +381,6 @@ end-of-buffer signals; pass the rest to the default handler."
 
 ;;; Required by ycmd.el
 (use-package f)
-
-;; (set-frame-font "Inconsolata-dz for Powerline-11")
-(set-frame-font "DejaVu Sans Mono-13")
-;; (set-frame-font "Hack-10")
 
 (dolist (hook my-prog-modes-hook-list)
   ;; (add-hook hook 'linum-mode)
