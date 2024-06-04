@@ -19,6 +19,11 @@
 ;;; Line numbers!
 ;;; Disable vertical scrollbars in all frames.
 (scroll-bar-mode -1)
+(defun my/disable-scroll-bars (frame)
+  (modify-frame-parameters frame
+                           '((vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil))))
+(add-hook 'after-make-frame-functions 'my/disable-scroll-bars)
 ;;; Disable menu bar for all (trying this out)
 (menu-bar-mode -1)
 ;;; No dialog boxes, rather show message in minibuffer
