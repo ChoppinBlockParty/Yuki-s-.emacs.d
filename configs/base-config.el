@@ -93,12 +93,8 @@
       mac-command-modifier 'meta
       mac-option-modifier 'none)
 
-(setenv "PATH" (concat (getenv "PATH") ":/bin"))
 (if (string= system-type "darwin")
   (progn
-    (setq dired-use-ls-dired t
-            insert-directory-program "gls"
-            dired-listing-switches "-aBhl --group-directories-first")
     (setq default-frame-alist '((width . 127) (height . 47)))
     (select-frame-set-input-focus (selected-frame))
     (set-frame-font "DejaVuSansM Nerd Font Mono-13")
