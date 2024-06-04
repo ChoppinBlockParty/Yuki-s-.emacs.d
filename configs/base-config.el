@@ -100,7 +100,7 @@
   (progn
     (setq default-frame-alist '((width . 127) (height . 47)))
     (select-frame-set-input-focus (selected-frame))
-    (set-frame-font "DejaVuSansM Nerd Font Mono-13")
+    (set-frame-font "DejaVuSansM Nerd Font Mono-15")
   )
   (progn
     (set-frame-font "DejaVu Sans Mono-13")
