@@ -99,7 +99,9 @@
     (setq dired-use-ls-dired t
             insert-directory-program "gls"
             dired-listing-switches "-aBhl --group-directories-first")
-    (setq default-frame-alist '((width . 137) (height . 61)))
+    (setq default-frame-alist '((width . 127) (height . 47)))
+    (select-frame-set-input-focus (selected-frame))
+    (set-frame-font "DejaVuSansM Nerd Font Mono-13")
   )
   (progn
     (set-frame-font "DejaVu Sans Mono-13")
