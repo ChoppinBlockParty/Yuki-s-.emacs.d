@@ -23,6 +23,8 @@
 !/tools
 !/tools/*.sh
 !/tools/*.desktop
+!/tools/mac
+!/tools/mac/*
 
 !.gitignore
 !init.el
