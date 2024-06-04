@@ -82,10 +82,8 @@
 ;;; Enable the mouse in terminal mode.
 (xterm-mouse-mode 1)
 
-;;; Change screen position for some file types (e.g. javascript)
-;;; probably due to formatter on save
-; (setq auto-save-timeout 2)
-; (auto-save-visited-mode)
+;;; Disable symlink the confirmation on symlink redirection.
+(setq vc-follow-symlinks t)
 
 ;;; I prefer cmd key for meta
 (setq mac-option-key-is-meta nil
