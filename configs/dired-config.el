@@ -8,11 +8,10 @@
 
   (if (string= system-type "darwin")
     (progn
-      (setq insert-directory-program "gls"
-            dired-listing-switches "-aBhl --group-directories-first"))
-    (progn
-      (setq dired-listing-switches "-Ahl --group-directories-first")
-      ))
+      (setq insert-directory-program "gls")
+    ))
+
+   (setq dired-listing-switches "-Ahl --group-directories-first")
 
   ;;; When you choose a directory to visit, it is normally visited in a new buffer – the
   ;;; Dired buffer you chose it in is not deleted.
