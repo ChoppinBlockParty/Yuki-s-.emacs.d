@@ -155,6 +155,12 @@
   (my-evil-all-modes-define-key "M-2" 'my-switch-to-previous-window)
   (my-evil-all-modes-define-key "M-3" 'my-switch-to-previous-buffer)
   (my-evil-all-modes-define-key "C-s" 'evil-write)
+
+  (my-evil-2-modes-define-key "M-q" 'evil-visual-block)
+
+  (my-evil-all-modes-define-key "M-c" 'evil-yank)
+  (my-evil-all-modes-define-key "M-v" 'evil-paste-after)
+
   (define-key evil-normal-state-map "ZZ" nil)
   (define-key evil-normal-state-map "ZQ" nil)
 
@@ -376,7 +382,6 @@
 
   (my-evil-2-modes-define-key "M-h" 'evil-jump-backward)
   (my-evil-2-modes-define-key "M-l" 'evil-jump-forward)
-  (my-evil-2-modes-define-key "M-c" 'evil-visual-block)
 
   (define-key evil-normal-state-map "U" 'evil-redo)
   (my-evil-2-modes-define-key "Y" 'evil-join)

@@ -10,6 +10,7 @@
 ;;; https://github.com/company-mode/company-mode/pull/706
 ;;; Described in [Switch from AC](https://github.com/company-mode/company-mode/wiki/Switching-from-AC)
 (use-package company
+  :after (evil-config)
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   ;;; Goint to configure all myself
@@ -56,6 +57,8 @@
   (setq-default company-mode t)
 
   (advice-add #'eglot--snippet-expansion-fn :override #'ignore)
+
+  (evil-define-key 'insert 'global (kbd "M-z") 'company-complete-common)
   )
 
 (define-key company-active-map (kbd "C-h") 'company-show-doc-buffer)
@@ -84,7 +87,6 @@
 (define-key company-active-map (kbd "RET") nil)
 (define-key company-active-map (kbd "[") nil)
 (define-key company-active-map (kbd "]") nil)
-(evil-define-key 'insert 'global (kbd "C-SPC") 'company-complete-common)
 
 (use-package ycmd
   :ensure nil
@@ -152,23 +154,6 @@
   ;;; Add the ycmd checker to the list of available checkers
   (add-to-list 'flycheck-checkers 'ycmd)
   )
-
-
-;;; Not sure, probably should rid off it, as it was last updated in 2017
-;; (use-package company-go
-;;   :ensure nil
-;;   :load-path "local/company-go"
-;;   :config
-
-;;   (setq
-;;     company-go-show-annotation t
-;;     company-go-insert-arguments nil
-;;     )
-
-;;   (add-hook 'go-mode-hook (lambda ()
-;;                           (set (make-local-variable 'company-backends) '(company-go))
-;;                           (company-mode)))
-;;   )
 
 
 (provide 'completion-config)
