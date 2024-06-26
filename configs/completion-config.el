@@ -26,7 +26,7 @@
 
   (setq
     ;; company-lighter-base ""
-    company-idle-delay 0.3
+    company-idle-delay 0.0
     company-minimum-prefix-length 1
     company-selection-default nil
     company-require-match nil      ; cancel selections by typing non-matching character
