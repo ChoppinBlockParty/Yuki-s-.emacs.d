@@ -109,7 +109,7 @@
 
   ;; (add-hook 'after-init-hook #'global-ycmd-mode)
   ;; (add-hook 'after-init-hook #'global-ycmd-mode)
-  (add-hook 'python-mode-hook 'ycmd-mode)
+  ;; (add-hook 'python-mode-hook 'ycmd-mode)
   (add-hook 'c-mode-hook 'ycmd-mode)
   (add-hook 'c++-mode-hook 'ycmd-mode)
   ;;; Not working as of 2021-01-18, switch to gocode (see below)
@@ -155,6 +155,16 @@
   (add-to-list 'flycheck-checkers 'ycmd)
   )
 
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-z")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+        (python-mode . lsp)
+        ;; if you want which-key integration
+        ;;(lsp-mode . lsp-enable-which-key-integration))
+        )
+  )
 
 (provide 'completion-config)
 ;;; completion-config.el ends here
