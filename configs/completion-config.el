@@ -6,11 +6,36 @@
   completion-show-help nil
   )
 
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-l")
+  ; :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+  ;     (python-mode . lsp)
+        ;; if you want which-key integration
+        ;;(lsp-mode . lsp-enable-which-key-integration))
+  ;       )
+
+  :config
+    (add-to-list 'lsp-disabled-clients 'pylsp)
+
+    (evil-define-key 'normal 'global
+        (kbd "SPC d") #'lsp-goto-type-definition
+        )
+    (evil-add-command-properties #'lsp-goto-type-definition :jump t)
+  )
+
+(use-package lsp-pyright
+  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
+
 ;;; Big discussion on how run Tab completion
 ;;; https://github.com/company-mode/company-mode/pull/706
 ;;; Described in [Switch from AC](https://github.com/company-mode/company-mode/wiki/Switching-from-AC)
 (use-package company
-  :after (evil-config)
+  :after (evil-config lsp-mode)
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   ;;; Goint to configure all myself
@@ -58,35 +83,39 @@
 
   (advice-add #'eglot--snippet-expansion-fn :override #'ignore)
 
-  (evil-define-key 'insert 'global (kbd "M-z") 'company-complete-common)
-  )
+  (evil-define-key 'insert 'global (kbd "TAB") 'company-complete-common)
 
-(define-key company-active-map (kbd "C-h") 'company-show-doc-buffer)
-(define-key company-active-map (kbd "C-l") 'company-show-location)
-(define-key company-active-map (kbd "C-k") 'company-select-previous)
-(define-key company-active-map (kbd "C-j") 'company-select-next)
-(define-key company-active-map (kbd "M-k") 'company-select-previous)
-(define-key company-active-map (kbd "M-j") 'company-select-next)
-(define-key company-active-map (kbd "<down>") 'company-select-next-or-abort)
-(define-key company-active-map (kbd "<up>") 'company-select-previous-or-abort)
-(define-key company-active-map [down-mouse-1] 'ignore)
-(define-key company-active-map [down-mouse-3] 'ignore)
-(define-key company-active-map [mouse-1] 'ignore)
-(define-key company-active-map [mouse-3] 'ignore)
-(define-key company-active-map [up-mouse-1] 'ignore)
-(define-key company-active-map [up-mouse-3] 'ignore)
-(define-key company-active-map (kbd "[shift-tab]") 'company-select-previous)
-(define-key company-active-map (kbd "S-TAB") 'company-select-previous)
-(define-key company-active-map (kbd "<backtab>") 'company-select-previous)
-(define-key company-active-map (kbd "[tab]") 'company-complete-common-or-cycle)
-(define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
-(define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-;;; Quits completion and removes last selection (works like a charm)
-(define-key company-active-map (kbd "C-w") 'company-abort)
-(define-key company-active-map [return] nil)
-(define-key company-active-map (kbd "RET") nil)
-(define-key company-active-map (kbd "[") nil)
-(define-key company-active-map (kbd "]") nil)
+  (define-key company-active-map (kbd "C-h") 'company-show-doc-buffer)
+  (define-key company-active-map (kbd "C-l") 'company-show-location)
+  (define-key company-active-map (kbd "C-k") 'company-select-previous)
+  (define-key company-active-map (kbd "C-j") 'company-select-next)
+  (define-key company-active-map (kbd "M-k") 'company-select-previous)
+  (define-key company-active-map (kbd "M-j") 'company-select-next)
+  (define-key company-active-map (kbd "<down>") 'company-select-next-or-abort)
+  (define-key company-active-map (kbd "<up>") 'company-select-previous-or-abort)
+  (define-key company-active-map [down-mouse-1] 'ignore)
+  (define-key company-active-map [down-mouse-3] 'ignore)
+  (define-key company-active-map [mouse-1] 'ignore)
+  (define-key company-active-map [mouse-3] 'ignore)
+  (define-key company-active-map [up-mouse-1] 'ignore)
+  (define-key company-active-map [up-mouse-3] 'ignore)
+  (define-key company-active-map (kbd "[shift-tab]") 'company-select-previous)
+  (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
+  (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
+  (define-key company-active-map (kbd "[tab]") 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
+  ;;; Quits completion and removes last selection (works like a charm)
+  (define-key company-active-map (kbd "C-w") 'company-abort)
+  (define-key company-active-map [return] nil)
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "[") nil)
+  (define-key company-active-map (kbd "]") nil)
+)
+
+;; With use-package:
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 (use-package ycmd
   :ensure nil
@@ -153,17 +182,6 @@
 
   ;;; Add the ycmd checker to the list of available checkers
   (add-to-list 'flycheck-checkers 'ycmd)
-  )
-
-(use-package lsp-mode
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "M-z")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-        (python-mode . lsp)
-        ;; if you want which-key integration
-        ;;(lsp-mode . lsp-enable-which-key-integration))
-        )
   )
 
 (provide 'completion-config)

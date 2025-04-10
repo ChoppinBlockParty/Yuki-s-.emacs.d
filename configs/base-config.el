@@ -10,6 +10,9 @@
 (setq-default major-mode 'text-mode)
 (setq initial-major-mode 'text-mode)
 
+;;; Improve
+(setq read-process-output-max (* 3 1024 1024)) ;; 3mb
+
 ;;; Disable confirmations to kill processes.
 (setq confirm-kill-processes nil)
 ;;; Disable warnings.
@@ -100,7 +103,7 @@
   (progn
     (setq default-frame-alist '((width . 127) (height . 47)))
     (select-frame-set-input-focus (selected-frame))
-    (set-frame-font "DejaVuSansM Nerd Font Mono-15")
+    (set-frame-font "DejaVuSansM Nerd Font Mono-16")
   )
   (progn
     (set-frame-font "DejaVu Sans Mono-13")
