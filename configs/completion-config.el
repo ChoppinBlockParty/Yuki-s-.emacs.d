@@ -23,6 +23,8 @@
         (kbd "SPC d") #'lsp-goto-type-definition
         )
     (evil-add-command-properties #'lsp-goto-type-definition :jump t)
+    (add-hook 'c-mode-hook 'lsp)
+    (add-hook 'c++-mode-hook 'lsp)
   )
 
 (use-package lsp-pyright
@@ -117,72 +119,72 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-(use-package ycmd
-  :ensure nil
-  :load-path "local/emacs-ycmd"
-  :config
-  (setq
-    ycmd-mode-line-prefix ""
-    ;;; ffs, everything is so complicated,..., this '-u' flag
-    ;;; https://github.com/abingham/emacs-ycmd/issues/429
-    ycmd-server-command `("python3" "-u" ,(file-truename "~/yuki/ycmd/ycmd"))
-    ;;; Load, do not 'ask
-    ycmd-extra-conf-handler 'load
-    ycmd-global-config (file-truename "~/.ycm_extra_conf.py")
-    ycmd-settings-json-filepath (concat user-emacs-directory "ycmd_default_settings.json")
-    request-message-level -1
-    )
+;; (use-package ycmd
+;;   :ensure nil
+;;   :load-path "local/emacs-ycmd"
+;;   :config
+;;   (setq
+;;     ycmd-mode-line-prefix ""
+;;     ;;; ffs, everything is so complicated,..., this '-u' flag
+;;     ;;; https://github.com/abingham/emacs-ycmd/issues/429
+;;     ycmd-server-command `("python3" "-u" ,(file-truename "~/yuki/ycmd/ycmd"))
+;;     ;;; Load, do not 'ask
+;;     ycmd-extra-conf-handler 'load
+;;     ycmd-global-config (file-truename "~/.ycm_extra_conf.py")
+;;     ycmd-settings-json-filepath (concat user-emacs-directory "ycmd_default_settings.json")
+;;     request-message-level -1
+;;     )
 
-  (modify-syntax-entry ?_ "w" ycmd-view-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" ycmd-fixit-mode-syntax-table)
+;;   (modify-syntax-entry ?_ "w" ycmd-view-mode-syntax-table)
+;;   (modify-syntax-entry ?_ "w" ycmd-fixit-mode-syntax-table)
 
-  ;; (add-hook 'after-init-hook #'global-ycmd-mode)
-  ;; (add-hook 'after-init-hook #'global-ycmd-mode)
-  ;; (add-hook 'python-mode-hook 'ycmd-mode)
-  (add-hook 'c-mode-hook 'ycmd-mode)
-  (add-hook 'c++-mode-hook 'ycmd-mode)
-  ;;; Not working as of 2021-01-18, switch to gocode (see below)
-  ;; (add-hook 'go-mode-hook 'ycmd-mode)
-  ;; (add-hook 'rjsx-mode-hook 'ycmd-mode)
-  ;; (add-hook 'js2-mode-hook 'ycmd-mode)
-  ;; (add-to-list 'ycmd-file-type-map '(rjsx-mode . ("javascript")))
+;;   ;; (add-hook 'after-init-hook #'global-ycmd-mode)
+;;   ;; (add-hook 'after-init-hook #'global-ycmd-mode)
+;;   ;; (add-hook 'python-mode-hook 'ycmd-mode)
+;;   (add-hook 'c-mode-hook 'ycmd-mode)
+;;   (add-hook 'c++-mode-hook 'ycmd-mode)
+;;   ;;; Not working as of 2021-01-18, switch to gocode (see below)
+;;   ;; (add-hook 'go-mode-hook 'ycmd-mode)
+;;   ;; (add-hook 'rjsx-mode-hook 'ycmd-mode)
+;;   ;; (add-hook 'js2-mode-hook 'ycmd-mode)
+;;   ;; (add-to-list 'ycmd-file-type-map '(rjsx-mode . ("javascript")))
 
-  (evil-define-key 'normal ycmd-mode-map
-     (kbd "SPC c") 'ycmd-goto-definition
-     (kbd "SPC d") 'ycmd-goto-declaration)
-  )
+;;   (evil-define-key 'normal ycmd-mode-map
+;;      (kbd "SPC c") 'ycmd-goto-definition
+;;      (kbd "SPC d") 'ycmd-goto-declaration)
+;;   )
 
-(evil-add-command-properties #'ycmd-goto :jump t)
-(evil-add-command-properties #'ycmd-goto-include :jump t)
-(evil-add-command-properties #'ycmd-goto-declaration :jump t)
-(evil-add-command-properties #'ycmd-goto-definition :jump t)
-(evil-add-command-properties #'ycmd-goto-implementation :jump t)
-(evil-add-command-properties #'ycmd-goto-imprecise :jump t)
-(evil-add-command-properties #'ycmd-goto-references :jump t)
-(evil-add-command-properties #'ycmd-goto-type :jump t)
+;; (evil-add-command-properties #'ycmd-goto :jump t)
+;; (evil-add-command-properties #'ycmd-goto-include :jump t)
+;; (evil-add-command-properties #'ycmd-goto-declaration :jump t)
+;; (evil-add-command-properties #'ycmd-goto-definition :jump t)
+;; (evil-add-command-properties #'ycmd-goto-implementation :jump t)
+;; (evil-add-command-properties #'ycmd-goto-imprecise :jump t)
+;; (evil-add-command-properties #'ycmd-goto-references :jump t)
+;; (evil-add-command-properties #'ycmd-goto-type :jump t)
 
-(use-package company-ycmd
-  :ensure nil
-  :load-path "local/emacs-ycmd"
-  :config
-    (company-ycmd-setup)
-    ;; (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
-  )
+;; (use-package company-ycmd
+;;   :ensure nil
+;;   :load-path "local/emacs-ycmd"
+;;   :config
+;;     (company-ycmd-setup)
+;;     ;; (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd))
+;;   )
 
-(use-package flycheck-ycmd
-  :init
-  (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
-  :config
+;; (use-package flycheck-ycmd
+;;   :init
+;;   (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
+;;   :config
 
-  (modify-syntax-entry ?_ "w" flycheck-error-list-mode-syntax-table)
+;;   (modify-syntax-entry ?_ "w" flycheck-error-list-mode-syntax-table)
 
 
-  ;;; Make sure the flycheck cache sees the parse results
-  (add-hook 'ycmd-file-parse-result-hook 'flycheck-ycmd--cache-parse-results)
+;;   ;;; Make sure the flycheck cache sees the parse results
+;;   (add-hook 'ycmd-file-parse-result-hook 'flycheck-ycmd--cache-parse-results)
 
-  ;;; Add the ycmd checker to the list of available checkers
-  (add-to-list 'flycheck-checkers 'ycmd)
-  )
+;;   ;;; Add the ycmd checker to the list of available checkers
+;;   (add-to-list 'flycheck-checkers 'ycmd)
+;;   )
 
 (provide 'completion-config)
 ;;; completion-config.el ends here
