@@ -99,5 +99,45 @@ to filter keys on the basis of `evil-collection-key-whitelist' and
       (setq filtered-bindings (nreverse filtered-bindings))
       (evil-collection--define-key states-to-bind map-sym filtered-bindings))))
 
+(defun evil-collection-inhibit-insert-state (map-sym)
+  "Unmap insertion keys from normal state.
+This is particularly useful for read-only modes."
+  (evil-collection-define-key 'normal map-sym
+    [remap evil-append] #'ignore
+    [remap evil-append-line] #'ignore
+    [remap evil-insert] #'ignore
+    [remap evil-insert-line] #'ignore
+    [remap evil-change] #'ignore
+    [remap evil-change-line] #'ignore
+    [remap evil-substitute] #'ignore
+    [remap evil-change-whole-line] #'ignore
+    [remap evil-delete] #'ignore
+    [remap evil-delete-line] #'ignore
+    [remap evil-delete-char] #'ignore
+    [remap evil-delete-backward-char] #'ignore
+    [remap evil-replace] #'ignore
+    [remap evil-replace-state] #'ignore
+    [remap evil-open-below] #'ignore
+    [remap evil-open-above] #'ignore
+    [remap evil-paste-after] #'ignore
+    [remap evil-paste-before] #'ignore
+    [remap evil-join] #'ignore
+    [remap evil-indent] #'ignore
+    [remap evil-shift-left] #'ignore
+    [remap evil-shift-right] #'ignore
+    [remap evil-invert-char] #'ignore))
+
+
+(defun evil-collection-set-readonly-bindings (map-sym)
+  "Unmap insertion keys from normal state. Additionally q can `quit-window'.
+This is particularly useful for read-only modes. Make sure it's
+called before setting up other evil bindings so that it can be
+overriden."
+  (evil-collection-inhibit-insert-state map-sym)
+  (evil-collection-define-key 'normal map-sym
+    "q"  #'quit-window
+    "ZZ" #'quit-window
+    "ZQ" #'evil-quit))
+
 (provide 'my-evil-collection-minimal)
 ;;; my-evil-collection-minimal.el ends here

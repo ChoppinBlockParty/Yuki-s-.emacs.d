@@ -74,6 +74,8 @@
 (require 'latex-config)
 (require 'tramp-config)
 (require 'ediff-config)
+(require 'xref-config)
+
 (require 'flip-between-buffers-config)
 (require 'other-stuff-config)
 (require 'global-key-binding-config)
