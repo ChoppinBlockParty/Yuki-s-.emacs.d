@@ -11,7 +11,7 @@
     (setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no")
   :config
     (setq vterm-max-scrollback 70000)
-    (setq vterm-buffer-name "*shell*")
+    (setq vterm-buffer-name-string "*shell-%s*")
     (setq vterm-kill-buffer-on-exit t)
 
     (defun my-vterm ()

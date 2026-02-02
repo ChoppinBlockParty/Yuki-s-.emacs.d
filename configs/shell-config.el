@@ -19,6 +19,14 @@
     )
   )
 
+(defun my-shell-rename-buffer-with-directory ()
+  "Rename shell buffer to include current directory."
+  (when (derived-mode-p 'shell-mode)
+    (let* ((dir-name (file-name-nondirectory
+                      (directory-file-name default-directory)))
+           (new-name (format "*shell-%s*" dir-name)))
+      (rename-buffer (generate-new-buffer-name new-name) t))))
+
 (require 'comint)
 ;;; For better shell directory tracking, used below
 (require 'dirtrack)
@@ -91,6 +99,11 @@
   ;;; Enable alternative tracking strategy
   (dirtrack-mode 1)
   (add-hook 'comint-preoutput-filter-functions 'dirtrack nil t)
+  ;; Rename buffer based on directory
+  (add-hook 'dirtrack-directory-change-hook
+            #'my-shell-rename-buffer-with-directory nil t)
+  ;; Also rename initially
+  (my-shell-rename-buffer-with-directory)
 
   ;;; popular pagers do not work in shell-mode
   (process-send-string (get-buffer-process (current-buffer))
