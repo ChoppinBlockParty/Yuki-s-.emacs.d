@@ -29,5 +29,6 @@
 !.gitignore
 !init.el
 !readme.md
+!CLAUDE.md
 !ycmd_default_settings.json
 !todo.md
