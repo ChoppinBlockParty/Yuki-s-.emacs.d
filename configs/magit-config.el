@@ -634,5 +634,18 @@
 (evil-magit-define-key 'normal 'magit-diff-mode-map "b" 'evil-backward-word-begin)
 (evil-magit-define-key 'normal 'magit-diff-mode-map "B" 'evil-backward-WORD-begin)
 
+;; Override magit-section-mode's truncate-lines=t so long lines wrap
+;; character-by-character with fringe continuation indicators.
+(add-hook 'magit-mode-hook (lambda () (setq truncate-lines nil)))
+
+;; Logical-line cursor movement in all magit buffers (matching normal buffer behavior).
+;; 0 = beginning of line, 5 = first non-blank, 8 = end of line.
+(evil-magit-define-key 'normal 'magit-mode-map "0" 'evil-beginning-of-line)
+(evil-magit-define-key 'visual 'magit-mode-map "0" 'evil-beginning-of-line)
+(evil-magit-define-key 'normal 'magit-mode-map "5" 'evil-first-non-blank)
+(evil-magit-define-key 'visual 'magit-mode-map "5" 'evil-first-non-blank)
+(evil-magit-define-key 'normal 'magit-mode-map "8" 'evil-end-of-line)
+(evil-magit-define-key 'visual 'magit-mode-map "8" 'evil-end-of-line)
+
 (provide 'magit-config)
 ;;; magit-config.el ends here

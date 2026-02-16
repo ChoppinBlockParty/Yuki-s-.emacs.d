@@ -168,7 +168,7 @@
   (defun run-emacs ()
     "Usefull for testing Emacs configuration."
     (interactive)
-    (start-process-shell-command "emacs" nil "emacs --debug-init ~/yuki/dwm/source/dwm.c")
+    (start-process-shell-command "emacs" nil "emacs --debug-init ~/.emacs.d/init.el")
     ;; (start-process-shell-command "emacs" nil "emacs")
     )
   (my-evil-all-modes-define-key "C-1" 'run-emacs)
