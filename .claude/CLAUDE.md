@@ -29,6 +29,7 @@ sudo ./tools/install-emacs.sh /opt/emacs
 - **Cache/state paths:** Everything stored under `~/.cache/emacs/` (backups, autosave, saveplace, savehist, recentf, projectile-cache)
 - **Custom-set-variables:** Embedded at the bottom of `init.el` (no separate `custom.el`)
 - **Keybinding priority:** `my-intercept-mode-map` is a custom minor mode map with `emulation-mode-map-alists` priority, used for bindings that must override all other modes
+- **Comment all changes:** Every new configuration line or snippet must have an accompanying comment explaining its purpose.
 
 ## Key Modules (by importance)
 
