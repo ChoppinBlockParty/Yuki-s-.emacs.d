@@ -21,6 +21,9 @@
       )
     )
   (projectile-global-mode t)
+  ;; projectile-mode doesn't load the bookmarks file; do it explicitly
+  ;; so counsel-projectile-switch-project has candidates immediately
+  (projectile-load-known-projects)
   )
 
 (provide 'projectile-config)
