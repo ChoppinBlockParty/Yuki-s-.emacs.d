@@ -166,9 +166,6 @@
     (add-hook 'typescript-mode-hook #'setup-ts-tide-mode)
     (add-hook 'web-mode-hook #'setup-tide-mode)
 
-    ;; enable typescript-tslint checker
-    (flycheck-add-mode 'typescript-tslint 'typescript-mode)
-
     (evil-define-key 'normal tide-mode-map
         (kbd "SPC d") #'tide-jump-to-definition
         (kbd "SPC c") #'tide-jump-back)
