@@ -61,9 +61,36 @@
   )
 
 (use-package markdown-mode
+  :custom
+  ;; Syntax-highlight fenced code blocks using each language's font-lock
+  (markdown-fontify-code-blocks-natively t)
+  ;; Conceal inline markup characters and show formatted text
+  (markdown-hide-markup t)
+  ;; Hide URL syntax in links, show only link text (URL visible on hover)
+  (markdown-hide-urls t)
+  ;; Enable ==highlight== syntax support
+  (markdown-enable-highlighting-syntax t)
+  ;; Enable LaTeX math syntax recognition
+  (markdown-enable-math t)
   :config
   (modify-syntax-entry ?_ "w" markdown-mode-syntax-table)
   (modify-syntax-entry ?- "w" markdown-mode-syntax-table)
+
+  ;; Toggle all markdown rendering on/off at once
+  (defun my-markdown-toggle-rendering ()
+    "Toggle all markdown in-buffer rendering (markup, URLs, code blocks)."
+    (interactive)
+    (markdown-toggle-markup-hiding)
+    (markdown-toggle-url-hiding)
+    (markdown-toggle-fontify-code-blocks-natively))
+
+  ;; Evil keybindings for rendering toggles (SPC m prefix)
+  (evil-define-key 'normal markdown-mode-map
+    (kbd "SPC m t") #'my-markdown-toggle-rendering
+    (kbd "SPC m m") #'markdown-toggle-markup-hiding
+    (kbd "SPC m u") #'markdown-toggle-url-hiding
+    (kbd "SPC m c") #'markdown-toggle-fontify-code-blocks-natively
+    (kbd "SPC m i") #'markdown-toggle-inline-images)
   )
 
 (use-package vimrc-mode
