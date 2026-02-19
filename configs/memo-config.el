@@ -17,11 +17,23 @@
     "zS   rg-save-search-as-name    Save search with a name")
   "List of rg-mode keybinding entries.")
 
+;; markdown-mode keybinding entries for the memo
+(defvar my-memo--markdown-keybindings
+  '("SPC m t  my-markdown-toggle-rendering                Toggle all rendering"
+    "SPC m m  markdown-toggle-markup-hiding                Toggle markup hiding only"
+    "SPC m u  markdown-toggle-url-hiding                   Toggle URL hiding only"
+    "SPC m c  markdown-toggle-fontify-code-blocks-natively Toggle code block highlighting only"
+    "SPC m i  markdown-toggle-inline-images                Toggle inline images")
+  "List of markdown-mode keybinding entries.")
+
 ;; Display keybindings memo in the minibuffer via completing-read
 (defun my-memo-keybindings ()
   "Show keybinding memo in the minibuffer."
   (interactive)
-  (completing-read "Keybindings: " my-memo--rg-keybindings nil t))
+  (completing-read "Keybindings: "
+                   (append my-memo--rg-keybindings
+                           my-memo--markdown-keybindings)
+                   nil t))
 
 (provide 'memo-config)
 ;;; memo-config.el ends here
