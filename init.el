@@ -78,6 +78,7 @@
 
 (require 'flip-between-buffers-config)
 (require 'other-stuff-config)
+(require 'memo-config)
 (require 'global-key-binding-config)
 
 ;;; Chooses random modes to obfuscate the current buffer, which can be used as a screensaver
