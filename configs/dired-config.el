@@ -300,6 +300,8 @@
 (defun my-dired-mode-hook()
   "Hook to setup all-the-icons."
   (dired-hide-details-mode 1)
+  ;; Auto-refresh dired buffers when directory contents change
+  (auto-revert-mode 1)
   ;; (dired-collapse-mode 1)
   ;; (add-hook 'dired-after-readin-hook 'all-the-icons-dired--display t t)
   )
