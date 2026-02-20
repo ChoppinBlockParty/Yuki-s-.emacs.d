@@ -5,7 +5,7 @@
 (use-package pdf-tools)
 
 (setq
-  pdf-view-display-size 'fit-page
+  pdf-view-display-size 'fit-width
   pdf-view-resize-factor 1.25
   ;;; In Continuous mode reaching the page edge advances to
   ;;; next/previous page. When non-nil, scrolling a line upward at the
