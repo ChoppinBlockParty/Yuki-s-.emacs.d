@@ -10,6 +10,9 @@
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-l")
+  ;; Disable LSP "format on type" - clangd reformats the just-inserted newline
+  ;; and strips the indentation produced by newline-and-indent in insert mode.
+  (setq lsp-enable-on-type-formatting nil)
   ; :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
   ;     (python-mode . lsp)
         ;; if you want which-key integration
