@@ -32,6 +32,13 @@
 
 (use-package lsp-pyright
   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+  :config
+  (defun my/lsp-pyright-locate-root (orig-fn &rest args)
+    "Use pyrightconfig.json or pyproject.toml as project root marker."
+    (or (locate-dominating-file default-directory "pyrightconfig.json")
+        (locate-dominating-file default-directory "pyproject.toml")
+        (apply orig-fn args)))
+  (advice-add 'lsp--suggest-project-root :around #'my/lsp-pyright-locate-root)
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred

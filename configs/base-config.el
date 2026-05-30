@@ -10,6 +10,14 @@
 (setq-default major-mode 'text-mode)
 (setq initial-major-mode 'text-mode)
 
+;;; Copy PATH from shell so GUI Emacs can find node, ripgrep, etc.
+(let ((path-from-shell (string-trim
+                        (shell-command-to-string
+                         "$SHELL --login -c 'echo $PATH'"))))
+  (setenv "PATH" path-from-shell)
+  (setq exec-path (append (parse-colon-path path-from-shell)
+                           (list exec-directory))))
+
 ;;; Improve
 (setq read-process-output-max (* 3 1024 1024)) ;; 3mb
 

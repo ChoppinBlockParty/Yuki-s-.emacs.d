@@ -14,6 +14,14 @@
     (setq vterm-buffer-name-string "*shell-%s*")
     (setq vterm-kill-buffer-on-exit t)
 
+    ;; Fix ANSI black/gray visibility: moe-dark sets ansi-color-black
+    ;; to #303030 (same as background), making black/gray text invisible.
+    ;; Override vterm faces so dark gray and bright gray are readable.
+    (set-face-attribute 'vterm-color-black nil
+                        :foreground "#4e4e4e" :background "#303030")
+    (set-face-attribute 'vterm-color-bright-black nil
+                        :foreground "#8a8a8a" :background "#4e4e4e")
+
     (defun my-vterm ()
       (interactive)
       (vterm vterm-buffer-name))

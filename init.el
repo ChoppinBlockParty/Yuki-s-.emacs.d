@@ -94,6 +94,11 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(lsp-mode kaolin-themes zerodark-theme xterm-color window-numbering wgrep vimrc-mode use-package spacemacs-theme smex rg rainbow-mode rainbow-delimiters powerline moe-theme markdown-mode magit ivy-rich iedit highlight-symbol highlight-operators helm-swoop helm-flycheck grandshell-theme go-mode flyspell-lazy flycheck-ycmd flx expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit evil-leader evil-easymotion dockerfile-mode docker-compose-mode counsel-projectile company-ycmd cmake-mode clang-format auctex))
+ '(safe-local-variable-values
+   '((lsp-pyright-venv-directory . ".venv")
+     (lsp-pyright-python-executable-cmd . "python3.12")
+     (lsp-pyright-python-executable-cmd . "python3.13")
+     (lsp-pyright-python-search-functions . (lsp-pyright--locate-python-python))))
  '(warning-suppress-types '((comp) (comp) (comp) (comp) (comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
